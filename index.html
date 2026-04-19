@@ -1458,7 +1458,7 @@ function startTestEngine(key,qs,name,contest,areaId,resId){
       activeTest={key:key,qs:saved.qs,answers:saved.answers||{},secs:saved.secs,timerInterval:null,areaId:areaId,resId:resId,name:name,contest:contest};
       renderTestUI();return;
     } else {
-      localStorage.removeItem('uwTest_'+key); // Clear old state on decline
+      localStorage.removeItem('uwTest_'+key);
     }
   }
   activeTest={key:key,qs:qs,answers:{},secs:3600,timerInterval:null,areaId:areaId,resId:resId,name:name,contest:contest};
@@ -1466,7 +1466,7 @@ function startTestEngine(key,qs,name,contest,areaId,resId){
 }
 
 function renderTestUI(){
-  var t=activeTest,C=t.contest.charAt(0).toUpperCase()+t.contest.slice(1);
+  var t=activeTest;
   var area=document.getElementById(t.areaId);
   document.getElementById(t.resId).style.display='none';
   var h='<div class="mhdr"><div><span style="font-size:1rem;font-weight:700">'+t.name+'</span>';
@@ -1476,38 +1476,75 @@ function renderTestUI(){
   h+='<div class="pbar-w"><div class="pbar" id="t-pbar" style="width:0%"></div></div>';
   t.qs.forEach(function(q,i){
     var dc=q.d==='easy'?'d-easy':q.d==='medium'?'d-med':'d-hard';
-    h+='<div class="qblk"><div class="qn">Q'+(i+1)+' <span class="dbadge '+dc+'">'+q.d.toUpperCase()+'</span> <span style="font-size:.68rem;color:var(--sub)">'+q.ref+'</span></div>';
-    h+='<div class="qt">'+q.q+'</div><div class="opts">';
+    h+='<div class="qblk" id="qblk-'+i+'"><div class="qn">Q'+(i+1)+' <span class="dbadge '+dc+'">'+q.d.toUpperCase()+'</span> <span style="font-size:.68rem;color:var(--sub)">'+q.ref+'</span></div>';
+    h+='<div class="qt">'+q.q+'</div><div class="opts" id="opts-'+i+'">';
     q.o.forEach(function(opt,j){
       var sel=t.answers[i]===j?' sel':'';
       h+='<button class="obtn'+sel+'" data-q="'+i+'" data-o="'+j+'" onclick="testPick('+i+','+j+')">'+String.fromCharCode(65+j)+') '+opt+'</button>';});
     h+='</div></div>';});
   h+='<div style="text-align:center;margin-top:16px"><button class="btn" style="padding:12px 32px;font-size:.92rem" onclick="submitTest()">Submit Test</button></div>';
   area.innerHTML=h;area.style.display='block';
-  // Hide setup if exists
   var setup=area.previousElementSibling;if(setup&&setup.id&&setup.id.endsWith('-setup'))setup.style.display='none';
   updateTestTimer();
   if(t.timerInterval)clearInterval(t.timerInterval);
-  t.timerInterval=setInterval(function(){t.secs--;updateTestTimer();saveTestState();if(t.secs<=0){clearInterval(t.timerInterval);submitTest();}},1000);
+  t.timerInterval=setInterval(function(){
+    if(!activeTest)return;
+    activeTest.secs--;
+    updateTestTimer();
+    if(activeTest.secs%5===0)saveTestState();
+    if(activeTest.secs<=0){clearInterval(activeTest.timerInterval);submitTest();}
+  },1000);
   updateTestProgress();
-  if(window.MathJax&&MathJax.typeset)setTimeout(function(){MathJax.typeset();},100);
+  if(window.MathJax&&MathJax.typeset){
+    setTimeout(function(){
+      MathJax.typeset();
+      setTimeout(function(){restoreSelections();},300);
+    },100);
+  }
+}
+
+function restoreSelections(){
+  if(!activeTest)return;
+  var answers=activeTest.answers;
+  for(var qi in answers){
+    if(!answers.hasOwnProperty(qi))continue;
+    var oi=answers[qi];
+    var opts=document.querySelectorAll('[data-q="'+qi+'"]');
+    opts.forEach(function(b){b.classList.remove('sel');});
+    var sel=document.querySelector('[data-q="'+qi+'"][data-o="'+oi+'"]');
+    if(sel)sel.classList.add('sel');
+  }
+  updateTestProgress();
 }
 
 function updateTestTimer(){
-  if(!activeTest)return;var m=Math.floor(activeTest.secs/60),s=activeTest.secs%60;
-  var el=document.getElementById('t-timer');if(el)el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-  if(activeTest.secs<300&&el)el.style.color='#f44336';
+  if(!activeTest)return;
+  var m=Math.floor(activeTest.secs/60),s=activeTest.secs%60;
+  var el=document.getElementById('t-timer');
+  if(!el)return;
+  el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  if(activeTest.secs<300)el.style.color='#f44336';
+  else el.style.color='';
 }
+
 function updateTestProgress(){
-  if(!activeTest)return;var n=Object.keys(activeTest.answers).length;
-  var el=document.getElementById('t-pbar');if(el)el.style.width=(n/activeTest.qs.length*100)+'%';
+  if(!activeTest)return;
+  var n=Object.keys(activeTest.answers).length;
+  var el=document.getElementById('t-pbar');
+  if(el)el.style.width=(n/activeTest.qs.length*100)+'%';
 }
+
 function testPick(qi,oi){
-  if(!activeTest)return;activeTest.answers[qi]=oi;
-  document.querySelectorAll('[data-q="'+qi+'"]').forEach(function(b){b.classList.remove('sel');});
-  var sel=document.querySelector('[data-q="'+qi+'"][data-o="'+oi+'"]');if(sel)sel.classList.add('sel');
-  updateTestProgress();saveTestState();
+  if(!activeTest)return;
+  activeTest.answers[qi]=oi;
+  var opts=document.querySelectorAll('[data-q="'+qi+'"]');
+  opts.forEach(function(b){b.classList.remove('sel');});
+  var sel=document.querySelector('[data-q="'+qi+'"][data-o="'+oi+'"]');
+  if(sel)sel.classList.add('sel');
+  updateTestProgress();
+  saveTestState();
 }
+
 function saveTestState(){
   if(!activeTest)return;
   localStorage.setItem('uwTest_'+activeTest.key,JSON.stringify({
@@ -1515,8 +1552,11 @@ function saveTestState(){
     answered:Object.keys(activeTest.answers).length
   }));
 }
+
 function pauseTest(){
-  if(!activeTest)return;clearInterval(activeTest.timerInterval);saveTestState();
+  if(!activeTest)return;
+  clearInterval(activeTest.timerInterval);
+  saveTestState();
   alert('Test paused! Your progress is saved. Come back anytime to resume.');
 }
 
@@ -1850,6 +1890,9 @@ Changes made: Questions have been reformatted for interactive use (multiple-choi
 </div>
 <div style="margin-top:10px;font-size:.7rem;color:rgba(255,255,255,.3)">
 Built by Sarvesh Ravikumar · Not affiliated with or endorsed by CEMC or the University of Waterloo
+</div>
+<div style="margin-top:8px;font-size:.72rem">
+<a href="privacy-policy.html" style="color:var(--gold);text-decoration:none">🔒 Privacy Policy</a>
 </div>
 </footer>
 
