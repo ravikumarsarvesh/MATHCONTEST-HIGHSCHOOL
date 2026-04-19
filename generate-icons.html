@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head><title>Icon Generator — Math Prep (Arena Style)</title>
+<style>
+body{font-family:sans-serif;background:#0a0e1a;color:#e0e0e0;padding:24px;text-align:center}
+h1{color:#FFD700;margin-bottom:8px}
+p{color:#87CEEB;margin-bottom:20px}
+canvas{border:1px solid #222;margin:8px;border-radius:8px}
+button{background:#e94560;color:#fff;border:none;padding:12px 24px;border-radius:8px;font-size:16px;cursor:pointer;margin:8px}
+button:hover{opacity:.85}
+a{color:#FFD700}
+#output{margin-top:20px}
+.row{display:flex;flex-wrap:wrap;justify-content:center;gap:20px}
+.card{background:#111833;border-radius:12px;padding:16px;display:inline-block}
+.label{font-size:12px;color:#87CEEB;margin-top:6px}
+</style>
+</head>
+<body>
+<h1>🏆 Math Prep — Icon Generator (Arena Style)</h1>
+<p>Big gold A + π, glowing blue arc, dark premium background</p>
+<button onclick="generateAll()">🎨 Generate All Icons</button>
+<button onclick="downloadAll()">⬇ Download All PNGs</button>
+<div id="output"></div>
+
+<script>
+var SIZES = [72, 96, 128, 144, 152, 192, 384, 512];
+
+function rr(ctx,x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);
+  ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);
+  ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);
+  ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);
+  ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
+}
+
+function drawIcon(canvas, size) {
+  var ctx = canvas.getContext('2d');
+  canvas.width = size;
+  canvas.height = size;
+  var s = size / 512;
+
+  // ── Dark background ──
+  var bg = ctx.createLinearGradient(0, 0, size, size);
+  bg.addColorStop(0, '#0a0e1a');
+  bg.addColorStop(0.5, '#111833');
+  bg.addColorStop(1, '#0d1528');
+  rr(ctx, 0, 0, size, size, 100*s);
+  ctx.fillStyle = bg;
+  ctx.fill();
+  ctx.save();
+  rr(ctx, 0, 0, size, size, 100*s);
+  ctx.clip();
+
+  // ── Math symbols in background ──
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  if(size >= 128) {
+    var syms = [
+      {t:'√x', x:75, y:100, sz:30, rot:-5, a:0.13},
+      {t:'∑',   x:430, y:90,  sz:34, rot:0,  a:0.10},
+      {t:'x²',  x:62,  y:285, sz:26, rot:0,  a:0.09},
+      {t:'a/b', x:60,  y:365, sz:24, rot:0,  a:0.08},
+      {t:'△',   x:438, y:335, sz:26, rot:0,  a:0.08}
+    ];
+    syms.forEach(function(sym){
+      ctx.save();
+      ctx.globalAlpha = sym.a;
+      ctx.translate(sym.x*s, sym.y*s);
+      ctx.rotate((sym.rot||0)*Math.PI/180);
+      ctx.font = 'bold '+Math.round(sym.sz*s)+'px serif';
+      ctx.fillStyle = '#1E90FF';
+      ctx.fillText(sym.t, 0, 0);
+      ctx.restore();
+    });
+  }
+  ctx.globalAlpha = 1;
+
+  // ── Blue glowing arc ──
+  // Glow layer
+  ctx.save();
+  ctx.shadowColor = '#1E90FF';
+  ctx.shadowBlur = 18*s;
+  ctx.beginPath();
+  ctx.arc(256*s, 310*s, 180*s, Math.PI*1.15, Math.PI*-0.15);
+  ctx.strokeStyle = '#1E90FF';
+  ctx.lineWidth = 6*s;
+  ctx.lineCap = 'round';
+  ctx.globalAlpha = 0.4;
+  ctx.stroke();
+  ctx.restore();
+  // Main arc
+  ctx.save();
+  ctx.shadowColor = '#00BFFF';
+  ctx.shadowBlur = 10*s;
+  ctx.beginPath();
+  ctx.arc(256*s, 310*s, 180*s, Math.PI*1.15, Math.PI*-0.15);
+  var arcG = ctx.createLinearGradient(100*s, 100*s, 412*s, 300*s);
+  arcG.addColorStop(0, '#00BFFF');
+  arcG.addColorStop(0.5, '#1E90FF');
+  arcG.addColorStop(1, '#0066CC');
+  ctx.strokeStyle = arcG;
+  ctx.lineWidth = 7*s;
+  ctx.lineCap = 'round';
+  ctx.globalAlpha = 0.85;
+  ctx.stroke();
+  ctx.restore();
+  ctx.globalAlpha = 1;
+
+  // ── 3D Gold letter A ──
+  ctx.save();
+  ctx.shadowColor = 'rgba(0,0,0,0.5)';
+  ctx.shadowBlur = 12*s;
+  ctx.shadowOffsetX = 3*s;
+  ctx.shadowOffsetY = 6*s;
+
+  // A - front face
+  var goldA = ctx.createLinearGradient(180*s, 68*s, 380*s, 320*s);
+  goldA.addColorStop(0, '#FFE44D');
+  goldA.addColorStop(0.3, '#FFD700');
+  goldA.addColorStop(0.7, '#DAA520');
+  goldA.addColorStop(1, '#B8860B');
+
+  ctx.beginPath();
+  ctx.moveTo(256*s, 68*s);
+  ctx.lineTo(380*s, 320*s);
+  ctx.lineTo(340*s, 320*s);
+  ctx.lineTo(310*s, 252*s);
+  ctx.lineTo(202*s, 252*s);
+  ctx.lineTo(172*s, 320*s);
+  ctx.lineTo(132*s, 320*s);
+  ctx.closePath();
+  ctx.fillStyle = goldA;
+  ctx.fill();
+
+  // A crossbar
+  rr(ctx, 210*s, 222*s, 92*s, 24*s, 4*s);
+  ctx.fillStyle = goldA;
+  ctx.globalAlpha = 0.9;
+  ctx.fill();
+  ctx.globalAlpha = 1;
+
+  // 3D depth - right side
+  var sideG = ctx.createLinearGradient(380*s, 0, 340*s, 320*s);
+  sideG.addColorStop(0, '#DAA520');
+  sideG.addColorStop(1, '#8B6914');
+  ctx.beginPath();
+  ctx.moveTo(380*s, 320*s);
+  ctx.lineTo(388*s, 328*s);
+  ctx.lineTo(348*s, 328*s);
+  ctx.lineTo(340*s, 320*s);
+  ctx.closePath();
+  ctx.fillStyle = sideG;
+  ctx.fill();
+
+  // 3D depth - right edge
+  ctx.beginPath();
+  ctx.moveTo(256*s, 68*s);
+  ctx.lineTo(264*s, 60*s);
+  ctx.lineTo(388*s, 328*s);
+  ctx.lineTo(380*s, 320*s);
+  ctx.closePath();
+  ctx.fillStyle = sideG;
+  ctx.globalAlpha = 0.45;
+  ctx.fill();
+  ctx.globalAlpha = 1;
+
+  ctx.restore(); // end shadow
+
+  // Top highlight on A
+  ctx.beginPath();
+  ctx.moveTo(256*s, 80*s);
+  ctx.lineTo(242*s, 118*s);
+  ctx.lineTo(270*s, 118*s);
+  ctx.closePath();
+  ctx.fillStyle = '#FFF8DC';
+  ctx.globalAlpha = 0.35;
+  ctx.fill();
+  ctx.globalAlpha = 1;
+
+  // ── π symbol on the A ──
+  ctx.save();
+  ctx.shadowColor = 'rgba(255,255,255,0.3)';
+  ctx.shadowBlur = 8*s;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.font = 'bold '+Math.round(110*s)+'px Georgia,serif';
+  ctx.fillStyle = '#fff';
+  ctx.globalAlpha = 0.92;
+  ctx.fillText('π', 256*s, 268*s);
+  ctx.restore();
+  ctx.globalAlpha = 1;
+
+  // ── "MATH PREP" text ──
+  ctx.save();
+  ctx.shadowColor = 'rgba(255,215,0,0.25)';
+  ctx.shadowBlur = 10*s;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+
+  var tg = ctx.createLinearGradient(0, 380*s, 0, 410*s);
+  tg.addColorStop(0, '#FFE44D');
+  tg.addColorStop(1, '#DAA520');
+
+  ctx.font = '900 '+Math.round(48*s)+'px "Segoe UI","Arial Black",sans-serif';
+  ctx.fillStyle = tg;
+  ctx.fillText('MATH', 118*s, 393*s);
+
+  ctx.fillStyle = '#FFD700';
+  ctx.fillText('PREP', 305*s, 393*s);
+  ctx.restore();
+
+  // ── Tagline ──
+  if(size >= 144) {
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = '600 '+Math.round(17*s)+'px "Segoe UI",sans-serif';
+    ctx.fillStyle = '#87CEEB';
+    ctx.globalAlpha = 0.8;
+    ctx.fillText('TRAIN. PRACTICE. ACE IT.', 256*s, 438*s);
+    ctx.globalAlpha = 1;
+  }
+
+  // ── Grade color accent lines at bottom ──
+  if(size >= 96) {
+    ctx.lineCap = 'round';
+    ctx.lineWidth = 4*s;
+    // Green (Gr 9)
+    ctx.beginPath();ctx.moveTo(140*s,468*s);ctx.lineTo(220*s,468*s);
+    ctx.strokeStyle = '#4CAF50';ctx.stroke();
+    // Blue (Gr 10)
+    ctx.beginPath();ctx.moveTo(230*s,468*s);ctx.lineTo(290*s,468*s);
+    ctx.strokeStyle = '#2196F3';ctx.stroke();
+    // Orange (Gr 11)
+    ctx.beginPath();ctx.moveTo(300*s,468*s);ctx.lineTo(372*s,468*s);
+    ctx.strokeStyle = '#FF9800';ctx.stroke();
+  }
+
+  ctx.restore(); // clip
+}
+
+function generateAll() {
+  var out = document.getElementById('output');
+  out.innerHTML = '<div class="row" id="icon-row"></div>';
+  var row = document.getElementById('icon-row');
+  SIZES.forEach(function(size) {
+    var div = document.createElement('div');
+    div.className = 'card';
+    var canvas = document.createElement('canvas');
+    canvas.id = 'c-'+size;
+    drawIcon(canvas, size);
+    div.appendChild(canvas);
+    var label = document.createElement('div');
+    label.className = 'label';
+    label.textContent = 'icon-' + size + '.png (' + size + '×' + size + ')';
+    div.appendChild(label);
+    var link = document.createElement('a');
+    link.href = canvas.toDataURL('image/png');
+    link.download = 'icon-' + size + '.png';
+    link.textContent = '⬇ Download';
+    link.style.display = 'block';
+    link.style.marginTop = '6px';
+    link.style.fontSize = '13px';
+    div.appendChild(link);
+    row.appendChild(div);
+  });
+}
+
+function downloadAll() {
+  generateAll();
+  setTimeout(function() {
+    SIZES.forEach(function(size, i) {
+      setTimeout(function() {
+        var canvas = document.getElementById('c-'+size);
+        if (!canvas) return;
+        var a = document.createElement('a');
+        a.href = canvas.toDataURL('image/png');
+        a.download = 'icon-' + size + '.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }, i * 300);
+    });
+  }, 500);
+}
+
+window.addEventListener('DOMContentLoaded', generateAll);
+</script>
+</body>
+</html>

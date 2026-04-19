@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html><head><title>Validate QB</title></head>
+<body>
+<pre id="out">Loading questions.js...</pre>
+<script>
+window.onerror = function(msg, url, line, col, err) {
+  document.getElementById('out').textContent = 'ERROR: ' + msg + '\nLine: ' + line + ', Col: ' + col + '\nFile: ' + url;
+  return true;
+};
+</script>
+<script src="questions.js"></script>
+<script>
+if (typeof QB !== 'undefined') {
+  document.getElementById('out').textContent = 'SUCCESS! QB has ' + QB.length + ' questions.\nFirst: ' + QB[0].ref + '\nLast: ' + QB[QB.length-1].ref;
+} else {
+  document.getElementById('out').textContent += '\nQB is undefined - syntax error in questions.js';
+}
+</script>
+</body></html>

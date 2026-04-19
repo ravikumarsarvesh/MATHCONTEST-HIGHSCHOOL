@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head><title>Feature Graphic — Play Store (1024×500)</title>
+<style>
+body{font-family:sans-serif;background:#0a0e1a;color:#e0e0e0;padding:24px;text-align:center}
+h1{color:#FFD700;margin-bottom:8px}
+p{color:#87CEEB;margin-bottom:20px}
+canvas{border:1px solid #222;max-width:100%;border-radius:8px}
+button{background:#e94560;color:#fff;border:none;padding:12px 24px;border-radius:8px;font-size:16px;cursor:pointer;margin:8px}
+button:hover{opacity:.85}
+</style>
+</head>
+<body>
+<h1>🏆 Play Store Feature Graphic (1024×500)</h1>
+<p>Arena-style banner matching the app icon</p>
+<button onclick="generate()">🎨 Generate</button>
+<button onclick="download()">⬇ Download PNG</button>
+<br><br>
+<canvas id="fg"></canvas>
+
+<script>
+function rr(ctx,x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);
+  ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);
+  ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);
+  ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);
+  ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
+}
+
+function generate(){
+  var c = document.getElementById('fg');
+  var ctx = c.getContext('2d');
+  c.width = 1024; c.height = 500;
+
+  // Background
+  var bg = ctx.createLinearGradient(0,0,1024,500);
+  bg.addColorStop(0,'#0a0e1a');bg.addColorStop(0.5,'#111833');bg.addColorStop(1,'#0d1528');
+  ctx.fillStyle = bg; ctx.fillRect(0,0,1024,500);
+
+  // Grid
+  ctx.strokeStyle='rgba(30,144,255,0.04)';ctx.lineWidth=1;
+  for(var i=0;i<1024;i+=64){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,500);ctx.stroke();}
+  for(var j=0;j<500;j+=64){ctx.beginPath();ctx.moveTo(0,j);ctx.lineTo(1024,j);ctx.stroke();}
+
+  // Math symbols scattered
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  [{t:'∑',x:80,y:70,sz:40,a:0.1},{t:'∫',x:950,y:60,sz:36,a:0.08},
+   {t:'√x',x:60,y:400,sz:30,a:0.08},{t:'x²',x:960,y:420,sz:28,a:0.07},
+   {t:'θ',x:140,y:250,sz:32,a:0.06},{t:'∞',x:900,y:240,sz:30,a:0.06},
+   {t:'△',x:80,y:180,sz:26,a:0.05},{t:'π',x:940,y:150,sz:34,a:0.05}
+  ].forEach(function(s){
+    ctx.globalAlpha=s.a;ctx.font='bold '+s.sz+'px serif';ctx.fillStyle='#1E90FF';
+    ctx.fillText(s.t,s.x,s.y);
+  });
+  ctx.globalAlpha=1;
+
+  // ── Left: Big A with π (icon replica) ──
+  var ox=230, oy=30, sc=0.75;
+
+  // Blue arc
+  ctx.save();ctx.shadowColor='#1E90FF';ctx.shadowBlur=16;
+  ctx.beginPath();ctx.arc(ox,oy+242*sc,180*sc,Math.PI*1.15,Math.PI*-0.15);
+  ctx.strokeStyle='#1E90FF';ctx.lineWidth=6*sc;ctx.lineCap='round';ctx.globalAlpha=0.35;ctx.stroke();
+  ctx.restore();
+  ctx.save();ctx.shadowColor='#00BFFF';ctx.shadowBlur=8;
+  ctx.beginPath();ctx.arc(ox,oy+242*sc,180*sc,Math.PI*1.15,Math.PI*-0.15);
+  var ag=ctx.createLinearGradient(ox-180*sc,0,ox+180*sc,0);
+  ag.addColorStop(0,'#00BFFF');ag.addColorStop(0.5,'#1E90FF');ag.addColorStop(1,'#0066CC');
+  ctx.strokeStyle=ag;ctx.lineWidth=6*sc;ctx.lineCap='round';ctx.globalAlpha=0.8;ctx.stroke();
+  ctx.restore();ctx.globalAlpha=1;
+
+  // Gold A
+  ctx.save();ctx.shadowColor='rgba(0,0,0,0.5)';ctx.shadowBlur=12;ctx.shadowOffsetY=5;
+  var gA=ctx.createLinearGradient(ox-80*sc,oy,ox+80*sc,oy+252*sc);
+  gA.addColorStop(0,'#FFE44D');gA.addColorStop(0.3,'#FFD700');gA.addColorStop(0.7,'#DAA520');gA.addColorStop(1,'#B8860B');
+  ctx.beginPath();
+  ctx.moveTo(ox,oy);ctx.lineTo(ox+124*sc,oy+252*sc);ctx.lineTo(ox+84*sc,oy+252*sc);
+  ctx.lineTo(ox+54*sc,oy+184*sc);ctx.lineTo(ox-54*sc,oy+184*sc);
+  ctx.lineTo(ox-84*sc,oy+252*sc);ctx.lineTo(ox-124*sc,oy+252*sc);ctx.closePath();
+  ctx.fillStyle=gA;ctx.fill();
+  rr(ctx,ox-46*sc,oy+154*sc,92*sc,22*sc,4*sc);ctx.fillStyle=gA;ctx.globalAlpha=0.9;ctx.fill();ctx.globalAlpha=1;
+  // 3D edge
+  var sG=ctx.createLinearGradient(ox+124*sc,0,ox+84*sc,oy+252*sc);
+  sG.addColorStop(0,'#DAA520');sG.addColorStop(1,'#8B6914');
+  ctx.beginPath();ctx.moveTo(ox+124*sc,oy+252*sc);ctx.lineTo(ox+132*sc,oy+260*sc);
+  ctx.lineTo(ox+92*sc,oy+260*sc);ctx.lineTo(ox+84*sc,oy+252*sc);ctx.closePath();
+  ctx.fillStyle=sG;ctx.fill();
+  ctx.restore();
+
+  // Highlight
+  ctx.beginPath();ctx.moveTo(ox,oy+10);ctx.lineTo(ox-12,oy+46);ctx.lineTo(ox+12,oy+46);ctx.closePath();
+  ctx.fillStyle='#FFF8DC';ctx.globalAlpha=0.3;ctx.fill();ctx.globalAlpha=1;
+
+  // π on A
+  ctx.save();ctx.shadowColor='rgba(255,255,255,0.3)';ctx.shadowBlur=6;
+  ctx.font='bold '+Math.round(90*sc)+'px Georgia,serif';ctx.fillStyle='#fff';ctx.globalAlpha=0.92;
+  ctx.fillText('π',ox,oy+200*sc);ctx.restore();ctx.globalAlpha=1;
+
+  // ── Right: Text content ──
+  var tx=520;
+
+  // App name
+  ctx.textAlign='left';
+  var tg=ctx.createLinearGradient(0,100,0,160);
+  tg.addColorStop(0,'#FFE44D');tg.addColorStop(1,'#DAA520');
+  ctx.font='900 56px "Segoe UI","Arial Black",sans-serif';
+  ctx.save();ctx.shadowColor='rgba(255,215,0,0.2)';ctx.shadowBlur=10;
+  ctx.fillStyle=tg;ctx.fillText('MATH PREP',tx,145);
+  ctx.restore();
+
+  // Subtitle
+  ctx.font='600 24px "Segoe UI",sans-serif';ctx.fillStyle='#87CEEB';
+  ctx.fillText('Waterloo Contest Training',tx,190);
+
+  // Contest names
+  ctx.font='400 20px sans-serif';ctx.fillStyle='rgba(255,255,255,0.6)';
+  ctx.fillText('Pascal (Gr 9)  ·  Cayley (Gr 10)  ·  Fermat (Gr 11)',tx,230);
+
+  // Feature pills
+  var features=['📝 Mock Tests','🃏 Flash Cards','📐 Formulas','💡 Solutions','📈 Progress'];
+  var fx=tx;
+  ctx.font='600 15px sans-serif';
+  features.forEach(function(f){
+    var w=ctx.measureText(f).width+20;
+    rr(ctx,fx,260,w,30,15);ctx.fillStyle='rgba(30,144,255,0.15)';ctx.fill();
+    ctx.strokeStyle='rgba(30,144,255,0.3)';ctx.lineWidth=1;
+    rr(ctx,fx,260,w,30,15);ctx.stroke();
+    ctx.fillStyle='#87CEEB';ctx.textAlign='center';ctx.fillText(f,fx+w/2,278);ctx.textAlign='left';
+    fx+=w+10;
+  });
+
+  // Tagline
+  ctx.font='700 18px sans-serif';ctx.fillStyle='rgba(255,255,255,0.5)';
+  ctx.fillText('TRAIN. PRACTICE. ACE IT.',tx,340);
+
+  // Grade color lines
+  ctx.lineCap='round';ctx.lineWidth=4;
+  ctx.beginPath();ctx.moveTo(tx,370);ctx.lineTo(tx+80,370);ctx.strokeStyle='#4CAF50';ctx.stroke();
+  ctx.beginPath();ctx.moveTo(tx+90,370);ctx.lineTo(tx+160,370);ctx.strokeStyle='#2196F3';ctx.stroke();
+  ctx.beginPath();ctx.moveTo(tx+170,370);ctx.lineTo(tx+240,370);ctx.strokeStyle='#FF9800';ctx.stroke();
+
+  // FREE badge
+  rr(ctx,tx,395,70,30,15);
+  var rg=ctx.createLinearGradient(tx,0,tx+70,0);
+  rg.addColorStop(0,'#e94560');rg.addColorStop(1,'#ff6b6b');
+  ctx.fillStyle=rg;ctx.fill();
+  ctx.font='900 15px sans-serif';ctx.fillStyle='#fff';ctx.textAlign='center';
+  ctx.fillText('FREE',tx+35,413);ctx.textAlign='left';
+
+  // 100% Free label
+  ctx.font='400 14px sans-serif';ctx.fillStyle='rgba(255,255,255,0.4)';
+  ctx.fillText('100% Free · No Ads · Offline Ready',tx+80,413);
+}
+
+function download(){
+  generate();
+  var a=document.createElement('a');
+  a.href=document.getElementById('fg').toDataURL('image/png');
+  a.download='feature-graphic-1024x500.png';
+  a.click();
+}
+
+window.addEventListener('DOMContentLoaded', generate);
+</script>
+</body>
+</html>

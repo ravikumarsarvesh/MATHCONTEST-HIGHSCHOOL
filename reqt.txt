@@ -1,0 +1,14 @@
+For grade 9 to 12 ontario university of waterlook conducts math contest every year, I would like to create html page with list of every years question papers along with answer code for each year contest like Pascal, cayley, fermat in a html page and on the same create flash cards to quiz the students and prepare on the same html page with mock test for each contest generate random 30 questions and answer it in the page and give how many they got wrong and wat the correct answers are and for each question papers in a different tab provide detailed step wise process to solve the question and important points to remember and increase the difficulty level every time they pass the contest 
+
+ok in mock test the questions arent complete when we refer the same question in relevant past papers they are detailed, need exact same questions word by word in mock questions as well
+also in mock tests it brings all contests in one test , make it category wise like jus pascal, just cayley and fermat and mixed randoms and also I need take year wise mock test for each and every past paper just like mock test , add another category for contest wise past papers  mock test past papers can be separate category or a tab. and set level of difficulty and also for each year paper for all contest provide mock tests and at end of the test provide detailed stepwise solution for each question
+
+save progress during mock test if I navigate to different page or pause it and start again,  end of the test provide solution step wise solution for each questions and end of the test prompt to send it to email address, Then save results of each mock tests and provide summary of right and wrong answers
+
+When I click on progress show list of all test that I have taken summary of right n wrong questions and answers along with list og wrong questions to repractice to get it right
+
+Add formulas as quiz to flash cards 
+
+solution tab doesnt make any sense, it has to have questions and answers solved for all mock tests and past papers with detailed step wise solution
+
+Also After every mock test is submitted provide correct answers and show steps to solve for all questions and highlight wrong questions and answers and show options to repractice all wrong questions

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html><head><title>Validate QB v2</title></head>
+<body>
+<pre id="out">Testing...</pre>
+<script>
+var out = document.getElementById('out');
+var xhr = new XMLHttpRequest();
+xhr.open('GET', 'questions.js', true);
+xhr.onload = function() {
+  out.textContent = 'File loaded (' + xhr.responseText.length + ' chars). Evaluating...\n';
+  try {
+    eval(xhr.responseText);
+    out.textContent += 'SUCCESS! QB has ' + QB.length + ' questions.\n';
+    out.textContent += 'First: ' + QB[0].ref + '\nLast: ' + QB[QB.length-1].ref;
+  } catch(e) {
+    out.textContent += 'SYNTAX ERROR: ' + e.message + '\n';
+    // Try to find the line
+    var lines = xhr.responseText.split('\n');
+    for (var i = 0; i < lines.length; i++) {
+      try { eval('var _t=[' + lines[i] + ']'); } 
+      catch(e2) { 
+        out.textContent += 'Bad line ' + (i+1) + ': ' + lines[i].substring(0, 200) + '\n';
+        if (i > 5) { out.textContent += '(stopping after 5 bad lines)'; break; }
+      }
+    }
+  }
+};
+xhr.onerror = function() { out.textContent = 'Failed to load questions.js via XHR'; };
+xhr.send();
+</script>
+</body></html>

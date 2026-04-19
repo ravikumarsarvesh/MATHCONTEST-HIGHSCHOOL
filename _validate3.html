@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html><head><title>Validate QB v3</title></head>
+<body>
+<pre id="out">Loading...</pre>
+<script>
+var out = document.getElementById('out');
+var s = document.createElement('script');
+s.src = 'questions.js';
+s.onload = function() {
+  out.textContent = 'questions.js loaded.\n';
+  if (typeof QB !== 'undefined') {
+    out.textContent += 'QB has ' + QB.length + ' questions.\n';
+    out.textContent += 'First: ' + QB[0].ref + '\nLast: ' + QB[QB.length-1].ref;
+  } else {
+    out.textContent += 'QB is UNDEFINED after load - syntax error in file.\n';
+    out.textContent += 'Trying binary search for error...\n';
+    // Fetch and binary search
+    fetch('questions.js').then(r=>r.text()).then(function(code){
+      var lines = code.split('\n');
+      out.textContent += 'File has ' + lines.length + ' lines.\n';
+      // Try first half
+      var mid = Math.floor(lines.length / 2);
+      try {
+        eval('var _t=[' + lines.slice(1, mid).join('\n') + '];');
+        out.textContent += 'First half (lines 1-' + mid + ') is OK\n';
+        out.textContent += 'Error is in second half (lines ' + mid + '-' + lines.length + ')\n';
+      } catch(e) {
+        out.textContent += 'Error in first half: ' + e.message + '\n';
+        // Try quarter
+        var q = Math.floor(mid / 2);
+        try {
+          eval('var _t=[' + lines.slice(1, q).join('\n') + '];');
+          out.textContent += 'Lines 1-' + q + ' OK. Error in lines ' + q + '-' + mid + '\n';
+        } catch(e2) {
+          out.textContent += 'Error in lines 1-' + q + ': ' + e2.message + '\n';
+        }
+      }
+    });
+  }
+};
+s.onerror = function(e) {
+  out.textContent = 'FAILED to load questions.js: ' + JSON.stringify(e);
+};
+document.head.appendChild(s);
+</script>
+</body></html>

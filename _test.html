@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<body style="font-family:monospace;padding:20px;background:#111;color:#0f0">
+<div id="r">Loading questions.js...</div>
+<script>
+window.onerror=function(m,u,l,c){document.getElementById('r').innerHTML='<b style="color:red">ERROR line '+l+' col '+c+':</b><br>'+m+'<br>File: '+u;return true};
+</script>
+<script src="questions.js"></script>
+<script>
+var r=document.getElementById('r');
+if(typeof QB!=='undefined'&&QB.length>0){
+r.innerHTML='<b style="color:lime">SUCCESS!</b> QB has <b>'+QB.length+'</b> questions.<br>First: '+QB[0].ref+'<br>Last: '+QB[QB.length-1].ref;
+}else{
+r.innerHTML+='<br><b style="color:red">QB is empty or undefined</b>';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<body style="font-family:monospace;padding:20px;background:#111;color:#0f0">
+<div id="r">Pick the questions.js file:</div>
+<input type="file" id="f" accept=".js">
+<pre id="out" style="color:#0f0;margin-top:10px"></pre>
+<script>
+document.getElementById('f').onchange=function(e){
+  var reader=new FileReader();
+  reader.onload=function(ev){
+    var code=ev.target.result;
+    var out=document.getElementById('out');
+    out.textContent='File loaded: '+code.length+' chars\nTrying eval...\n';
+    try{
+      eval(code);
+      out.textContent+='SUCCESS! QB has '+QB.length+' questions.\nFirst: '+QB[0].ref+'\nLast: '+QB[QB.length-1].ref;
+    }catch(err){
+      out.textContent+='ERROR: '+err.message+'\n\n';
+      // Binary search for the bad line
+      var lines=code.split('\n');
+      out.textContent+='Total lines: '+lines.length+'\nSearching for bad line...\n\n';
+      for(var i=0;i<lines.length;i++){
+        var line=lines[i].trim();
+        if(line.indexOf('{id:')==0){
+          try{eval('var _x=['+line.replace(/,$/,'')+']');}
+          catch(e2){out.textContent+='BAD LINE '+(i+1)+': '+e2.message+'\n'+line.substring(0,200)+'\n\n';}
+        }
+      }
+      out.textContent+='Search complete.';
+    }
+  };
+  reader.readAsText(e.target.files[0]);
+};
+</script>
+</body>
+</html>
