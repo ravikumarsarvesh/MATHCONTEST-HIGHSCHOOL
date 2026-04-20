@@ -181,18 +181,18 @@ footer.attribution .ft-section{margin-bottom:8px}
 /* ── MOBILE APP: Compact App Bar ── */
 header.app-bar{position:sticky;top:0;z-index:200;height:48px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent),var(--hl));padding:0 16px;box-shadow:0 2px 8px rgba(0,0,0,.3)}
 .app-bar-title{font-size:1.1rem;font-weight:700;color:#fff;letter-spacing:.5px}
-/* ── MOBILE APP: Bottom Navigation ── */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:200;display:flex;justify-content:space-around;align-items:center;height:56px;background:var(--mid);border-top:1px solid rgba(255,255,255,.08);box-shadow:0 -2px 8px rgba(0,0,0,.3);padding-bottom:env(safe-area-inset-bottom,0px)}
+/* ── MOBILE APP: Top Navigation ── */
+.bottom-nav{position:sticky;top:48px;left:0;right:0;z-index:199;display:flex;justify-content:space-around;align-items:center;height:50px;background:var(--mid);border-bottom:1px solid rgba(255,255,255,.08);box-shadow:0 2px 8px rgba(0,0,0,.3)}
 .bnav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;min-height:48px;padding:4px 0;cursor:pointer;color:var(--sub);transition:color .2s;-webkit-tap-highlight-color:transparent}
 .bnav-item.active{color:var(--gold)}
 .bnav-icon{font-size:1.2rem;line-height:1}
 .bnav-label{font-size:.65rem;font-weight:600;margin-top:2px;letter-spacing:.3px}
 /* ── MOBILE APP: Sub-Navigation ── */
-.sub-nav{display:flex;gap:8px;padding:12px 16px 8px;background:var(--dark);position:sticky;top:48px;z-index:99}
+.sub-nav{display:flex;gap:8px;padding:12px 16px 8px;background:var(--dark);position:sticky;top:98px;z-index:98}
 .sub-nav-btn{padding:8px 16px;border-radius:20px;border:1.5px solid var(--accent);background:transparent;color:var(--sub);font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;min-height:36px;-webkit-tap-highlight-color:transparent}
 .sub-nav-btn.on{background:var(--accent);color:#fff;border-color:var(--accent)}
 /* ── MOBILE APP: Attribution Panel ── */
-.attribution-trigger{position:fixed;bottom:calc(56px + env(safe-area-inset-bottom,0px));left:0;right:0;z-index:150;background:var(--mid);border-top:1px solid rgba(255,255,255,.06);padding:8px 16px;text-align:center;font-size:.72rem;color:var(--sub);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.attribution-trigger{position:fixed;bottom:0;left:0;right:0;z-index:150;background:var(--mid);border-top:1px solid rgba(255,255,255,.06);padding:8px 16px;text-align:center;font-size:.72rem;color:var(--sub);cursor:pointer;-webkit-tap-highlight-color:transparent}
 .attribution-panel{position:fixed;bottom:0;left:0;right:0;z-index:300;background:var(--mid);border-top:2px solid var(--accent);padding:20px 24px;padding-bottom:calc(20px + env(safe-area-inset-bottom,0px));max-height:70vh;overflow-y:auto;transform:translateY(100%);transition:transform .3s ease-out;text-align:center;font-size:.78rem;color:var(--sub);line-height:1.7}
 .attribution-panel.expanded{transform:translateY(0)}
 .attribution-panel a{color:var(--gold);text-decoration:none}
@@ -213,15 +213,22 @@ header.app-bar{position:sticky;top:0;z-index:200;height:48px;display:flex;align-
 .pnl{max-width:100%;opacity:0;transition:opacity .15s ease-in-out}
 .pnl.on{opacity:1}
 /* ── MOBILE APP: Test Banner ── */
-#test-banner{position:sticky;top:48px;z-index:150;background:linear-gradient(90deg,var(--hl),#c0392b);padding:10px 16px;text-align:center;cursor:pointer;font-size:.84rem;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+#test-banner{position:sticky;top:98px;z-index:150;background:linear-gradient(90deg,var(--hl),#c0392b);padding:10px 16px;text-align:center;cursor:pointer;font-size:.84rem;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.3)}
 /* ── MOBILE APP: Global Touch & Overflow ── */
 .bnav-item,.sub-nav-btn,.btn,.btn2,.obtn,.sbtn,.ccard{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .pnl{overscroll-behavior:contain}
-body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px));overflow-x:hidden}
+body{padding-bottom:0;overflow-x:hidden}
 </style>
 </head>
 <body>
 <header class="app-bar"><span class="app-bar-title">🏆 Math Arena - Waterloo Prep</span></header>
+<nav class="bottom-nav" id="bottom-nav">
+<div class="bnav-item active" data-tab="papers"><span class="bnav-icon">📚</span><span class="bnav-label">Home</span></div>
+<div class="bnav-item" data-tab="practice"><span class="bnav-icon">📝</span><span class="bnav-label">Practice</span></div>
+<div class="bnav-item" data-tab="sol"><span class="bnav-icon">💡</span><span class="bnav-label">Solutions</span></div>
+<div class="bnav-item" data-tab="fc"><span class="bnav-icon">🃏</span><span class="bnav-label">Cards</span></div>
+<div class="bnav-item" data-tab="prog"><span class="bnav-icon">📈</span><span class="bnav-label">Progress</span></div>
+</nav>
 <div class="tabs" id="tabbar" style="display:none">
 <div class="tab on" data-pnl="papers">📚 CEMC Past Papers</div>
 <div class="tab" data-pnl="pastmock">📋 Past Paper Practice</div>
@@ -2139,13 +2146,6 @@ window.addEventListener('DOMContentLoaded',function(){
 window.addEventListener('beforeunload',function(){if(activeTest)saveTestState();});
 </script>
 
-<nav class="bottom-nav" id="bottom-nav">
-<div class="bnav-item active" data-tab="papers"><span class="bnav-icon">📚</span><span class="bnav-label">Home</span></div>
-<div class="bnav-item" data-tab="practice"><span class="bnav-icon">📝</span><span class="bnav-label">Practice</span></div>
-<div class="bnav-item" data-tab="sol"><span class="bnav-icon">💡</span><span class="bnav-label">Solutions</span></div>
-<div class="bnav-item" data-tab="fc"><span class="bnav-icon">🃏</span><span class="bnav-label">Cards</span></div>
-<div class="bnav-item" data-tab="prog"><span class="bnav-icon">📈</span><span class="bnav-label">Progress</span></div>
-</nav>
 
 <div class="attribution-trigger" onclick="toggleAttribution()">📜 Attribution & Copyright ▼</div>
 <div class="attribution-backdrop" id="attribution-backdrop" onclick="closeAttribution()"></div>
