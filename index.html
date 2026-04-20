@@ -215,8 +215,70 @@ header.app-bar{position:sticky;top:0;z-index:200;height:auto;min-height:48px;dis
 /* ── MOBILE APP: Test Banner ── */
 #test-banner{position:sticky;top:98px;z-index:150;background:linear-gradient(90deg,var(--hl),#c0392b);padding:10px 16px;text-align:center;cursor:pointer;font-size:.84rem;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.3)}
 /* ── MOBILE APP: Global Touch & Overflow ── */
-.bnav-item,.sub-nav-btn,.btn,.btn2,.obtn,.sbtn,.ccard{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.bnav-item,.sub-nav-btn,.btn,.btn2,.obtn,.sbtn,.ccard,.paper-card,.paper-btn{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .pnl{overscroll-behavior:contain}
+/* ── MOBILE APP: Paper List Cards ── */
+.paper-list{display:flex;flex-direction:column;gap:10px}
+.paper-card{background:var(--cbg);border-radius:12px;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,.25);transition:transform .1s,box-shadow .1s;position:relative;overflow:hidden}
+.paper-card:active{transform:scale(.98);box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.paper-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.paper-year{font-size:1.1rem;font-weight:800;color:var(--gold)}
+.paper-card-title{font-size:.95rem;color:var(--txt);margin-bottom:10px}
+.paper-card-actions{display:flex;gap:8px}
+.paper-btn{display:inline-flex;align-items:center;padding:8px 14px;border-radius:8px;font-size:.85rem;font-weight:600;text-decoration:none;min-height:40px;transition:transform .1s}
+.paper-btn:active{transform:scale(.95)}
+.paper-btn-primary{background:var(--accent);color:var(--gold)}
+.paper-btn-secondary{background:rgba(255,255,255,.06);color:var(--ok);border:1px solid rgba(255,255,255,.1)}
+/* ── MOBILE APP: Contest Card Polish ── */
+.ccard{transition:transform .15s,box-shadow .15s;position:relative;overflow:hidden}
+.ccard:active{transform:scale(.96);box-shadow:0 2px 6px rgba(0,0,0,.5)}
+/* ── MOBILE APP: Ripple Effect ── */
+@keyframes ripple{0%{transform:scale(0);opacity:.4}100%{transform:scale(4);opacity:0}}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.2);width:50px;height:50px;pointer-events:none;animation:ripple .5s ease-out forwards}
+/* ── MOBILE APP: Solutions Page ── */
+.sol-contest-tabs{display:flex;gap:0;margin-bottom:12px;background:var(--cbg);border-radius:10px;padding:3px;overflow:hidden}
+.sol-tab{flex:1;padding:10px 8px;border:none;background:transparent;color:var(--sub);font-size:.9rem;font-weight:600;cursor:pointer;border-radius:8px;transition:all .2s;min-height:40px;-webkit-tap-highlight-color:transparent}
+.sol-tab.on{background:var(--accent);color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.sol-tab:active{transform:scale(.96)}
+.sol-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.sol-filters .sel{flex:1;min-width:0;font-size:.88rem}
+.sol-year-list{display:flex;flex-direction:column;gap:8px}
+.sol-year-card{display:flex;align-items:center;justify-content:space-between;background:var(--cbg);border-radius:12px;padding:14px 16px;cursor:pointer;transition:transform .1s,box-shadow .1s;box-shadow:0 2px 6px rgba(0,0,0,.2);-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden}
+.sol-year-card:active{transform:scale(.97);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.sol-year-card-left{padding-left:12px;border-left:3px solid var(--accent)}
+.sol-year-num{font-size:1.2rem;font-weight:800;color:var(--gold)}
+.sol-year-meta{font-size:.8rem;color:var(--sub);margin-top:2px}
+.sol-year-card-right{display:flex;align-items:center;gap:10px}
+.sol-year-bank{font-size:.75rem;color:var(--ok);font-weight:600}
+.sol-year-arrow{font-size:1.4rem;color:var(--sub);font-weight:300}
+.sol-detail-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.sol-back-btn{background:transparent;border:1.5px solid var(--accent);color:var(--sub);padding:8px 14px;border-radius:8px;font-size:.85rem;cursor:pointer;min-height:38px;-webkit-tap-highlight-color:transparent}
+.sol-back-btn:active{background:var(--accent);color:#fff}
+.sol-action-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.sol-action-card{display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--cbg);border-radius:12px;padding:18px 12px;text-decoration:none;color:var(--txt);box-shadow:0 2px 6px rgba(0,0,0,.2);transition:transform .1s;-webkit-tap-highlight-color:transparent;gap:6px}
+.sol-action-card:active{transform:scale(.95)}
+.sol-action-label{font-size:.95rem;font-weight:700;color:var(--gold)}
+.sol-action-sub{font-size:.75rem;color:var(--sub)}
+/* ── MOBILE APP: Practice Setup Cards ── */
+.practice-setup-card{background:var(--cbg);border-radius:12px;padding:16px;box-shadow:0 2px 6px rgba(0,0,0,.2);margin-bottom:14px}
+.practice-field{margin-bottom:12px}
+.practice-label{display:block;font-size:.78rem;font-weight:600;color:var(--sub);margin-bottom:4px;letter-spacing:.5px;text-transform:uppercase}
+.practice-field .sel{width:100%}
+.practice-start-btn{width:100%;margin-top:4px}
+/* ── MOBILE APP: Progress Cards ── */
+.progress-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:8px}
+.progress-card{background:var(--cbg);border-radius:12px;padding:16px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.progress-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.progress-contest{font-size:1rem;font-weight:700}
+.progress-score{font-size:2.2rem;font-weight:900;color:var(--gold);line-height:1}
+.progress-pct{font-size:1rem;font-weight:600;color:var(--sub)}
+.progress-stats{display:flex;justify-content:space-between;font-size:.78rem;color:var(--sub);margin-top:4px}
+.progress-empty{background:var(--cbg);border-radius:12px;padding:30px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.progress-hist-card{background:var(--cbg);border-radius:12px;padding:14px 16px;margin-bottom:10px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.2);transition:transform .1s;-webkit-tap-highlight-color:transparent}
+.progress-hist-card:active{transform:scale(.98)}
+.progress-hist-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.progress-hist-name{font-size:.95rem;font-weight:700;flex:1;margin-right:8px}
+.progress-hist-meta{display:flex;gap:12px;font-size:.8rem;color:var(--sub)}
 body{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));overflow-x:hidden}
 </style>
 </head>
@@ -253,34 +315,36 @@ body{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));overflow-x:hidd
 <button class="sub-nav-btn on" data-panel="pastmock">Past Papers</button>
 <button class="sub-nav-btn" data-panel="mock">Category Test</button>
 </div>
-<div class="stitle">📋 Year-wise Past Paper Mock Tests</div>
-<p style="color:var(--sub);font-size:.82rem;margin-bottom:14px">Take a full mock test based on a specific year\'s contest paper. Questions match the official papers.</p>
-<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px">
-<select class="sel" id="pm-c"><option value="pascal">Pascal</option><option value="cayley">Cayley</option><option value="fermat">Fermat</option></select>
-<select class="sel" id="pm-y"></select>
-<button class="btn" onclick="startPastMock()">🚀 Start Past Paper Test</button></div>
+<div class="stitle">📋 Past Paper Practice</div>
+<p style="color:var(--sub);font-size:.85rem;margin-bottom:14px;line-height:1.5">Take a full mock test from a specific year's contest paper.</p>
+<div class="practice-setup-card">
+<div class="practice-field"><label class="practice-label">Contest</label><select class="sel" id="pm-c"><option value="pascal">Pascal</option><option value="cayley">Cayley</option><option value="fermat">Fermat</option></select></div>
+<div class="practice-field"><label class="practice-label">Year</label><select class="sel" id="pm-y"></select></div>
+<button class="btn practice-start-btn" onclick="startPastMock()">🚀 Start Past Paper Test</button>
+</div>
 <div id="pm-area" style="display:none"></div>
 <div id="pm-res" style="display:none"></div></div>
 
 <div id="pnl-mock" class="pnl">
 <div id="m-setup">
 <div class="stitle">📝 Category Mock Test</div>
-<p style="color:var(--sub);font-size:.82rem;margin-bottom:14px">25 random questions from the question bank · 60 min · Filtered by contest</p>
-<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px">
-<select class="sel" id="m-c"><option value="pascal">Pascal Only</option><option value="cayley">Cayley Only</option><option value="fermat">Fermat Only</option><option value="mixed">Mixed (All Contests)</option></select>
-<select class="sel" id="m-d"><option value="mixed">Mixed Difficulty</option><option value="easy">Easy (Part A)</option><option value="medium">Medium (Part B)</option><option value="hard">Hard (Part C)</option></select>
-<button class="btn" onclick="startMock()">🚀 Start Mock Test</button></div></div>
+<p style="color:var(--sub);font-size:.85rem;margin-bottom:14px;line-height:1.5">25 random questions · 60 min · Filtered by contest & difficulty</p>
+<div class="practice-setup-card">
+<div class="practice-field"><label class="practice-label">Contest</label><select class="sel" id="m-c"><option value="pascal">Pascal Only</option><option value="cayley">Cayley Only</option><option value="fermat">Fermat Only</option><option value="mixed">Mixed (All Contests)</option></select></div>
+<div class="practice-field"><label class="practice-label">Difficulty</label><select class="sel" id="m-d"><option value="mixed">Mixed Difficulty</option><option value="easy">Easy (Part A)</option><option value="medium">Medium (Part B)</option><option value="hard">Hard (Part C)</option></select></div>
+<button class="btn practice-start-btn" onclick="startMock()">🚀 Start Mock Test</button>
+</div></div>
 <div id="m-area" style="display:none"></div>
 <div id="m-res" style="display:none"></div></div>
 
 <div id="pnl-sol" class="pnl">
-<div class="stitle">💡 Complete Solutions — All Contests, All Years</div>
-<p style="color:var(--sub);font-size:.82rem;margin-bottom:14px">Select a contest and year to view step-by-step solutions. Papers and solutions link to the official <a href="https://cemc.uwaterloo.ca/" target="_blank" style="color:var(--gold)">CEMC website</a>. All contest materials © CEMC, University of Waterloo, used under <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" style="color:var(--gold)">CC BY-NC 4.0</a>.</p>
-<div class="snav">
-<button class="sbtn on" onclick="showSol('pascal',this)">Pascal</button>
-<button class="sbtn" onclick="showSol('cayley',this)">Cayley</button>
-<button class="sbtn" onclick="showSol('fermat',this)">Fermat</button></div>
-<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center">
+<div class="stitle">💡 Solutions</div>
+<p style="color:var(--sub);font-size:.85rem;margin-bottom:14px;line-height:1.6">Browse step-by-step solutions. Papers link to the official <a href="https://cemc.uwaterloo.ca/" target="_blank" style="color:var(--gold)">CEMC website</a>. All materials © CEMC, University of Waterloo, used under <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" style="color:var(--gold)">CC BY-NC 4.0</a>.</p>
+<div class="sol-contest-tabs">
+<button class="sol-tab on" onclick="showSol('pascal',this)">Pascal</button>
+<button class="sol-tab" onclick="showSol('cayley',this)">Cayley</button>
+<button class="sol-tab" onclick="showSol('fermat',this)">Fermat</button></div>
+<div class="sol-filters">
 <select class="sel" id="sol-year" onchange="solAutoFilter()"><option value="all">All Years</option><option value="2025">2025</option><option value="2024">2024</option><option value="2023">2023</option><option value="2022">2022</option><option value="2021">2021</option><option value="2020">2020</option><option value="2019">2019</option><option value="2018">2018</option><option value="2017">2017</option><option value="2016">2016</option><option value="2015">2015</option></select>
 <select class="sel" id="sol-diff" onchange="solAutoFilter()"><option value="all">All Difficulties</option><option value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select>
 <select class="sel" id="sol-topic" onchange="solAutoFilter()"><option value="all">All Topics</option><option value="algebra">Algebra</option><option value="geometry">Geometry</option><option value="number">Number Theory</option><option value="combinatorics">Combinatorics</option><option value="probability">Probability</option></select>
@@ -292,19 +356,20 @@ body{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));overflow-x:hidd
 <button class="sub-nav-btn on" data-panel="fc">Flash Cards</button>
 <button class="sub-nav-btn" data-panel="formulas">Formulas</button>
 </div>
-<div class="snav" style="margin-bottom:14px">
-<button class="sbtn on" onclick="fcMode('cards',this)">🃏 Flash Cards</button>
-<button class="sbtn" onclick="fcMode('quiz',this)">🧠 Formula Quiz</button>
+<div class="sol-contest-tabs" style="margin-bottom:14px">
+<button class="sol-tab on" onclick="fcMode('cards',this)">🃏 Flash Cards</button>
+<button class="sol-tab" onclick="fcMode('quiz',this)">🧠 Formula Quiz</button>
 </div>
 
 <!-- FLASH CARDS MODE -->
 <div id="fc-cards-mode">
-<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center">
-<select class="sel" id="fc-c"><option value="pascal">Pascal</option><option value="cayley">Cayley</option><option value="fermat">Fermat</option></select>
-<select class="sel" id="fc-t"><option value="all">All Topics</option><option value="algebra">Algebra</option><option value="geometry">Geometry</option><option value="number">Number Theory</option><option value="combinatorics">Combinatorics</option><option value="probability">Probability</option></select>
-<button class="btn" onclick="loadFC()">Load</button><button class="btn2" onclick="shuffFC()">🔀 Shuffle</button></div>
+<div class="practice-setup-card" style="margin-bottom:16px">
+<div class="practice-field"><label class="practice-label">Contest</label><select class="sel" id="fc-c"><option value="pascal">Pascal</option><option value="cayley">Cayley</option><option value="fermat">Fermat</option></select></div>
+<div class="practice-field"><label class="practice-label">Topic</label><select class="sel" id="fc-t"><option value="all">All Topics</option><option value="algebra">Algebra</option><option value="geometry">Geometry</option><option value="number">Number Theory</option><option value="combinatorics">Combinatorics</option><option value="probability">Probability</option></select></div>
+<div style="display:flex;gap:8px"><button class="btn" style="flex:1" onclick="loadFC()">Load</button><button class="btn2" style="flex:1" onclick="shuffFC()">🔀 Shuffle</button></div>
+</div>
 <div class="fcwrap"><div class="fc" id="fcard" onclick="flipFC()">
-<div class="face ffront"><div class="ql">QUESTION</div><div class="qt" id="fc-q">Click "Load" to begin</div><div class="hn">Click to flip</div></div>
+<div class="face ffront"><div class="ql">QUESTION</div><div class="qt" id="fc-q">Click "Load" to begin</div><div class="hn">Tap to flip</div></div>
 <div class="face fback"><div class="ql">ANSWER</div><div class="at" id="fc-a"></div><div class="hn" id="fc-h"></div></div>
 </div></div>
 <div class="fcnav"><button class="btn btn-sm" onclick="fcPrev()">← Prev</button><span class="fcc" id="fc-cnt">0/0</span><button class="btn btn-sm" onclick="fcNext()">Next →</button></div>
@@ -312,10 +377,10 @@ body{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));overflow-x:hidd
 
 <!-- FORMULA QUIZ MODE -->
 <div id="fc-quiz-mode" style="display:none">
-<p style="color:var(--sub);font-size:.82rem;margin-bottom:12px">Test your formula knowledge! Type the answer or pick from choices. Covers all formulas.</p>
-<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center">
-<select class="sel" id="fq-cat"><option value="all">All Categories</option><option value="Algebra">Algebra</option><option value="Geometry">Geometry</option><option value="Number Theory">Number Theory</option><option value="Counting & Probability">Counting & Probability</option></select>
-<button class="btn" onclick="startFormulaQuiz()">🚀 Start Quiz (10 Qs)</button>
+<p style="color:var(--sub);font-size:.85rem;margin-bottom:12px;line-height:1.5">Test your formula knowledge! Covers all key formulas.</p>
+<div class="practice-setup-card" style="margin-bottom:14px">
+<div class="practice-field"><label class="practice-label">Category</label><select class="sel" id="fq-cat"><option value="all">All Categories</option><option value="Algebra">Algebra</option><option value="Geometry">Geometry</option><option value="Number Theory">Number Theory</option><option value="Counting & Probability">Counting & Probability</option></select></div>
+<button class="btn practice-start-btn" onclick="startFormulaQuiz()">🚀 Start Quiz (10 Qs)</button>
 </div>
 <div id="fq-area"></div>
 <div id="fq-results" style="display:none"></div>
@@ -1393,12 +1458,16 @@ function returnToTest(){
 // ═══════════════════════════════════════════════════════════
 function showYT(c){
   var C=c.charAt(0).toUpperCase()+c.slice(1),h='<div class="stitle">'+C+' Papers (2015–2025)</div>';
-  h+='<table class="yt"><tr><th>Year</th><th>Paper</th><th>Solutions</th><th>Diff</th></tr>';
+  h+='<div class="paper-list">';
   PAPERS[c].forEach(function(p){var dc=p.difficulty==='easy'?'d-easy':p.difficulty==='medium'?'d-med':'d-hard';
-    h+='<tr><td>'+p.year+'</td><td><a href="'+p.contest+'" target="_blank">📄 '+C+' '+p.year+'</a></td>';
-    h+='<td><a href="'+p.solution+'" target="_blank">✅ Solutions</a></td>';
-    h+='<td><span class="dbadge '+dc+'">'+p.difficulty.toUpperCase()+'</span></td></tr>';});
-  h+='</table>';document.getElementById('yt-area').innerHTML=h;
+    h+='<div class="paper-card">';
+    h+='<div class="paper-card-header"><span class="paper-year">'+p.year+'</span><span class="dbadge '+dc+'">'+p.difficulty.toUpperCase()+'</span></div>';
+    h+='<div class="paper-card-title">'+C+' Contest '+p.year+'</div>';
+    h+='<div class="paper-card-actions">';
+    h+='<a href="'+p.contest+'" target="_blank" class="paper-btn paper-btn-primary">📄 View Paper</a>';
+    h+='<a href="'+p.solution+'" target="_blank" class="paper-btn paper-btn-secondary">✅ Solutions</a>';
+    h+='</div></div>';});
+  h+='</div>';document.getElementById('yt-area').innerHTML=h;
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1419,7 +1488,7 @@ function fcPrev(){if(fcIdx>0){fcIdx--;showFC();}}function fcNext(){if(fcIdx<fcLi
 // FLASH CARDS — Mode toggle + Formula Quiz
 // ═══════════════════════════════════════════════════════════
 function fcMode(mode,btn){
-  document.querySelectorAll('#pnl-fc .sbtn').forEach(function(b){b.classList.remove('on');});
+  document.querySelectorAll('#pnl-fc .sol-tab').forEach(function(b){b.classList.remove('on');});
   btn.classList.add('on');
   document.getElementById('fc-cards-mode').style.display=mode==='cards'?'block':'none';
   document.getElementById('fc-quiz-mode').style.display=mode==='quiz'?'block':'none';
@@ -1756,7 +1825,7 @@ function solAutoFilter(){
   showSol(c,activeBtn);
 }
 function showSol(c,btn){
-  document.querySelectorAll('#pnl-sol .sbtn').forEach(function(b){b.classList.remove('on');});
+  document.querySelectorAll('#pnl-sol .sol-tab').forEach(function(b){b.classList.remove('on');});
   if(btn)btn.classList.add('on');
   var year=document.getElementById('sol-year').value;
   var diff=document.getElementById('sol-diff').value;
@@ -1764,54 +1833,54 @@ function showSol(c,btn){
   var C=c.charAt(0).toUpperCase()+c.slice(1);
   var bUrl='https://cemc.uwaterloo.ca/sites/default/files/documents/';
   var el=document.getElementById('sol-content');
+  var contestColor=c==='pascal'?'var(--pascal)':c==='cayley'?'var(--cayley)':'var(--fermat)';
 
   if(year==='all'){
-    // Show year list, filtered by difficulty
-    var h='<div class="stitle">'+C+' — All Years (2015–2025)</div>';
+    var h='<div class="stitle">'+C+' — All Years</div>';
+    h+='<div class="sol-year-list">';
     for(var y=2025;y>=2015;y--){
       var dc=y>=2023?'d-hard':y>=2021?'d-med':'d-easy';
       var dLabel=y>=2023?'hard':y>=2021?'medium':'easy';
-      // Apply difficulty filter
       if(diff!=='all'&&dLabel!==diff)continue;
       var bankCount=QB.filter(function(q){return q.c===c&&q.year===y;}).length;
-      h+='<div class="solblk" style="cursor:pointer" onclick="document.getElementById(\'sol-year\').value=\''+y+'\';showSol(\''+c+'\',document.querySelector(\'#pnl-sol .sbtn.on\'))">';
-      h+='<h3>'+C+' '+y+' <span class="dbadge '+dc+'">'+dLabel.toUpperCase()+'</span></h3>';
-      h+='<div style="font-size:.84rem;color:var(--sub)">📄 Full 25-question paper + ✅ Step-by-step solutions</div>';
-      if(bankCount>0) h+='<div style="font-size:.78rem;color:var(--ok);margin-top:3px">🎯 '+bankCount+' questions available in practice bank</div>';
-      else h+='<div style="font-size:.78rem;color:var(--sub);margin-top:3px">📎 Opens on CEMC website</div>';
-      h+='<div style="margin-top:4px;font-size:.8rem;color:var(--gold)">Click to view →</div></div>';
+      h+='<div class="sol-year-card" onclick="document.getElementById(\'sol-year\').value=\''+y+'\';showSol(\''+c+'\',document.querySelector(\'#pnl-sol .sol-tab.on\'))">';
+      h+='<div class="sol-year-card-left" style="border-left-color:'+contestColor+'">';
+      h+='<div class="sol-year-num">'+y+'</div>';
+      h+='<div class="sol-year-meta">'+C+' Contest</div>';
+      h+='</div>';
+      h+='<div class="sol-year-card-right">';
+      h+='<span class="dbadge '+dc+'">'+dLabel.toUpperCase()+'</span>';
+      if(bankCount>0) h+='<div class="sol-year-bank">🎯 '+bankCount+' Qs</div>';
+      h+='<div class="sol-year-arrow">›</div>';
+      h+='</div></div>';
     }
+    h+='</div>';
     el.innerHTML=h;return;
   }
 
-  // ── Single year view — consistent layout for ALL years ──
+  // ── Single year view ──
   var yr=parseInt(year);
   var cUrl=bUrl+yr+'/'+yr+C+'Contest.html';
   var sUrl=bUrl+yr+'/'+yr+C+'Solution.html';
   var dc2=yr>=2023?'d-hard':yr>=2021?'d-med':'d-easy';
   var dLabel2=yr>=2023?'HARD':yr>=2021?'MEDIUM':'EASY';
 
-  var h='<div class="stitle">'+C+' '+yr+' <span class="dbadge '+dc2+'">'+dLabel2+'</span></div>';
+  var h='<div class="sol-detail-header">';
+  h+='<button class="sol-back-btn" onclick="document.getElementById(\'sol-year\').value=\'all\';showSol(\''+c+'\',document.querySelector(\'#pnl-sol .sol-tab.on\'))">← Back</button>';
+  h+='<span class="stitle" style="margin:0">'+C+' '+yr+'</span>';
+  h+='<span class="dbadge '+dc2+'">'+dLabel2+'</span></div>';
 
-  // Always show CEMC links at top
-  h+='<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">';
-  h+='<a href="'+cUrl+'" target="_blank" class="btn" style="text-decoration:none">📄 Paper in New Tab</a>';
-  h+='<a href="'+sUrl+'" target="_blank" class="btn2" style="text-decoration:none">✅ Solutions in New Tab</a>';
-  h+='<button class="btn2" onclick="document.getElementById(\'sol-year\').value=\'all\';showSol(\''+c+'\',document.querySelector(\'#pnl-sol .sbtn.on\'))">← Back to All Years</button>';
+  h+='<div class="sol-action-cards">';
+  h+='<a href="'+cUrl+'" target="_blank" class="sol-action-card">';
+  h+='<span style="font-size:1.4rem">📄</span>';
+  h+='<span class="sol-action-label">View Paper</span>';
+  h+='<span class="sol-action-sub">25 Questions</span></a>';
+  h+='<a href="'+sUrl+'" target="_blank" class="sol-action-card">';
+  h+='<span style="font-size:1.4rem">✅</span>';
+  h+='<span class="sol-action-label">Solutions</span>';
+  h+='<span class="sol-action-sub">Step-by-step</span></a>';
   h+='</div>';
 
-  // Always show the CEMC open-in-website box
-  h+='<div class="solblk" style="border-left:4px solid var(--gold)">';
-  h+='<h3>📄 Official Paper & Solutions on CEMC Website</h3>';
-  h+='<p style="font-size:.86rem;margin:8px 0;color:var(--sub)">Click to open the complete 25-question paper and step-by-step solutions:</p>';
-  h+='<div style="display:flex;gap:12px;flex-wrap:wrap;margin:12px 0">';
-  h+='<a href="'+cUrl+'" target="_blank" style="color:#fff;background:var(--cayley);padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:700">📄 '+C+' '+yr+' Paper (25 Qs) →</a>';
-  h+='<a href="'+sUrl+'" target="_blank" style="color:#fff;background:var(--ok);padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:700">✅ '+C+' '+yr+' Solutions →</a>';
-  h+='</div>';
-  h+='<p style="font-size:.8rem;color:var(--sub);margin-top:6px">💡 Tip: When hosted on Vercel, papers load directly in-page.</p>';
-  h+='</div>';
-
-  // Filter questions from bank for this year
   var qs=QB.filter(function(q){
     if(q.c!==c||q.year!==yr)return false;
     if(diff!=='all'&&q.d!==diff)return false;
@@ -1820,27 +1889,26 @@ function showSol(c,btn){
   });
 
   if(qs.length>0){
-    h+='<div class="stitle" style="margin-top:14px">🎯 Practice Questions from '+C+' '+yr+' ('+qs.length+')</div>';
+    h+='<div class="stitle" style="margin-top:16px">🎯 Practice Questions ('+qs.length+')</div>';
     qs.forEach(function(q,i){
       var qdc=q.d==='easy'?'d-easy':q.d==='medium'?'d-med':'d-hard';
       h+='<div class="solblk"><h3>Q'+q.qnum+' <span class="dbadge '+qdc+'">'+q.d.toUpperCase()+'</span> <span style="font-size:.72rem;color:var(--sub)">'+q.ref+'</span></h3>';
-      h+='<div style="margin-bottom:8px;font-size:.9rem;line-height:1.6">'+q.q+'</div><div style="margin-bottom:10px">';
-      q.o.forEach(function(opt,j){h+='<div'+(j===q.a?' style="color:var(--ok);font-weight:700"':'')+'>'+(j===q.a?'✅ ':' &nbsp;&nbsp; ')+String.fromCharCode(65+j)+') '+opt+'</div>';});
+      h+='<div style="margin-bottom:8px;font-size:.95rem;line-height:1.6">'+q.q+'</div><div style="margin-bottom:10px">';
+      q.o.forEach(function(opt,j){h+='<div style="padding:4px 0;font-size:.9rem"'+(j===q.a?' style="padding:4px 0;font-size:.9rem;color:var(--ok);font-weight:700"':'')+'>'+(j===q.a?'✅ ':' &nbsp;&nbsp; ')+String.fromCharCode(65+j)+') '+opt+'</div>';});
       h+='</div><div class="ris" style="margin-top:0"><strong>Solution:</strong> '+q.sol+'<br><strong>Why:</strong> '+q.rat+'</div></div>';
     });
   } else {
-    // No bank questions — show a clear message
     var totalForYear=QB.filter(function(q){return q.c===c&&q.year===yr;}).length;
     h+='<div class="stitle" style="margin-top:14px">🎯 Practice Questions</div>';
     if(totalForYear>0){
       h+='<div class="solblk" style="border-left:4px solid var(--sub);text-align:center;padding:24px">';
       h+='<div style="font-size:.9rem;color:var(--sub)">No questions match the current filters.</div>';
-      h+='<div style="font-size:.82rem;color:var(--sub);margin-top:6px">'+totalForYear+' questions available for '+C+' '+yr+' — try changing the difficulty or topic filter.</div></div>';
+      h+='<div style="font-size:.82rem;color:var(--sub);margin-top:6px">'+totalForYear+' questions available — try changing filters.</div></div>';
     } else {
       h+='<div class="solblk" style="border-left:4px solid var(--sub);text-align:center;padding:24px">';
       h+='<div style="font-size:1.5rem;margin-bottom:8px">📎</div>';
       h+='<div style="font-size:.9rem;color:var(--sub)">Practice questions for '+C+' '+yr+' are not yet in the bank.</div>';
-      h+='<div style="font-size:.82rem;color:var(--sub);margin-top:6px">Use the buttons above to view the full paper and solutions on the CEMC website.</div></div>';
+      h+='<div style="font-size:.82rem;color:var(--sub);margin-top:6px">Use the buttons above to view on the CEMC website.</div></div>';
     }
   }
 
@@ -1867,40 +1935,52 @@ function renderProgress(){
   var stats=JSON.parse(localStorage.getItem('uwContest')||'{}');
   var h='';
 
-  // Per-contest summary
+  // Per-contest summary cards
+  h+='<div class="progress-grid">';
   ['pascal','cayley','fermat'].forEach(function(c){
     var C=c.charAt(0).toUpperCase()+c.slice(1),info=stats[c]||{tests:0,totalScore:0,best:0};
     var avg=info.tests?Math.round(info.totalScore/info.tests):0,rating=getCEMCRating(avg);
     var bc=c==='pascal'?'var(--pascal)':c==='cayley'?'var(--cayley)':'var(--fermat)';
-    h+='<div style="background:var(--cbg);border-radius:10px;padding:16px;margin-bottom:12px;border-left:4px solid '+bc+'">';
-    h+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">';
-    h+='<span style="font-size:1rem;font-weight:700">'+C+'</span>';
+    h+='<div class="progress-card" style="border-top:3px solid '+bc+'">';
+    h+='<div class="progress-card-head"><span class="progress-contest">'+C+'</span>';
     h+='<span class="cemc-rating '+rating.cls+'">'+rating.label+'</span></div>';
-    h+='<div class="lvlw"><div class="lvlb" style="width:'+Math.min(avg,100)+'%"></div></div>';
-    h+='<div class="lvli"><span>Avg: '+avg+'%</span><span>Best: '+info.best+'%</span><span>Tests: '+info.tests+'</span></div></div>';
+    h+='<div class="progress-score">'+avg+'<span class="progress-pct">%</span></div>';
+    h+='<div class="lvlw"><div class="lvlb" style="width:'+Math.min(avg,100)+'%;background:'+bc+'"></div></div>';
+    h+='<div class="progress-stats"><span>Best: '+info.best+'%</span><span>Tests: '+info.tests+'</span></div>';
+    h+='</div>';
   });
+  h+='</div>';
 
   // Test history
-  h+='<div class="stitle" style="margin-top:18px">📋 Test History ('+hist.length+' tests)</div>';
-  if(!hist.length)h+='<p style="color:var(--sub)">No tests taken yet. Start a Mock Test or Past Paper Test!</p>';
+  h+='<div class="stitle" style="margin-top:18px">📋 Test History</div>';
+  if(!hist.length){
+    h+='<div class="progress-empty"><div style="font-size:2rem;margin-bottom:8px">📝</div>';
+    h+='<div style="color:var(--sub);font-size:.9rem">No tests taken yet.</div>';
+    h+='<div style="color:var(--sub);font-size:.82rem;margin-top:4px">Start a Practice Test to track your progress!</div></div>';
+  }
   hist.slice().reverse().forEach(function(t,idx){
     var rating=getCEMCRating(t.pct);
-    h+='<div class="hist-item" onclick="toggleHistDetail('+idx+')">';
-    h+='<div class="hi-title">'+t.name+' <span class="cemc-rating '+rating.cls+'">'+rating.label+'</span></div>';
-    h+='<div class="hi-meta">'+new Date(t.date).toLocaleDateString()+' · '+t.correct+'/'+t.total+' correct ('+t.pct+'%) · ✅'+t.correct+' ❌'+t.wrong+' ⏭'+t.skipped+'</div>';
-    h+='<div id="hist-detail-'+idx+'" style="display:none;margin-top:8px">';
+    h+='<div class="progress-hist-card" onclick="toggleHistDetail('+idx+')">';
+    h+='<div class="progress-hist-head">';
+    h+='<div class="progress-hist-name">'+t.name+'</div>';
+    h+='<span class="cemc-rating '+rating.cls+'">'+rating.label+'</span></div>';
+    h+='<div class="progress-hist-meta">';
+    h+='<span>'+new Date(t.date).toLocaleDateString()+'</span>';
+    h+='<span>'+t.pct+'%</span>';
+    h+='<span>✅'+t.correct+' ❌'+t.wrong+' ⏭'+t.skipped+'</span></div>';
+    h+='<div id="hist-detail-'+idx+'" style="display:none;margin-top:10px;border-top:1px solid rgba(255,255,255,.06);padding-top:10px">';
     if(t.wrongQs&&t.wrongQs.length){
-      h+='<div class="stitle" style="font-size:.9rem;margin-top:6px">❌ Wrong Questions — Re-practice these:</div>';
+      h+='<div style="font-size:.88rem;font-weight:700;color:var(--hl);margin-bottom:8px">❌ Review Wrong Questions</div>';
       t.wrongQs.forEach(function(wq){
-        h+='<div class="wrong-item"><div>'+wq.q+'</div>';
-        h+='<div style="margin-top:4px;font-size:.78rem;color:var(--ok)">✅ Correct: '+wq.correct+'</div>';
-        h+='<div style="font-size:.76rem;color:#90caf9;margin-top:2px">'+wq.rat+'</div>';
-        h+='<div style="font-size:.68rem;color:var(--sub);font-style:italic">'+wq.ref+'</div></div>';});
-    }else{h+='<div style="color:var(--ok);font-size:.84rem">🎉 All correct!</div>';}
+        h+='<div class="wrong-item"><div style="font-size:.88rem">'+wq.q+'</div>';
+        h+='<div style="margin-top:4px;font-size:.82rem;color:var(--ok)">✅ '+wq.correct+'</div>';
+        h+='<div style="font-size:.78rem;color:#90caf9;margin-top:2px">'+wq.rat+'</div>';
+        h+='<div style="font-size:.72rem;color:var(--sub);font-style:italic">'+wq.ref+'</div></div>';});
+    }else{h+='<div style="color:var(--ok);font-size:.88rem">🎉 All correct!</div>';}
     h+='</div></div>';
   });
 
-  h+='<div style="text-align:center;margin-top:16px"><button class="btn" style="background:#555;padding:8px 18px" onclick="if(confirm(\'Reset ALL progress and history?\')){localStorage.removeItem(\'uwHistory\');localStorage.removeItem(\'uwContest\');renderProgress();}">Reset All</button></div>';
+  h+='<div style="text-align:center;margin-top:20px"><button class="btn-tertiary" style="font-size:.85rem" onclick="if(confirm(\'Reset ALL progress and history?\')){localStorage.removeItem(\'uwHistory\');localStorage.removeItem(\'uwContest\');renderProgress();}">Reset All Progress</button></div>';
   document.getElementById('prog-content').innerHTML=h;
   if(window.MathJax&&MathJax.typeset)setTimeout(function(){MathJax.typeset();},100);
 }
@@ -2129,6 +2209,20 @@ function initMobileLayout(){
   for(var k=0;k<allPnl.length;k++)allPnl[k].classList.remove('on');
   var papersEl=document.getElementById('pnl-papers');
   if(papersEl)papersEl.classList.add('on');
+
+  // Add ripple effect to tappable elements
+  document.addEventListener('touchstart',function(e){
+    var el=e.target.closest('.ccard,.bnav-item,.paper-card');
+    if(!el)return;
+    var rect=el.getBoundingClientRect();
+    var touch=e.touches[0];
+    var ripple=document.createElement('span');
+    ripple.className='ripple';
+    ripple.style.left=(touch.clientX-rect.left-25)+'px';
+    ripple.style.top=(touch.clientY-rect.top-25)+'px';
+    el.appendChild(ripple);
+    setTimeout(function(){if(ripple.parentNode)ripple.parentNode.removeChild(ripple);},500);
+  },{passive:true});
 }
 
 // ═══════════════════════════════════════════════════════════
