@@ -178,13 +178,51 @@ footer.attribution a{color:var(--gold);text-decoration:none}
 footer.attribution a:hover{text-decoration:underline}
 footer.attribution .cc-badge{display:inline-block;margin-top:8px;padding:4px 12px;border-radius:6px;background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.2);font-size:.72rem}
 footer.attribution .ft-section{margin-bottom:8px}
+/* ── MOBILE APP: Compact App Bar ── */
+header.app-bar{position:sticky;top:0;z-index:200;height:48px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent),var(--hl));padding:0 16px;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.app-bar-title{font-size:1.1rem;font-weight:700;color:#fff;letter-spacing:.5px}
+/* ── MOBILE APP: Bottom Navigation ── */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:200;display:flex;justify-content:space-around;align-items:center;height:56px;background:var(--mid);border-top:1px solid rgba(255,255,255,.08);box-shadow:0 -2px 8px rgba(0,0,0,.3);padding-bottom:env(safe-area-inset-bottom,0px)}
+.bnav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;min-height:48px;padding:4px 0;cursor:pointer;color:var(--sub);transition:color .2s;-webkit-tap-highlight-color:transparent}
+.bnav-item.active{color:var(--gold)}
+.bnav-icon{font-size:1.2rem;line-height:1}
+.bnav-label{font-size:.65rem;font-weight:600;margin-top:2px;letter-spacing:.3px}
+/* ── MOBILE APP: Sub-Navigation ── */
+.sub-nav{display:flex;gap:8px;padding:12px 16px 8px;background:var(--dark);position:sticky;top:48px;z-index:99}
+.sub-nav-btn{padding:8px 16px;border-radius:20px;border:1.5px solid var(--accent);background:transparent;color:var(--sub);font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;min-height:36px;-webkit-tap-highlight-color:transparent}
+.sub-nav-btn.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+/* ── MOBILE APP: Attribution Panel ── */
+.attribution-trigger{position:fixed;bottom:calc(56px + env(safe-area-inset-bottom,0px));left:0;right:0;z-index:150;background:var(--mid);border-top:1px solid rgba(255,255,255,.06);padding:8px 16px;text-align:center;font-size:.72rem;color:var(--sub);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.attribution-panel{position:fixed;bottom:0;left:0;right:0;z-index:300;background:var(--mid);border-top:2px solid var(--accent);padding:20px 24px;padding-bottom:calc(20px + env(safe-area-inset-bottom,0px));max-height:70vh;overflow-y:auto;transform:translateY(100%);transition:transform .3s ease-out;text-align:center;font-size:.78rem;color:var(--sub);line-height:1.7}
+.attribution-panel.expanded{transform:translateY(0)}
+.attribution-panel a{color:var(--gold);text-decoration:none}
+.attribution-panel a:hover{text-decoration:underline}
+.attribution-panel .cc-badge{display:inline-block;margin-top:8px;padding:4px 12px;border-radius:6px;background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.2);font-size:.72rem}
+.attribution-panel .ft-section{margin-bottom:8px}
+.attribution-backdrop{position:fixed;inset:0;z-index:250;background:rgba(0,0,0,.5);display:none}
+/* ── MOBILE APP: Card Enhancement ── */
+.ccard{box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.qblk{box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.solblk{box-shadow:0 1px 4px rgba(0,0,0,.2)}
+/* ── MOBILE APP: Button Hierarchy ── */
+.btn,.btn-primary{min-height:44px;padding:12px 20px;border-radius:10px;box-shadow:0 2px 6px rgba(233,69,96,.3);transition:opacity .2s,transform .1s}
+.btn:active,.btn-primary:active{transform:scale(.97)}
+.btn2,.btn-secondary{min-height:44px;border-radius:10px}
+.btn-tertiary{background:transparent;color:var(--sub);border:none;padding:8px 14px;font-size:.84rem;min-height:44px;cursor:pointer}
+/* ── MOBILE APP: Panel Transitions ── */
+.pnl{max-width:100%;opacity:0;transition:opacity .15s ease-in-out}
+.pnl.on{opacity:1}
+/* ── MOBILE APP: Test Banner ── */
+#test-banner{position:sticky;top:48px;z-index:150;background:linear-gradient(90deg,var(--hl),#c0392b);padding:10px 16px;text-align:center;cursor:pointer;font-size:.84rem;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+/* ── MOBILE APP: Global Touch & Overflow ── */
+.bnav-item,.sub-nav-btn,.btn,.btn2,.obtn,.sbtn,.ccard{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.pnl{overscroll-behavior:contain}
+body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px));overflow-x:hidden}
 </style>
 </head>
 <body>
-<header><h1>🏆 Waterloo Math Prep Hub <span style="font-size:.55em;color:rgba(255,255,255,.6);font-weight:400">(Unofficial)</span></h1>
-<p>Practice for Pascal, Cayley & Fermat Contests</p>
-<p style="font-size:.7rem;color:rgba(255,255,255,.55);margin-top:6px">Contest materials © <a href="https://cemc.uwaterloo.ca/" target="_blank" style="color:rgba(255,255,255,.75);text-decoration:underline">CEMC, University of Waterloo</a>. Used under <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" style="color:rgba(255,255,255,.75);text-decoration:underline">CC BY-NC 4.0</a>.</p></header>
-<div class="tabs" id="tabbar">
+<header class="app-bar"><span class="app-bar-title">🏆 Math Arena - Waterloo Prep</span></header>
+<div class="tabs" id="tabbar" style="display:none">
 <div class="tab on" data-pnl="papers">📚 CEMC Past Papers</div>
 <div class="tab" data-pnl="pastmock">📋 Past Paper Practice</div>
 <div class="tab" data-pnl="mock">📝 Practice Test</div>
@@ -204,6 +242,10 @@ footer.attribution .ft-section{margin-bottom:8px}
 </div><div id="yt-area"></div></div>
 
 <div id="pnl-pastmock" class="pnl">
+<div class="sub-nav" id="sub-nav-practice">
+<button class="sub-nav-btn on" data-panel="pastmock">Past Papers</button>
+<button class="sub-nav-btn" data-panel="mock">Category Test</button>
+</div>
 <div class="stitle">📋 Year-wise Past Paper Mock Tests</div>
 <p style="color:var(--sub);font-size:.82rem;margin-bottom:14px">Take a full mock test based on a specific year\'s contest paper. Questions match the official papers.</p>
 <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px">
@@ -239,6 +281,10 @@ footer.attribution .ft-section{margin-bottom:8px}
 <div id="sol-content"></div></div>
 
 <div id="pnl-fc" class="pnl">
+<div class="sub-nav" id="sub-nav-cards">
+<button class="sub-nav-btn on" data-panel="fc">Flash Cards</button>
+<button class="sub-nav-btn" data-panel="formulas">Formulas</button>
+</div>
 <div class="snav" style="margin-bottom:14px">
 <button class="sbtn on" onclick="fcMode('cards',this)">🃏 Flash Cards</button>
 <button class="sbtn" onclick="fcMode('quiz',this)">🧠 Formula Quiz</button>
@@ -1858,9 +1904,231 @@ function toggleHistDetail(idx){
 }
 
 // ═══════════════════════════════════════════════════════════
+// MOBILE APP: Navigation Router
+// ═══════════════════════════════════════════════════════════
+var NAV_ITEMS=[
+  {id:'papers',icon:'📚',label:'Home',panels:['papers'],activePanel:'papers'},
+  {id:'practice',icon:'📝',label:'Practice',panels:['pastmock','mock'],activePanel:'pastmock'},
+  {id:'sol',icon:'💡',label:'Solutions',panels:['sol'],activePanel:'sol'},
+  {id:'fc',icon:'🃏',label:'Cards',panels:['fc','formulas'],activePanel:'fc'},
+  {id:'prog',icon:'📈',label:'Progress',panels:['prog'],activePanel:'prog'}
+];
+var PANEL_MAP={
+  papers:{tab:'papers',subNav:false},
+  pastmock:{tab:'practice',subNav:true,label:'Past Papers'},
+  mock:{tab:'practice',subNav:true,label:'Category Test'},
+  sol:{tab:'sol',subNav:false},
+  fc:{tab:'fc',subNav:true,label:'Flash Cards'},
+  formulas:{tab:'fc',subNav:true,label:'Formulas'},
+  prog:{tab:'prog',subNav:false}
+};
+var navState={activeTab:'papers',activePanel:'papers',scrollPositions:{},testInProgress:false};
+var navHistory=['papers'];
+var attributionExpanded=false;
+
+function navigateTo(targetTabId){
+  if(targetTabId===navState.activeTab)return;
+  var currentPanel=navState.activePanel;
+  var targetNavItem=null;
+  for(var i=0;i<NAV_ITEMS.length;i++){if(NAV_ITEMS[i].id===targetTabId){targetNavItem=NAV_ITEMS[i];break;}}
+  if(!targetNavItem)return;
+  var targetPanel=targetNavItem.activePanel||targetNavItem.panels[0];
+  var targetEl=document.getElementById('pnl-'+targetPanel);
+  if(!targetEl){console.warn('Panel not found: pnl-'+targetPanel);return;}
+
+  // Handle active test
+  if(typeof activeTest!=='undefined'&&activeTest){
+    var testPanels=['mock','pastmock'];
+    var leavingTest=false;
+    for(var j=0;j<testPanels.length;j++){if(testPanels[j]===currentPanel){leavingTest=true;break;}}
+    var enteringTest=false;
+    for(var j=0;j<testPanels.length;j++){if(testPanels[j]===targetPanel){enteringTest=true;break;}}
+    if(leavingTest&&!enteringTest){
+      try{if(typeof saveTestState==='function')saveTestState();}catch(e){}
+      var banner=document.getElementById('test-banner');
+      if(banner)banner.style.display='block';
+    }else if(enteringTest){
+      var banner=document.getElementById('test-banner');
+      if(banner)banner.style.display='none';
+    }
+  }
+
+  // Save scroll position
+  navState.scrollPositions[currentPanel]=window.scrollY||window.pageYOffset||0;
+
+  // Switch panels
+  var allPnl=document.querySelectorAll('.pnl');
+  for(var k=0;k<allPnl.length;k++)allPnl[k].classList.remove('on');
+  targetEl.classList.add('on');
+
+  // Update bottom nav active state
+  var allNav=document.querySelectorAll('.bnav-item');
+  for(var k=0;k<allNav.length;k++){
+    if(allNav[k].getAttribute('data-tab')===targetTabId)allNav[k].classList.add('active');
+    else allNav[k].classList.remove('active');
+  }
+
+  // Show/hide sub-navs
+  var practiceSubNav=document.getElementById('sub-nav-practice');
+  var cardsSubNav=document.getElementById('sub-nav-cards');
+  if(practiceSubNav)practiceSubNav.style.display=(targetTabId==='practice')?'flex':'none';
+  if(cardsSubNav)cardsSubNav.style.display=(targetTabId==='fc')?'flex':'none';
+
+  // Restore scroll position
+  var savedY=navState.scrollPositions[targetPanel]||0;
+  window.scrollTo(0,savedY);
+
+  // Update state
+  navState.activeTab=targetTabId;
+  navState.activePanel=targetPanel;
+  navHistory.push(targetTabId);
+
+  // Close attribution if open
+  if(attributionExpanded)closeAttribution();
+
+  // Trigger callbacks for specific panels
+  if(targetPanel==='prog'&&typeof renderProgress==='function')renderProgress();
+  if(targetPanel==='sol'&&typeof showSol==='function')showSol('pascal',document.querySelector('.sbtn'));
+
+  // Re-typeset MathJax
+  if(window.MathJax&&typeof MathJax.typeset==='function'){
+    setTimeout(function(){try{MathJax.typeset();}catch(e){}},100);
+  }
+}
+
+function switchSubPanel(panelId){
+  if(panelId===navState.activePanel)return;
+  var currentPanel=navState.activePanel;
+  var targetEl=document.getElementById('pnl-'+panelId);
+  if(!targetEl){console.warn('Sub-panel not found: pnl-'+panelId);return;}
+
+  // Save scroll
+  navState.scrollPositions[currentPanel]=window.scrollY||window.pageYOffset||0;
+
+  // Switch panels
+  var curEl=document.getElementById('pnl-'+currentPanel);
+  if(curEl)curEl.classList.remove('on');
+  targetEl.classList.add('on');
+
+  // Update sub-nav buttons
+  var tabId=PANEL_MAP[panelId]?PANEL_MAP[panelId].tab:'';
+  var subNavId=(tabId==='practice')?'sub-nav-practice':(tabId==='fc')?'sub-nav-cards':'';
+  if(subNavId){
+    var btns=document.querySelectorAll('#'+subNavId+' .sub-nav-btn');
+    for(var i=0;i<btns.length;i++){
+      if(btns[i].getAttribute('data-panel')===panelId)btns[i].classList.add('on');
+      else btns[i].classList.remove('on');
+    }
+  }
+
+  // Restore scroll
+  window.scrollTo(0,navState.scrollPositions[panelId]||0);
+  navState.activePanel=panelId;
+
+  // Update nav item memory
+  for(var i=0;i<NAV_ITEMS.length;i++){
+    if(NAV_ITEMS[i].id===tabId){NAV_ITEMS[i].activePanel=panelId;break;}
+  }
+
+  // Re-typeset MathJax
+  if(window.MathJax&&typeof MathJax.typeset==='function'){
+    setTimeout(function(){try{MathJax.typeset();}catch(e){}},100);
+  }
+}
+
+function toggleAttribution(){
+  var panel=document.getElementById('attribution-panel');
+  var backdrop=document.getElementById('attribution-backdrop');
+  if(!panel||!backdrop)return;
+  attributionExpanded=!attributionExpanded;
+  if(attributionExpanded){
+    panel.classList.add('expanded');
+    backdrop.style.display='block';
+    document.body.style.overflow='hidden';
+  }else{
+    closeAttribution();
+  }
+}
+
+function closeAttribution(){
+  var panel=document.getElementById('attribution-panel');
+  var backdrop=document.getElementById('attribution-backdrop');
+  if(panel)panel.classList.remove('expanded');
+  if(backdrop)backdrop.style.display='none';
+  document.body.style.overflow='';
+  attributionExpanded=false;
+}
+
+window.handleBackButton=function(){
+  if(attributionExpanded){closeAttribution();return true;}
+  if(navHistory.length>1){
+    navHistory.pop();
+    var prevTab=navHistory[navHistory.length-1];
+    // Navigate without pushing to history
+    var oldPush=navHistory.push;
+    navHistory.push=function(){};
+    navigateTo(prevTab);
+    navHistory.push=oldPush;
+    return true;
+  }
+  return false;
+};
+
+function returnToTest(){
+  // Find which test panel is active
+  if(typeof activeTest!=='undefined'&&activeTest){
+    var testTab='practice';
+    navigateTo(testTab);
+  }
+}
+
+function initMobileLayout(){
+  // Hide original tabbar
+  var tabbar=document.getElementById('tabbar');
+  if(tabbar)tabbar.style.display='none';
+
+  // Attach bottom nav click handlers
+  var navItems=document.querySelectorAll('.bnav-item');
+  for(var i=0;i<navItems.length;i++){
+    navItems[i].addEventListener('click',function(){
+      var tab=this.getAttribute('data-tab');
+      if(tab)navigateTo(tab);
+    });
+  }
+
+  // Attach sub-nav click handlers
+  var subBtns=document.querySelectorAll('.sub-nav-btn');
+  for(var i=0;i<subBtns.length;i++){
+    subBtns[i].addEventListener('click',function(){
+      var panel=this.getAttribute('data-panel');
+      if(panel)switchSubPanel(panel);
+    });
+  }
+
+  // Hide sub-navs initially (only show for active tab)
+  var practiceSubNav=document.getElementById('sub-nav-practice');
+  var cardsSubNav=document.getElementById('sub-nav-cards');
+  if(practiceSubNav)practiceSubNav.style.display='none';
+  if(cardsSubNav)cardsSubNav.style.display='none';
+
+  // Set up test banner click handler
+  var banner=document.getElementById('test-banner');
+  if(banner){
+    banner.onclick=function(){returnToTest();};
+  }
+
+  // Ensure papers panel is active
+  var allPnl=document.querySelectorAll('.pnl');
+  for(var k=0;k<allPnl.length;k++)allPnl[k].classList.remove('on');
+  var papersEl=document.getElementById('pnl-papers');
+  if(papersEl)papersEl.classList.add('on');
+}
+
+// ═══════════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded',function(){
+  initMobileLayout();
   renderFormulas();showYT('pascal');showSol('pascal',document.querySelector('.sbtn'));
   // Register service worker for PWA / offline support
   if('serviceWorker' in navigator){
@@ -1871,9 +2139,22 @@ window.addEventListener('DOMContentLoaded',function(){
 window.addEventListener('beforeunload',function(){if(activeTest)saveTestState();});
 </script>
 
-<footer class="attribution">
+<nav class="bottom-nav" id="bottom-nav">
+<div class="bnav-item active" data-tab="papers"><span class="bnav-icon">📚</span><span class="bnav-label">Home</span></div>
+<div class="bnav-item" data-tab="practice"><span class="bnav-icon">📝</span><span class="bnav-label">Practice</span></div>
+<div class="bnav-item" data-tab="sol"><span class="bnav-icon">💡</span><span class="bnav-label">Solutions</span></div>
+<div class="bnav-item" data-tab="fc"><span class="bnav-icon">🃏</span><span class="bnav-label">Cards</span></div>
+<div class="bnav-item" data-tab="prog"><span class="bnav-icon">📈</span><span class="bnav-label">Progress</span></div>
+</nav>
+
+<div class="attribution-trigger" onclick="toggleAttribution()">📜 Attribution & Copyright ▼</div>
+<div class="attribution-backdrop" id="attribution-backdrop" onclick="closeAttribution()"></div>
+<div class="attribution-panel" id="attribution-panel">
 <div class="ft-section">
 <strong style="color:#FFD700">📜 Attribution & Copyright</strong>
+</div>
+<div class="ft-section">
+Contest materials © <a href="https://cemc.uwaterloo.ca/" target="_blank">CEMC, University of Waterloo</a>. Used under <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a>.
 </div>
 <div class="ft-section">
 Contest questions, solutions, and related materials are © <a href="https://cemc.uwaterloo.ca/" target="_blank">Centre for Education in Mathematics and Computing (CEMC)</a>, <a href="https://uwaterloo.ca/" target="_blank">University of Waterloo</a>.<br>
@@ -1894,6 +2175,6 @@ Built by Sarvesh Ravikumar · Not affiliated with or endorsed by CEMC or the Uni
 <div style="margin-top:8px;font-size:.72rem">
 <a href="privacy-policy.html" style="color:var(--gold);text-decoration:none">🔒 Privacy Policy</a>
 </div>
-</footer>
+</div>
 
 </body></html>
