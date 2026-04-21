@@ -186,7 +186,7 @@ header.app-bar{position:sticky;top:0;z-index:200;height:auto;min-height:48px;dis
 .bnav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;min-height:48px;padding:4px 0;cursor:pointer;color:var(--sub);transition:color .2s;-webkit-tap-highlight-color:transparent}
 .bnav-item.active{color:var(--gold)}
 .bnav-icon{font-size:1.3rem;line-height:1}
-.bnav-label{font-size:.75rem;font-weight:600;margin-top:2px;letter-spacing:.3px}
+.bnav-label{font-size:.6rem;font-weight:600;margin-top:2px;letter-spacing:.2px}
 /* ── MOBILE APP: Sub-Navigation ── */
 .sub-nav{display:flex;gap:8px;padding:12px 16px 8px;background:var(--dark);position:sticky;top:98px;z-index:98}
 .sub-nav-btn{padding:8px 16px;border-radius:20px;border:1.5px solid var(--accent);background:transparent;color:var(--sub);font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;min-height:36px;-webkit-tap-highlight-color:transparent}
@@ -210,8 +210,8 @@ header.app-bar{position:sticky;top:0;z-index:200;height:auto;min-height:48px;dis
 .btn2,.btn-secondary{min-height:44px;border-radius:10px}
 .btn-tertiary{background:transparent;color:var(--sub);border:none;padding:8px 14px;font-size:.84rem;min-height:44px;cursor:pointer}
 /* ── MOBILE APP: Panel Transitions ── */
-.pnl{max-width:100%;opacity:0;transition:opacity .15s ease-in-out}
-.pnl.on{opacity:1}
+.pnl{max-width:100%}
+.pnl.on{display:block}
 /* ── MOBILE APP: Test Banner ── */
 #test-banner{position:sticky;top:98px;z-index:150;background:linear-gradient(90deg,var(--hl),#c0392b);padding:10px 16px;text-align:center;cursor:pointer;font-size:.84rem;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.3)}
 /* ── MOBILE APP: Global Touch & Overflow ── */
@@ -239,6 +239,9 @@ header.app-bar{position:sticky;top:0;z-index:200;height:auto;min-height:48px;dis
 .sol-contest-tabs{display:flex;gap:0;margin-bottom:12px;background:var(--cbg);border-radius:10px;padding:3px;overflow:hidden}
 .sol-tab{flex:1;padding:10px 8px;border:none;background:transparent;color:var(--sub);font-size:.9rem;font-weight:600;cursor:pointer;border-radius:8px;transition:all .2s;min-height:40px;-webkit-tap-highlight-color:transparent}
 .sol-tab.on{background:var(--accent);color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.sol-tab.on.pascal-tab{background:var(--pascal);color:#000}
+.sol-tab.on.cayley-tab{background:var(--cayley);color:#fff}
+.sol-tab.on.fermat-tab{background:var(--fermat);color:#000}
 .sol-tab:active{transform:scale(.96)}
 .sol-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .sol-filters .sel{flex:1;min-width:0;font-size:.88rem}
@@ -283,10 +286,11 @@ body{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));overflow-x:hidd
 </style>
 </head>
 <body>
-<header class="app-bar"><div style="text-align:center"><span class="app-bar-title">🏆 Math Arena - Waterloo Prep</span><div style="font-size:.65rem;color:rgba(255,255,255,.6);letter-spacing:3px;margin-top:2px;font-weight:600">TRAIN · COMPETE · IMPROVE</div></div></header>
+<header class="app-bar"><div style="text-align:center"><span class="app-bar-title">🏆 Math Arena - Waterloo Math Prep</span><div style="font-size:.65rem;color:rgba(255,255,255,.6);letter-spacing:3px;margin-top:2px;font-weight:600">Practice Pascal · Cayley · Fermat</div></div></header>
 <nav class="bottom-nav" id="bottom-nav">
 <div class="bnav-item active" data-tab="papers"><span class="bnav-icon">📚</span><span class="bnav-label">Home</span></div>
-<div class="bnav-item" data-tab="practice"><span class="bnav-icon">📝</span><span class="bnav-label">Practice</span></div>
+<div class="bnav-item" data-tab="pastmock"><span class="bnav-icon">📋</span><span class="bnav-label">Past Papers Practice</span></div>
+<div class="bnav-item" data-tab="mock"><span class="bnav-icon">📝</span><span class="bnav-label">All Contests Practice</span></div>
 <div class="bnav-item" data-tab="sol"><span class="bnav-icon">💡</span><span class="bnav-label">Solutions</span></div>
 <div class="bnav-item" data-tab="fc"><span class="bnav-icon">🃏</span><span class="bnav-label">Cards</span></div>
 <div class="bnav-item" data-tab="prog"><span class="bnav-icon">📈</span><span class="bnav-label">Progress</span></div>
@@ -308,13 +312,10 @@ body{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));overflow-x:hidd
 <div class="ccard pascal" onclick="showYT('pascal')"><span class="badge">GRADE 9</span><h2>Pascal</h2><p>25 questions · 60 min</p></div>
 <div class="ccard cayley" onclick="showYT('cayley')"><span class="badge">GRADE 10</span><h2>Cayley</h2><p>25 questions · 60 min</p></div>
 <div class="ccard fermat" onclick="showYT('fermat')"><span class="badge">GRADE 11</span><h2>Fermat</h2><p>25 questions · 60 min</p></div>
-</div><div id="yt-area"></div></div>
+</div><div id="yt-area"></div>
+</div>
 
 <div id="pnl-pastmock" class="pnl">
-<div class="sub-nav" id="sub-nav-practice">
-<button class="sub-nav-btn on" data-panel="pastmock">Past Papers</button>
-<button class="sub-nav-btn" data-panel="mock">Category Test</button>
-</div>
 <div class="stitle">📋 Past Paper Practice</div>
 <p style="color:var(--sub);font-size:.85rem;margin-bottom:14px;line-height:1.5">Take a full mock test from a specific year's contest paper.</p>
 <div class="practice-setup-card">
@@ -323,11 +324,12 @@ body{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));overflow-x:hidd
 <button class="btn practice-start-btn" onclick="startPastMock()">🚀 Start Past Paper Test</button>
 </div>
 <div id="pm-area" style="display:none"></div>
-<div id="pm-res" style="display:none"></div></div>
+<div id="pm-res" style="display:none"></div>
+</div>
 
 <div id="pnl-mock" class="pnl">
 <div id="m-setup">
-<div class="stitle">📝 Category Mock Test</div>
+<div class="stitle">📝 All Contests Practice</div>
 <p style="color:var(--sub);font-size:.85rem;margin-bottom:14px;line-height:1.5">25 random questions · 60 min · Filtered by contest & difficulty</p>
 <div class="practice-setup-card">
 <div class="practice-field"><label class="practice-label">Contest</label><select class="sel" id="m-c"><option value="pascal">Pascal Only</option><option value="cayley">Cayley Only</option><option value="fermat">Fermat Only</option><option value="mixed">Mixed (All Contests)</option></select></div>
@@ -335,15 +337,16 @@ body{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));overflow-x:hidd
 <button class="btn practice-start-btn" onclick="startMock()">🚀 Start Mock Test</button>
 </div></div>
 <div id="m-area" style="display:none"></div>
-<div id="m-res" style="display:none"></div></div>
+<div id="m-res" style="display:none"></div>
+</div>
 
 <div id="pnl-sol" class="pnl">
 <div class="stitle">💡 Solutions</div>
 <p style="color:var(--sub);font-size:.85rem;margin-bottom:14px;line-height:1.6">Browse step-by-step solutions. Papers link to the official <a href="https://cemc.uwaterloo.ca/" target="_blank" style="color:var(--gold)">CEMC website</a>. All materials © CEMC, University of Waterloo, used under <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" style="color:var(--gold)">CC BY-NC 4.0</a>.</p>
 <div class="sol-contest-tabs">
-<button class="sol-tab on" onclick="showSol('pascal',this)">Pascal</button>
-<button class="sol-tab" onclick="showSol('cayley',this)">Cayley</button>
-<button class="sol-tab" onclick="showSol('fermat',this)">Fermat</button></div>
+<button class="sol-tab on pascal-tab" onclick="showSol('pascal',this)">Pascal</button>
+<button class="sol-tab cayley-tab" onclick="showSol('cayley',this)">Cayley</button>
+<button class="sol-tab fermat-tab" onclick="showSol('fermat',this)">Fermat</button></div>
 <div class="sol-filters">
 <select class="sel" id="sol-year" onchange="solAutoFilter()"><option value="all">All Years</option><option value="2025">2025</option><option value="2024">2024</option><option value="2023">2023</option><option value="2022">2022</option><option value="2021">2021</option><option value="2020">2020</option><option value="2019">2019</option><option value="2018">2018</option><option value="2017">2017</option><option value="2016">2016</option><option value="2015">2015</option></select>
 <select class="sel" id="sol-diff" onchange="solAutoFilter()"><option value="all">All Difficulties</option><option value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select>
@@ -1446,10 +1449,24 @@ function returnToTest(){
   if(!activeTest)return;
   var tabId=activeTest.areaId==='pm-area'?'pastmock':'mock';
   document.querySelectorAll('.pnl').forEach(function(p){p.classList.remove('on');});
-  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
   document.getElementById('pnl-'+tabId).classList.add('on');
-  document.querySelector('[data-pnl="'+tabId+'"]').classList.add('on');
+  // Update bottom nav
+  var allNav=document.querySelectorAll('.bnav-item');
+  for(var k=0;k<allNav.length;k++){
+    if(allNav[k].getAttribute('data-tab')===tabId)allNav[k].classList.add('active');
+    else allNav[k].classList.remove('active');
+  }
+  navState.activeTab=tabId;navState.activePanel=tabId;
   document.getElementById('test-banner').style.display='none';
+  // Resume timer if paused
+  if(activeTest&&!activeTest.timerInterval){
+    activeTest.timerInterval=setInterval(function(){
+      if(!activeTest)return;
+      activeTest.secs--;updateTestTimer();
+      if(activeTest.secs%5===0)saveTestState();
+      if(activeTest.secs<=0){clearInterval(activeTest.timerInterval);submitTest();}
+    },1000);
+  }
   window.scrollTo(0,0);
 }
 
@@ -1679,7 +1696,8 @@ function pauseTest(){
   if(!activeTest)return;
   clearInterval(activeTest.timerInterval);
   saveTestState();
-  alert('Test paused! Your progress is saved. Come back anytime to resume.');
+  var el=document.getElementById('t-timer');
+  if(el){el.textContent='PAUSED';el.style.color='var(--gold)';}
 }
 
 function submitTest(){
@@ -1706,7 +1724,6 @@ function submitTest(){
     improvements.forEach(function(imp){h+='<li><strong>'+imp.topic.charAt(0).toUpperCase()+imp.topic.slice(1)+'</strong> ('+imp.count+' wrong): '+imp.tip+'</li>';});
     h+='</ul></div>';}
   // Email prompt
-  h+='<div class="email-box"><input type="email" id="email-input" placeholder="Enter email to send results"><button class="btn btn-sm" onclick="sendEmail()">📧 Send</button></div>';
   h+='<div style="margin-top:12px"><button class="btn" style="padding:8px 24px" onclick="resetTest(\''+t.areaId+'\',\''+t.resId+'\')">Try Again</button></div></div>';
 
   // Detailed review with step-by-step solutions for ALL questions
@@ -1845,7 +1862,7 @@ function showSol(c,btn){
       var bankCount=QB.filter(function(q){return q.c===c&&q.year===y;}).length;
       h+='<div class="sol-year-card" onclick="document.getElementById(\'sol-year\').value=\''+y+'\';showSol(\''+c+'\',document.querySelector(\'#pnl-sol .sol-tab.on\'))">';
       h+='<div class="sol-year-card-left" style="border-left-color:'+contestColor+'">';
-      h+='<div class="sol-year-num">'+y+'</div>';
+      h+='<div class="sol-year-num" style="color:'+contestColor+'">'+y+'</div>';
       h+='<div class="sol-year-meta">'+C+' Contest</div>';
       h+='</div>';
       h+='<div class="sol-year-card-right">';
@@ -1995,15 +2012,16 @@ function toggleHistDetail(idx){
 // ═══════════════════════════════════════════════════════════
 var NAV_ITEMS=[
   {id:'papers',icon:'📚',label:'Home',panels:['papers'],activePanel:'papers'},
-  {id:'practice',icon:'📝',label:'Practice',panels:['pastmock','mock'],activePanel:'pastmock'},
+  {id:'pastmock',icon:'📋',label:'Past Papers',panels:['pastmock'],activePanel:'pastmock'},
+  {id:'mock',icon:'📝',label:'Practice',panels:['mock'],activePanel:'mock'},
   {id:'sol',icon:'💡',label:'Solutions',panels:['sol'],activePanel:'sol'},
   {id:'fc',icon:'🃏',label:'Cards',panels:['fc','formulas'],activePanel:'fc'},
   {id:'prog',icon:'📈',label:'Progress',panels:['prog'],activePanel:'prog'}
 ];
 var PANEL_MAP={
   papers:{tab:'papers',subNav:false},
-  pastmock:{tab:'practice',subNav:true,label:'Past Papers'},
-  mock:{tab:'practice',subNav:true,label:'Category Test'},
+  pastmock:{tab:'pastmock',subNav:false},
+  mock:{tab:'mock',subNav:false},
   sol:{tab:'sol',subNav:false},
   fc:{tab:'fc',subNav:true,label:'Flash Cards'},
   formulas:{tab:'fc',subNav:true,label:'Formulas'},
@@ -2056,9 +2074,7 @@ function navigateTo(targetTabId){
   }
 
   // Show/hide sub-navs
-  var practiceSubNav=document.getElementById('sub-nav-practice');
   var cardsSubNav=document.getElementById('sub-nav-cards');
-  if(practiceSubNav)practiceSubNav.style.display=(targetTabId==='practice')?'flex':'none';
   if(cardsSubNav)cardsSubNav.style.display=(targetTabId==='fc')?'flex':'none';
 
   // Restore scroll position
@@ -2099,7 +2115,7 @@ function switchSubPanel(panelId){
 
   // Update sub-nav buttons
   var tabId=PANEL_MAP[panelId]?PANEL_MAP[panelId].tab:'';
-  var subNavId=(tabId==='practice')?'sub-nav-practice':(tabId==='fc')?'sub-nav-cards':'';
+  var subNavId=(tabId==='fc')?'sub-nav-cards':'';
   if(subNavId){
     var btns=document.querySelectorAll('#'+subNavId+' .sub-nav-btn');
     for(var i=0;i<btns.length;i++){
@@ -2161,14 +2177,6 @@ window.handleBackButton=function(){
   return false;
 };
 
-function returnToTest(){
-  // Find which test panel is active
-  if(typeof activeTest!=='undefined'&&activeTest){
-    var testTab='practice';
-    navigateTo(testTab);
-  }
-}
-
 function initMobileLayout(){
   // Hide original tabbar
   var tabbar=document.getElementById('tabbar');
@@ -2193,9 +2201,7 @@ function initMobileLayout(){
   }
 
   // Hide sub-navs initially (only show for active tab)
-  var practiceSubNav=document.getElementById('sub-nav-practice');
   var cardsSubNav=document.getElementById('sub-nav-cards');
-  if(practiceSubNav)practiceSubNav.style.display='none';
   if(cardsSubNav)cardsSubNav.style.display='none';
 
   // Set up test banner click handler

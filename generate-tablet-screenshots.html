@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generate Tablet Screenshots — Math Arena</title>
+<style>
+  body{background:#111;color:#e0e0e0;font-family:'Segoe UI',system-ui,sans-serif;margin:0;padding:24px}
+  h1{color:#FFD700;text-align:center;margin-bottom:4px}
+  p.sub{color:#a0aec0;font-size:.85rem;text-align:center;margin-bottom:20px}
+  .specs{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:24px}
+  .spec{background:#1e2a45;padding:5px 12px;border-radius:8px;font-size:.76rem}
+  .spec strong{color:#4CAF50}
+  .section{margin-bottom:40px}
+  .section h2{color:#FFD700;text-align:center;margin-bottom:16px}
+  .grid{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin-bottom:24px}
+  .card{background:#1a1a2e;border-radius:12px;padding:14px;text-align:center}
+  .card canvas{border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.5)}
+  .card h3{color:#FFD700;font-size:.85rem;margin:10px 0 6px}
+  .btn{background:#e94560;color:#fff;font-weight:700;border:none;cursor:pointer;padding:8px 16px;border-radius:8px;font-size:.82rem;transition:.2s}
+  .btn:hover{opacity:.85}
+  .btn-all{background:#0f3460;padding:12px 28px;font-size:.95rem;border-radius:10px;display:block;margin:0 auto 20px}
+</style>
+</head>
+<body>
+
+<h1>📱 Tablet Screenshot Generator</h1>
+<p class="sub">Google Play Store — 7-inch & 10-inch Tablets</p>
+<div class="specs">
+  <div class="spec"><strong>✔</strong> 7-inch: 1200×1920 (10:16)</div>
+  <div class="spec"><strong>✔</strong> 10-inch: 1600×2560 (10:16)</div>
+  <div class="spec"><strong>✔</strong> PNG</div>
+  <div class="spec"><strong>✔</strong> 9:16 ratio</div>
+  <div class="spec"><strong>✔</strong> Play Store Ready</div>
+</div>
+
+<div class="section">
+<h2>7-inch Tablet (1200 × 1920)</h2>
+<button class="btn btn-all" onclick="downloadAll7()">📥 Download All 4 (7-inch)</button>
+<div class="grid" id="grid7"></div>
+</div>
+
+<div class="section">
+<h2>10-inch Tablet (1600 × 2560)</h2>
+<button class="btn btn-all" onclick="downloadAll10()">📥 Download All 4 (10-inch)</button>
+<div class="grid" id="grid10"></div>
+</div>
+
+<script>
+var DARK='#1a1a2e',MID='#16213e',ACCENT='#0f3460',HL='#e94560',GOLD='#FFD700';
+var PASCAL='#4CAF50',CAYLEY='#2196F3',FERMAT='#FF9800';
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);
+  ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
+}
+
+function drawTabletScreen(ctx,W,H,screenNum){
+  var s=W/1080; // scale relative to phone base
+
+  // Background
+  var bg=ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#0d1525');bg.addColorStop(0.5,DARK);bg.addColorStop(1,'#0a1020');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+
+  // Status bar
+  ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='600 '+Math.round(28*s)+'px "Segoe UI"';
+  ctx.textAlign='left';ctx.fillText('9:41',40*s,52*s);
+  ctx.textAlign='right';ctx.fillText('100%  ▐█▌',W-40*s,52*s);
+
+  // Header
+  var hg=ctx.createLinearGradient(0,70*s,0,200*s);hg.addColorStop(0,ACCENT);hg.addColorStop(1,HL);
+  ctx.fillStyle=hg;ctx.fillRect(0,70*s,W,130*s);
+  ctx.fillStyle='#fff';ctx.font='bold '+Math.round(42*s)+'px "Segoe UI"';ctx.textAlign='center';
+  ctx.fillText('🏆 Math Arena - Waterloo Prep',W/2,145*s);
+  ctx.fillStyle='rgba(255,255,255,0.6)';ctx.font=Math.round(26*s)+'px "Segoe UI"';
+  ctx.fillText('Practice Pascal · Cayley · Fermat',W/2,185*s);
+
+  // Bottom nav
+  var navY=H-70*s;
+  ctx.fillStyle=MID;ctx.fillRect(0,navY,W,70*s);
+  ctx.strokeStyle='rgba(255,255,255,0.08)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(0,navY);ctx.lineTo(W,navY);ctx.stroke();
+  var tabs=['📚 Home','📝 Practice','💡 Solutions','🃏 Cards','📈 Progress'];
+  var activeIdx=screenNum===1?0:screenNum===2?1:screenNum===3?2:3;
+  tabs.forEach(function(t,i){
+    var tx=W/5*i+W/10;
+    ctx.fillStyle=i===activeIdx?GOLD:'#a0aec0';
+    ctx.font='bold '+Math.round(20*s)+'px "Segoe UI"';ctx.textAlign='center';
+    ctx.fillText(t,tx,navY+44*s);
+  });
+
+  if(screenNum===1) drawTabletHome(ctx,W,H,s);
+  else if(screenNum===2) drawTabletPractice(ctx,W,H,s);
+  else if(screenNum===3) drawTabletResults(ctx,W,H,s);
+  else drawTabletCards(ctx,W,H,s);
+}
+
+function drawTabletHome(ctx,W,H,s){
+  // Promo
+  ctx.fillStyle=GOLD;ctx.font='bold '+Math.round(48*s)+'px "Segoe UI"';ctx.textAlign='center';
+  ctx.fillText('Choose Your Contest',W/2,280*s);
+  ctx.fillStyle='rgba(255,255,255,0.6)';ctx.font=Math.round(28*s)+'px "Segoe UI"';
+  ctx.fillText('Practice with real CEMC past papers',W/2,330*s);
+
+  // Contest cards in a row for tablet
+  var cardW=(W-160*s)/3;
+  var contests=[{name:'Pascal',grade:'GRADE 9',color:PASCAL},{name:'Cayley',grade:'GRADE 10',color:CAYLEY},{name:'Fermat',grade:'GRADE 11',color:FERMAT}];
+  contests.forEach(function(c,i){
+    var cx=60*s+i*(cardW+20*s);var cy=380*s;
+    roundRect(ctx,cx,cy,cardW,200*s,20*s);ctx.fillStyle='#1e2a45';ctx.fill();
+    ctx.strokeStyle=c.color;ctx.lineWidth=3;ctx.stroke();
+    // Badge
+    ctx.font='bold '+Math.round(18*s)+'px "Segoe UI"';var tw=ctx.measureText(c.grade).width;
+    roundRect(ctx,cx+cardW/2-tw/2-12*s,cy+30*s,tw+24*s,28*s,14*s);ctx.fillStyle=c.color;ctx.fill();
+    ctx.fillStyle=c.color===CAYLEY?'#fff':'#000';ctx.textAlign='center';ctx.fillText(c.grade,cx+cardW/2,cy+52*s);
+    ctx.fillStyle='#fff';ctx.font='bold '+Math.round(36*s)+'px "Segoe UI"';ctx.fillText(c.name,cx+cardW/2,cy+110*s);
+    ctx.fillStyle='#a0aec0';ctx.font=Math.round(22*s)+'px "Segoe UI"';ctx.fillText('25 Qs · 60 min',cx+cardW/2,cy+150*s);
+  });
+
+  // Paper cards
+  var py=620*s;
+  ctx.fillStyle=GOLD;ctx.font='bold '+Math.round(32*s)+'px "Segoe UI"';ctx.textAlign='left';
+  ctx.fillText('📚 Pascal Papers (2015–2025)',80*s,py);
+  py+=30*s;
+  var years=[2025,2024,2023,2022,2021,2020,2019];
+  years.forEach(function(yr,i){
+    var ry=py+i*90*s;
+    roundRect(ctx,60*s,ry,W-120*s,78*s,12*s);ctx.fillStyle='#1e2a45';ctx.fill();
+    ctx.fillStyle=GOLD;ctx.font='bold '+Math.round(30*s)+'px "Segoe UI"';ctx.textAlign='left';
+    ctx.fillText(yr+'',100*s,ry+34*s);
+    ctx.fillStyle='#e0e0e0';ctx.font=Math.round(24*s)+'px "Segoe UI"';
+    ctx.fillText('Pascal Contest '+yr,220*s,ry+34*s);
+    // Actions
+    ctx.fillStyle=ACCENT;roundRect(ctx,W-420*s,ry+16*s,140*s,46*s,8*s);ctx.fill();
+    ctx.fillStyle=GOLD;ctx.font='bold '+Math.round(20*s)+'px "Segoe UI"';ctx.textAlign='center';
+    ctx.fillText('📄 Paper',W-350*s,ry+46*s);
+    ctx.fillStyle='rgba(76,175,80,0.15)';roundRect(ctx,W-260*s,ry+16*s,160*s,46*s,8*s);ctx.fill();
+    ctx.strokeStyle='rgba(76,175,80,0.3)';ctx.lineWidth=1;ctx.stroke();
+    ctx.fillStyle=PASCAL;ctx.fillText('✅ Solutions',W-180*s,ry+46*s);
+    // Diff badge
+    var dc=yr>=2023?'HARD':yr>=2021?'MED':'EASY';
+    var dcol=yr>=2023?'#b71c1c':yr>=2021?'#e65100':'#2e7d32';
+    roundRect(ctx,W-80*s,ry+20*s,60*s,38*s,8*s);ctx.fillStyle=dcol;ctx.fill();
+    ctx.fillStyle='#fff';ctx.font='bold '+Math.round(16*s)+'px "Segoe UI"';ctx.fillText(dc,W-50*s,ry+46*s);
+  });
+
+  ctx.fillStyle='rgba(255,255,255,0.25)';ctx.font=Math.round(22*s)+'px "Segoe UI"';ctx.textAlign='center';
+  ctx.fillText('Free · No Ads · All CEMC Materials © CEMC, University of Waterloo',W/2,H-90*s);
+}
+
+function drawTabletPractice(ctx,W,H,s){
+  ctx.fillStyle=GOLD;ctx.font='bold '+Math.round(48*s)+'px "Segoe UI"';ctx.textAlign='center';
+  ctx.fillText('Timed Practice Test',W/2,280*s);
+  ctx.fillStyle='rgba(255,255,255,0.6)';ctx.font=Math.round(28*s)+'px "Segoe UI"';
+  ctx.fillText('25 questions · 60 minutes · Auto-graded',W/2,330*s);
+
+  // Timer
+  roundRect(ctx,W/2-160*s,370*s,320*s,60*s,14*s);ctx.fillStyle='#1e2a45';ctx.fill();
+  ctx.strokeStyle=HL;ctx.lineWidth=3;ctx.stroke();
+  ctx.fillStyle=HL;ctx.font='bold '+Math.round(34*s)+'px "Segoe UI"';ctx.textAlign='center';ctx.fillText('⏱ 47:23',W/2,410*s);
+
+  // Progress
+  roundRect(ctx,60*s,450*s,W-120*s,12*s,6*s);ctx.fillStyle='rgba(255,255,255,0.1)';ctx.fill();
+  var pg=ctx.createLinearGradient(60*s,0,60*s+(W-120*s)*0.48,0);pg.addColorStop(0,PASCAL);pg.addColorStop(1,CAYLEY);
+  roundRect(ctx,60*s,450*s,(W-120*s)*0.48,12*s,6*s);ctx.fillStyle=pg;ctx.fill();
+  ctx.fillStyle='#a0aec0';ctx.font=Math.round(22*s)+'px "Segoe UI"';ctx.textAlign='right';ctx.fillText('12/25 answered',W-80*s,490*s);
+
+  // Question
+  var qy=520*s;
+  roundRect(ctx,40*s,qy,W-80*s,280*s,16*s);ctx.fillStyle='#1e2a45';ctx.fill();ctx.strokeStyle=ACCENT;ctx.lineWidth=2;ctx.stroke();
+  ctx.fillStyle='#a0aec0';ctx.font='bold '+Math.round(20*s)+'px "Segoe UI"';ctx.textAlign='left';ctx.fillText('Q12',80*s,qy+36*s);
+  roundRect(ctx,140*s,qy+16*s,100*s,30*s,8*s);ctx.fillStyle='#e65100';ctx.fill();
+  ctx.fillStyle='#fff';ctx.font='bold '+Math.round(18*s)+'px "Segoe UI"';ctx.textAlign='center';ctx.fillText('MEDIUM',190*s,qy+38*s);
+  ctx.fillStyle='#e0e0e0';ctx.font=Math.round(28*s)+'px "Segoe UI"';ctx.textAlign='left';
+  ctx.fillText('The sum of 10 positive integers is 30.',80*s,qy+90*s);
+  ctx.fillText('What is the largest number that can be',80*s,qy+130*s);
+  ctx.fillText('used in this sum?',80*s,qy+170*s);
+
+  // Options
+  var opts=['A) 17','B) 19','C) 21','D) 23','E) 25'];
+  opts.forEach(function(o,i){
+    var by=qy+300*s+i*72*s;
+    roundRect(ctx,60*s,by,W-120*s,60*s,12*s);
+    if(i===2){ctx.fillStyle='rgba(33,150,243,0.15)';ctx.fill();ctx.strokeStyle=CAYLEY;ctx.lineWidth=3;ctx.stroke();}
+    else{ctx.fillStyle='rgba(255,255,255,0.04)';ctx.fill();ctx.strokeStyle='rgba(255,255,255,0.1)';ctx.lineWidth=2;ctx.stroke();}
+    ctx.fillStyle=i===2?'#fff':'#e0e0e0';ctx.font=Math.round(28*s)+'px "Segoe UI"';ctx.textAlign='left';ctx.fillText(o,100*s,by+40*s);
+  });
+
+  ctx.fillStyle='rgba(255,255,255,0.25)';ctx.font=Math.round(22*s)+'px "Segoe UI"';ctx.textAlign='center';
+  ctx.fillText('Pause & Resume · Detailed Solutions After',W/2,H-90*s);
+}
+
+function drawTabletResults(ctx,W,H,s){
+  ctx.fillStyle=GOLD;ctx.font='bold '+Math.round(48*s)+'px "Segoe UI"';ctx.textAlign='center';
+  ctx.fillText('Instant Results & Review',W/2,280*s);
+  ctx.fillStyle='rgba(255,255,255,0.6)';ctx.font=Math.round(28*s)+'px "Segoe UI"';
+  ctx.fillText('CEMC-style ratings & step-by-step solutions',W/2,330*s);
+
+  // Score
+  ctx.beginPath();ctx.arc(W/2,480*s,100*s,0,Math.PI*2);ctx.fillStyle='#1e2a45';ctx.fill();
+  ctx.strokeStyle=GOLD;ctx.lineWidth=5;ctx.stroke();
+  ctx.fillStyle=GOLD;ctx.font='bold '+Math.round(72*s)+'px "Segoe UI"';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('84%',W/2,480*s);ctx.textBaseline='top';
+
+  roundRect(ctx,W/2-70*s,590*s,140*s,40*s,10*s);ctx.fillStyle='#7c4dff';ctx.fill();
+  ctx.fillStyle='#fff';ctx.font='bold '+Math.round(24*s)+'px "Segoe UI"';ctx.textAlign='center';ctx.fillText('Distinction',W/2,600*s);
+
+  // Stats
+  var stats=[{v:'21',l:'Correct',c:PASCAL},{v:'3',l:'Wrong',c:HL},{v:'1',l:'Skipped',c:GOLD},{v:'84%',l:'Score',c:'#fff'}];
+  var statW=(W-160*s)/4;
+  stats.forEach(function(st,i){
+    var sx=60*s+i*(statW+14*s);var sy=660*s;
+    roundRect(ctx,sx,sy,statW,100*s,12*s);ctx.fillStyle='#1e2a45';ctx.fill();
+    ctx.fillStyle=st.c;ctx.font='bold '+Math.round(40*s)+'px "Segoe UI"';ctx.textAlign='center';ctx.fillText(st.v,sx+statW/2,sy+50*s);
+    ctx.fillStyle='#a0aec0';ctx.font=Math.round(20*s)+'px "Segoe UI"';ctx.fillText(st.l,sx+statW/2,sy+80*s);
+  });
+
+  // Improvements
+  var iy=790*s;
+  roundRect(ctx,60*s,iy,W-120*s,180*s,14*s);ctx.fillStyle='rgba(233,69,96,0.1)';ctx.fill();
+  ctx.strokeStyle='rgba(233,69,96,0.3)';ctx.lineWidth=2;ctx.stroke();
+  ctx.fillStyle=HL;ctx.font='bold '+Math.round(26*s)+'px "Segoe UI"';ctx.textAlign='left';ctx.fillText('📌 Areas to Improve:',100*s,iy+40*s);
+  ctx.fillStyle='#e0e0e0';ctx.font=Math.round(24*s)+'px "Segoe UI"';
+  ctx.fillText('• Geometry (2 wrong): Draw diagrams!',100*s,iy+80*s);
+  ctx.fillText('• Number Theory (1 wrong): Practice mods',100*s,iy+116*s);
+  ctx.fillText('• Combinatorics (1 skipped): Master C(n,r)',100*s,iy+152*s);
+
+  // Review
+  ctx.fillStyle=GOLD;ctx.font='bold '+Math.round(30*s)+'px "Segoe UI"';ctx.textAlign='left';ctx.fillText('📋 Step-by-Step Review',80*s,1000*s);
+  var ry=1030*s;
+  roundRect(ctx,60*s,ry,W-120*s,120*s,12*s);ctx.fillStyle='rgba(76,175,80,0.06)';ctx.fill();
+  ctx.strokeStyle=PASCAL;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(60*s,ry);ctx.lineTo(60*s,ry+120*s);ctx.stroke();
+  ctx.fillStyle=PASCAL;ctx.font='bold '+Math.round(22*s)+'px "Segoe UI"';ctx.textAlign='left';ctx.fillText('✅ Q1: (2×0)+(2×5) = 10',100*s,ry+40*s);
+  ctx.fillStyle='#90caf9';ctx.font=Math.round(22*s)+'px "Segoe UI"';ctx.fillText('BEDMAS: multiply first, then add',100*s,ry+80*s);
+
+  ry+=140*s;
+  roundRect(ctx,60*s,ry,W-120*s,120*s,12*s);ctx.fillStyle='rgba(244,67,54,0.06)';ctx.fill();
+  ctx.strokeStyle=HL;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(60*s,ry);ctx.lineTo(60*s,ry+120*s);ctx.stroke();
+  ctx.fillStyle=HL;ctx.font='bold '+Math.round(22*s)+'px "Segoe UI"';ctx.textAlign='left';ctx.fillText('❌ Q11: ∠ACD = 40° (isosceles property)',100*s,ry+40*s);
+  ctx.fillStyle='#90caf9';ctx.font=Math.round(22*s)+'px "Segoe UI"';ctx.fillText('AB=AD → ∠ADB=80° → ∠ADC=100° → ∠ACD=40°',100*s,ry+80*s);
+
+  ctx.fillStyle='rgba(255,255,255,0.25)';ctx.font=Math.round(22*s)+'px "Segoe UI"';ctx.textAlign='center';
+  ctx.fillText('Re-practice Wrong Questions · Track Progress',W/2,H-90*s);
+}
+
+function drawTabletCards(ctx,W,H,s){
+  ctx.fillStyle=GOLD;ctx.font='bold '+Math.round(48*s)+'px "Segoe UI"';ctx.textAlign='center';
+  ctx.fillText('Flash Cards & Formulas',W/2,280*s);
+  ctx.fillStyle='rgba(255,255,255,0.6)';ctx.font=Math.round(28*s)+'px "Segoe UI"';
+  ctx.fillText('Master key concepts for contest day',W/2,330*s);
+
+  // Flash card
+  var fy=380*s;
+  roundRect(ctx,80*s,fy,W-160*s,280*s,20*s);
+  ctx.fillStyle='#1e2a45';ctx.fill();ctx.strokeStyle=ACCENT;ctx.lineWidth=3;ctx.stroke();
+  ctx.fillStyle='#a0aec0';ctx.font='bold '+Math.round(20*s)+'px "Segoe UI"';ctx.textAlign='center';ctx.fillText('QUESTION',W/2,fy+36*s);
+  ctx.fillStyle='#fff';ctx.font=Math.round(32*s)+'px "Segoe UI"';ctx.fillText('What is the Quadratic Formula?',W/2,fy+100*s);
+  ctx.fillStyle=GOLD;ctx.font='italic '+Math.round(36*s)+'px Georgia, serif';ctx.fillText('(-b ± √(b²-4ac)) / 2a',W/2,fy+170*s);
+  ctx.fillStyle='#a0aec0';ctx.font=Math.round(24*s)+'px "Segoe UI"';ctx.fillText('For ax² + bx + c = 0',W/2,fy+220*s);
+  ctx.fillStyle='rgba(255,255,255,0.3)';ctx.font=Math.round(20*s)+'px "Segoe UI"';ctx.fillText('Tap to flip',W/2,fy+260*s);
+
+  ctx.fillStyle='#a0aec0';ctx.font=Math.round(26*s)+'px "Segoe UI"';ctx.textAlign='center';ctx.fillText('← Prev    5/31    Next →',W/2,fy+310*s);
+
+  // Formulas
+  var cy=fy+360*s;
+  ctx.fillStyle=GOLD;ctx.font='bold '+Math.round(30*s)+'px "Segoe UI"';ctx.textAlign='left';ctx.fillText('📐 Formula Reference',80*s,cy);
+  var formulas=[
+    {cat:'Algebra',items:['(a+b)² = a²+2ab+b²','Sum 1..n = n(n+1)/2','Geometric: a(rⁿ-1)/(r-1)']},
+    {cat:'Geometry',items:['Triangle = ½bh','Pythagoras: a²+b²=c²','Circle: A=πr², C=2πr']},
+    {cat:'Number Theory',items:['Divisors: (e₁+1)(e₂+1)...','Trailing zeros: ⌊n/5⌋+⌊n/25⌋+...','Units digit: period divides 4']},
+  ];
+  formulas.forEach(function(sec,si){
+    var sy=cy+40*s+si*220*s;
+    roundRect(ctx,60*s,sy,W-120*s,200*s,14*s);ctx.fillStyle='#1e2a45';ctx.fill();
+    ctx.strokeStyle=GOLD;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(60*s,sy);ctx.lineTo(60*s,sy+200*s);ctx.stroke();
+    ctx.fillStyle=GOLD;ctx.font='bold '+Math.round(26*s)+'px "Segoe UI"';ctx.textAlign='left';ctx.fillText(sec.cat,100*s,sy+36*s);
+    sec.items.forEach(function(item,ii){
+      ctx.fillStyle='#e0e0e0';ctx.font=Math.round(24*s)+'px "Segoe UI"';ctx.fillText('• '+item,100*s,sy+72*s+ii*48*s);
+    });
+  });
+
+  ctx.fillStyle='rgba(255,255,255,0.25)';ctx.font=Math.round(22*s)+'px "Segoe UI"';ctx.textAlign='center';
+  ctx.fillText('31 Flash Cards · Complete Formula Reference',W/2,H-90*s);
+}
+
+// ── Render both sizes ──
+var screens=[
+  {fn:1,title:'1. Home'},
+  {fn:2,title:'2. Practice Test'},
+  {fn:3,title:'3. Results'},
+  {fn:4,title:'4. Cards & Formulas'},
+];
+
+function renderSet(gridId,W,H,prefix){
+  var grid=document.getElementById(gridId);
+  screens.forEach(function(scr,i){
+    var div=document.createElement('div');div.className='card';
+    var c=document.createElement('canvas');c.width=W;c.height=H;c.id=prefix+i;
+    var aspect=H/W;c.style.width='240px';c.style.height=Math.round(240*aspect)+'px';
+    var cx=c.getContext('2d');drawTabletScreen(cx,W,H,scr.fn);
+    var h3=document.createElement('h3');h3.textContent=scr.title;
+    var btn=document.createElement('button');btn.className='btn';btn.textContent='📥 Download';
+    btn.onclick=(function(id,name){return function(){
+      var cv=document.getElementById(id);var a=document.createElement('a');a.download=name;a.href=cv.toDataURL('image/png');a.click();
+    };})(prefix+i,prefix+'-screenshot-'+(i+1)+'.png');
+    div.appendChild(c);div.appendChild(h3);div.appendChild(btn);grid.appendChild(div);
+  });
+}
+
+renderSet('grid7',1200,1920,'7inch');
+renderSet('grid10',1600,2560,'10inch');
+
+function downloadAll7(){screens.forEach(function(_,i){setTimeout(function(){
+  var c=document.getElementById('7inch'+i);var a=document.createElement('a');a.download='7inch-screenshot-'+(i+1)+'.png';a.href=c.toDataURL('image/png');a.click();
+},i*400);});}
+
+function downloadAll10(){screens.forEach(function(_,i){setTimeout(function(){
+  var c=document.getElementById('10inch'+i);var a=document.createElement('a');a.download='10inch-screenshot-'+(i+1)+'.png';a.href=c.toDataURL('image/png');a.click();
+},i*400);});}
+</script>
+</body>
+</html>

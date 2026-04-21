@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generate App Icon — MathArena</title>
+<style>
+  body { background: #1a1a2e; color: #e0e0e0; font-family: 'Segoe UI', system-ui, sans-serif; display: flex; flex-direction: column; align-items: center; padding: 30px; min-height: 100vh; margin: 0; }
+  h1 { color: #FFD700; margin-bottom: 6px; }
+  p.sub { color: #a0aec0; font-size: .88rem; margin-bottom: 24px; }
+  .preview { margin: 20px 0; }
+  canvas { border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,.5); }
+  .controls { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
+  .btn { background: #e94560; color: #fff; font-weight: 700; border: none; cursor: pointer; padding: 12px 24px; border-radius: 10px; font-size: .95rem; transition: .2s; }
+  .btn:hover { opacity: .85; }
+  .btn-alt { background: #0f3460; }
+  .info { margin-top: 16px; font-size: .8rem; color: #a0aec0; text-align: center; max-width: 500px; }
+  .specs { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-top: 12px; }
+  .spec { background: #1e2a45; padding: 6px 14px; border-radius: 8px; font-size: .78rem; }
+  .spec strong { color: #4CAF50; }
+</style>
+</head>
+<body>
+
+<h1>🎨 App Icon Generator</h1>
+<p class="sub">MathArena – Waterloo Prep · Google Play Ready</p>
+
+<div class="specs">
+  <div class="spec"><strong>✔</strong> 512 × 512</div>
+  <div class="spec"><strong>✔</strong> PNG</div>
+  <div class="spec"><strong>✔</strong> Clean background</div>
+  <div class="spec"><strong>✔</strong> Minimal text</div>
+  <div class="spec"><strong>✔</strong> 1 main symbol</div>
+</div>
+
+<div class="preview">
+  <canvas id="icon" width="512" height="512"></canvas>
+</div>
+
+<div class="controls">
+  <button class="btn" onclick="download512()">📥 Download 512×512 PNG</button>
+  <button class="btn btn-alt" onclick="download192()">📥 Download 192×192 PNG</button>
+  <button class="btn btn-alt" onclick="downloadAll()">📥 Download All Sizes</button>
+</div>
+
+<div class="info">
+  Click download to save the icon as PNG. The "All Sizes" button generates 72, 96, 128, 144, 152, 192, 384, and 512px versions.
+</div>
+
+<script>
+function drawIcon(ctx, size) {
+  var s = size / 512; // scale factor
+  ctx.save();
+  ctx.scale(s, s);
+
+  // ── Background: rounded square with dark gradient ──
+  var r = 80; // corner radius
+  ctx.beginPath();
+  ctx.moveTo(r, 0);
+  ctx.lineTo(512 - r, 0);
+  ctx.quadraticCurveTo(512, 0, 512, r);
+  ctx.lineTo(512, 512 - r);
+  ctx.quadraticCurveTo(512, 512, 512 - r, 512);
+  ctx.lineTo(r, 512);
+  ctx.quadraticCurveTo(0, 512, 0, 512 - r);
+  ctx.lineTo(0, r);
+  ctx.quadraticCurveTo(0, 0, r, 0);
+  ctx.closePath();
+  ctx.clip();
+
+  // Dark navy gradient background
+  var bg = ctx.createRadialGradient(256, 200, 50, 256, 300, 400);
+  bg.addColorStop(0, '#1a2744');
+  bg.addColorStop(0.5, '#111d35');
+  bg.addColorStop(1, '#0a1225');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, 512, 512);
+
+  // ── Subtle math symbols in background ──
+  ctx.globalAlpha = 0.12;
+  ctx.fillStyle = '#4488cc';
+  ctx.font = 'bold 38px "Segoe UI", sans-serif';
+  ctx.fillText('√x', 32, 62);
+  ctx.fillText('Σ', 432, 62);
+  ctx.font = 'bold 32px "Segoe UI", sans-serif';
+  ctx.fillText('x²', 38, 140);
+  ctx.font = 'italic 34px "Segoe UI", sans-serif';
+  ctx.fillText('a/b', 28, 420);
+  ctx.fillText('△', 440, 400);
+  ctx.fillText('∫', 445, 160);
+  ctx.fillText('±', 30, 260);
+  ctx.globalAlpha = 1.0;
+
+  // ── Glowing arc behind the A ──
+  ctx.strokeStyle = '#2288dd';
+  ctx.lineWidth = 6;
+  ctx.shadowColor = '#2288dd';
+  ctx.shadowBlur = 20;
+  ctx.beginPath();
+  ctx.arc(256, 260, 170, -Math.PI * 0.85, Math.PI * 0.05, false);
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // Second arc layer (brighter, thinner)
+  ctx.strokeStyle = '#44aaff';
+  ctx.lineWidth = 3;
+  ctx.shadowColor = '#44aaff';
+  ctx.shadowBlur = 12;
+  ctx.beginPath();
+  ctx.arc(256, 260, 174, -Math.PI * 0.8, Math.PI * 0.0, false);
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // ── Large "A" letter — the main symbol ──
+  // Gold gradient
+  var goldGrad = ctx.createLinearGradient(160, 80, 350, 380);
+  goldGrad.addColorStop(0, '#FFE44D');
+  goldGrad.addColorStop(0.3, '#FFD700');
+  goldGrad.addColorStop(0.6, '#E6A800');
+  goldGrad.addColorStop(1, '#CC8800');
+
+  // Shadow for depth
+  ctx.shadowColor = 'rgba(0,0,0,0.5)';
+  ctx.shadowBlur = 18;
+  ctx.shadowOffsetX = 4;
+  ctx.shadowOffsetY = 6;
+
+  // Draw the A shape
+  ctx.fillStyle = goldGrad;
+  ctx.beginPath();
+  // Left leg
+  ctx.moveTo(256, 68);
+  ctx.lineTo(120, 380);
+  ctx.lineTo(160, 380);
+  ctx.lineTo(256, 108);
+  // Right leg
+  ctx.moveTo(256, 68);
+  ctx.lineTo(392, 380);
+  ctx.lineTo(352, 380);
+  ctx.lineTo(256, 108);
+  ctx.fill();
+
+  // Crossbar of A
+  ctx.fillStyle = goldGrad;
+  ctx.beginPath();
+  ctx.moveTo(178, 290);
+  ctx.lineTo(334, 290);
+  ctx.lineTo(324, 260);
+  ctx.lineTo(188, 260);
+  ctx.closePath();
+  ctx.fill();
+
+  // Fill the full A as a solid shape for cleaner look
+  ctx.beginPath();
+  ctx.moveTo(256, 68);    // top
+  ctx.lineTo(112, 388);   // bottom-left outer
+  ctx.lineTo(168, 388);   // bottom-left inner
+  ctx.lineTo(192, 310);   // crossbar left
+  ctx.lineTo(320, 310);   // crossbar right
+  ctx.lineTo(344, 388);   // bottom-right inner
+  ctx.lineTo(400, 388);   // bottom-right outer
+  ctx.closePath();
+  ctx.fillStyle = goldGrad;
+  ctx.fill();
+
+  // Cut out the triangle inside A (above crossbar)
+  ctx.shadowColor = 'transparent';
+  ctx.shadowBlur = 0;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 0;
+
+  ctx.save();
+  ctx.globalCompositeOperation = 'destination-out';
+  ctx.beginPath();
+  ctx.moveTo(256, 148);
+  ctx.lineTo(204, 290);
+  ctx.lineTo(308, 290);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+
+  // Refill the cutout area with background
+  var bgInner = ctx.createRadialGradient(256, 220, 10, 256, 240, 100);
+  bgInner.addColorStop(0, '#162040');
+  bgInner.addColorStop(1, '#111d35');
+  ctx.beginPath();
+  ctx.moveTo(256, 148);
+  ctx.lineTo(204, 290);
+  ctx.lineTo(308, 290);
+  ctx.closePath();
+  ctx.fillStyle = bgInner;
+  ctx.fill();
+
+  // ── Pi symbol (π) inside the A ──
+  ctx.shadowColor = 'rgba(0,0,0,0.3)';
+  ctx.shadowBlur = 8;
+  ctx.shadowOffsetX = 2;
+  ctx.shadowOffsetY = 3;
+
+  var piGrad = ctx.createLinearGradient(220, 180, 300, 280);
+  piGrad.addColorStop(0, '#ffffff');
+  piGrad.addColorStop(1, '#ccccdd');
+  ctx.fillStyle = piGrad;
+  ctx.font = 'italic bold 110px Georgia, "Times New Roman", serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('π', 256, 235);
+
+  ctx.shadowColor = 'transparent';
+  ctx.shadowBlur = 0;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 0;
+
+  // ── "MATH ARENA" text at bottom ──
+  // "MATH" in white
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.font = 'bold 52px "Segoe UI", Arial, sans-serif';
+
+  // Measure to position side by side
+  var mathW = ctx.measureText('MATH ').width;
+  var arenaW = ctx.measureText('PREP').width;
+  var totalW = mathW + arenaW;
+  var startX = 256 - totalW / 2;
+
+  ctx.fillStyle = '#ffffff';
+  ctx.textAlign = 'left';
+  ctx.fillText('MATH ', startX, 400);
+
+  ctx.fillStyle = '#FFD700';
+  ctx.fillText('PREP', startX + mathW, 400);
+
+  // ── Tagline ──
+  ctx.fillStyle = '#8899bb';
+  ctx.font = 'bold 18px "Segoe UI", Arial, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.letterSpacing = '4px';
+  ctx.fillText('Practice Pascal, Cayley, Fermat', 256, 462);
+
+  ctx.restore();
+}
+
+// Draw on page load
+var canvas = document.getElementById('icon');
+var ctx = canvas.getContext('2d');
+drawIcon(ctx, 512);
+
+function downloadAtSize(size, filename) {
+  var c = document.createElement('canvas');
+  c.width = size;
+  c.height = size;
+  var cx = c.getContext('2d');
+  drawIcon(cx, size);
+  var link = document.createElement('a');
+  link.download = filename || ('icon-' + size + '.png');
+  link.href = c.toDataURL('image/png');
+  link.click();
+}
+
+function download512() {
+  downloadAtSize(512, 'matharena-icon-512.png');
+}
+
+function download192() {
+  downloadAtSize(192, 'matharena-icon-192.png');
+}
+
+function downloadAll() {
+  var sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+  sizes.forEach(function(sz, i) {
+    setTimeout(function() {
+      downloadAtSize(sz, 'icon-' + sz + '.png');
+    }, i * 300);
+  });
+}
+</script>
+
+</body>
+</html>
