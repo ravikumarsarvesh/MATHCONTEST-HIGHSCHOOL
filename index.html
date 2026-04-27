@@ -289,8 +289,8 @@ body{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));overflow-x:hidd
 <header class="app-bar"><div style="text-align:center"><span class="app-bar-title">🏆 Math Arena - Waterloo Math Prep</span><div style="font-size:.65rem;color:rgba(255,255,255,.6);letter-spacing:3px;margin-top:2px;font-weight:600">Practice Pascal · Cayley · Fermat</div></div></header>
 <nav class="bottom-nav" id="bottom-nav">
 <div class="bnav-item active" data-tab="papers"><span class="bnav-icon">📚</span><span class="bnav-label">Home</span></div>
-<div class="bnav-item" data-tab="pastmock"><span class="bnav-icon">📋</span><span class="bnav-label">Past Papers Practice</span></div>
-<div class="bnav-item" data-tab="mock"><span class="bnav-icon">📝</span><span class="bnav-label">All Contests Practice</span></div>
+<div class="bnav-item" data-tab="pastmock"><span class="bnav-icon">📋</span><span class="bnav-label">Exam Practice</span></div>
+<div class="bnav-item" data-tab="mock"><span class="bnav-icon">📝</span><span class="bnav-label">Mock Tests</span></div>
 <div class="bnav-item" data-tab="sol"><span class="bnav-icon">💡</span><span class="bnav-label">Solutions</span></div>
 <div class="bnav-item" data-tab="fc"><span class="bnav-icon">🃏</span><span class="bnav-label">Cards</span></div>
 <div class="bnav-item" data-tab="prog"><span class="bnav-icon">📈</span><span class="bnav-label">Progress</span></div>
@@ -1700,10 +1700,24 @@ function saveTestState(){
 
 function pauseTest(){
   if(!activeTest)return;
-  clearInterval(activeTest.timerInterval);
-  saveTestState();
-  var el=document.getElementById('t-timer');
-  if(el){el.textContent='PAUSED';el.style.color='var(--gold)';}
+  if(activeTest.paused){
+    // Resume
+    activeTest.paused=false;
+    activeTest.timerInterval=setInterval(function(){
+      if(!activeTest)return;
+      activeTest.secs--;updateTestTimer();
+      if(activeTest.secs%5===0)saveTestState();
+      if(activeTest.secs<=0){clearInterval(activeTest.timerInterval);submitTest();}
+    },1000);
+    updateTestTimer();
+  }else{
+    // Pause
+    activeTest.paused=true;
+    clearInterval(activeTest.timerInterval);activeTest.timerInterval=null;
+    saveTestState();
+    var el=document.getElementById('t-timer');
+    if(el){el.textContent='⏸ PAUSED';el.style.color='var(--gold)';}
+  }
 }
 
 function submitTest(){

@@ -186,7 +186,7 @@ header.app-bar{position:sticky;top:0;z-index:200;height:auto;min-height:48px;dis
 .bnav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;min-height:48px;padding:4px 0;cursor:pointer;color:var(--sub);transition:color .2s;-webkit-tap-highlight-color:transparent}
 .bnav-item.active{color:var(--gold)}
 .bnav-icon{font-size:1.3rem;line-height:1}
-.bnav-label{font-size:.6rem;font-weight:600;margin-top:2px;letter-spacing:.2px}
+.bnav-label{font-size:.6rem;font-weight:600;margin-top:2px;letter-spacing:.2px;text-align:center;line-height:1.2}
 /* ── MOBILE APP: Sub-Navigation ── */
 .sub-nav{display:flex;gap:8px;padding:12px 16px 8px;background:var(--dark);position:sticky;top:98px;z-index:98}
 .sub-nav-btn{padding:8px 16px;border-radius:20px;border:1.5px solid var(--accent);background:transparent;color:var(--sub);font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;min-height:36px;-webkit-tap-highlight-color:transparent}
@@ -289,8 +289,8 @@ body{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));overflow-x:hidd
 <header class="app-bar"><div style="text-align:center"><span class="app-bar-title">🏆 Math Arena - Waterloo Math Prep</span><div style="font-size:.65rem;color:rgba(255,255,255,.6);letter-spacing:3px;margin-top:2px;font-weight:600">Practice Pascal · Cayley · Fermat</div></div></header>
 <nav class="bottom-nav" id="bottom-nav">
 <div class="bnav-item active" data-tab="papers"><span class="bnav-icon">📚</span><span class="bnav-label">Home</span></div>
-<div class="bnav-item" data-tab="pastmock"><span class="bnav-icon">📋</span><span class="bnav-label">Past Papers Practice</span></div>
-<div class="bnav-item" data-tab="mock"><span class="bnav-icon">📝</span><span class="bnav-label">All Contests Practice</span></div>
+<div class="bnav-item" data-tab="pastmock"><span class="bnav-icon">📋</span><span class="bnav-label">Exam Practice</span></div>
+<div class="bnav-item" data-tab="mock"><span class="bnav-icon">📝</span><span class="bnav-label">Mock Tests</span></div>
 <div class="bnav-item" data-tab="sol"><span class="bnav-icon">💡</span><span class="bnav-label">Solutions</span></div>
 <div class="bnav-item" data-tab="fc"><span class="bnav-icon">🃏</span><span class="bnav-label">Cards</span></div>
 <div class="bnav-item" data-tab="prog"><span class="bnav-icon">📈</span><span class="bnav-label">Progress</span></div>
@@ -1623,6 +1623,12 @@ function renderTestUI(){
     h+='</div></div>';});
   h+='<div style="text-align:center;margin-top:16px"><button class="btn" style="padding:12px 32px;font-size:.92rem" onclick="submitTest()">Submit Test</button></div>';
   area.innerHTML=h;area.style.display='block';
+  // Ensure parent .pnl panel has .on class so it's visible
+  var pnl=area.closest('.pnl');
+  if(pnl&&!pnl.classList.contains('on')){
+    document.querySelectorAll('.pnl').forEach(function(p){p.classList.remove('on');});
+    pnl.classList.add('on');
+  }
   var setup=area.previousElementSibling;if(setup&&setup.id&&setup.id.endsWith('-setup'))setup.style.display='none';
   updateTestTimer();
   if(t.timerInterval)clearInterval(t.timerInterval);
@@ -1694,10 +1700,24 @@ function saveTestState(){
 
 function pauseTest(){
   if(!activeTest)return;
-  clearInterval(activeTest.timerInterval);
-  saveTestState();
-  var el=document.getElementById('t-timer');
-  if(el){el.textContent='PAUSED';el.style.color='var(--gold)';}
+  if(activeTest.paused){
+    // Resume
+    activeTest.paused=false;
+    activeTest.timerInterval=setInterval(function(){
+      if(!activeTest)return;
+      activeTest.secs--;updateTestTimer();
+      if(activeTest.secs%5===0)saveTestState();
+      if(activeTest.secs<=0){clearInterval(activeTest.timerInterval);submitTest();}
+    },1000);
+    updateTestTimer();
+  }else{
+    // Pause
+    activeTest.paused=true;
+    clearInterval(activeTest.timerInterval);activeTest.timerInterval=null;
+    saveTestState();
+    var el=document.getElementById('t-timer');
+    if(el){el.textContent='⏸ PAUSED';el.style.color='var(--gold)';}
+  }
 }
 
 function submitTest(){
