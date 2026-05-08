@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Gold "A" letter - large, centered, filling ~75% of safe zone -->
+    <!-- Safe zone is 66x66 centered (from 21,21 to 87,87) -->
+    <!-- A fills from x:33 to x:75, y:24 to y:80 -->
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M54,24 L33,80 L40,80 L45,67 L63,67 L68,80 L75,80 L54,24z M47,61 L54,38 L61,61z" />
+
+    <!-- Pi symbol inside the A -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M47,52 L47,49 L61,49 L61,52 L57,52 L57,62 L54,62 L54,52 L51,52 L51,62 L48,62 L48,52z" />
+
+    <!-- Small "MATH PREP" text area indicator - two colored dots -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M44,85 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0" />
+    <path
+        android:fillColor="#2196F3"
+        android:pathData="M52.5,85 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0" />
+    <path
+        android:fillColor="#FF9800"
+        android:pathData="M61,85 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0" />
+</vector>
