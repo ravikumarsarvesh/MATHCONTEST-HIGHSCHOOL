@@ -1,4 +1,4 @@
-var CACHE_NAME = 'matharena-v20';
+var CACHE_NAME = 'matharena-v21';
 
 self.addEventListener('install', function(event) {
   event.waitUntil(self.skipWaiting());
