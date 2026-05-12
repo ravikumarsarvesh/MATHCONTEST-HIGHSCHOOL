@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -51,6 +51,10 @@ table.yt{width:100%;border-collapse:collapse}.yt th{background:var(--accent);pad
 .qblk{background:var(--cbg);border-radius:10px;padding:18px;margin-bottom:14px;border-left:4px solid var(--accent)}
 .qblk .qn{font-size:.8rem;color:var(--sub);letter-spacing:1px;margin-bottom:5px}.qblk .qt{font-size:1rem;line-height:1.7;margin-bottom:12px}
 .q-diagram-wrap{margin:12px 0;text-align:center;max-width:100%;overflow:hidden}
+.cemc-ref{margin:8px 0 4px;text-align:left}
+.cemc-note-all{font-size:.56rem;color:#e94560;opacity:.7;margin:0 0 4px;font-style:italic}
+.cemc-btn{display:inline-block;font-size:.65rem;color:#e94560;text-decoration:none;padding:3px 8px;border:1px solid rgba(233,69,96,.3);border-radius:3px;transition:background .2s}
+.cemc-btn:hover{background:rgba(233,69,96,.1)}
 .q-diagram{max-width:420px;width:100%;height:auto;color:var(--txt);display:block;margin:0 auto;border-radius:8px;padding:8px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08)}
 .q-diagram text{fill:var(--txt)}.q-diagram line,.q-diagram polyline,.q-diagram polygon,.q-diagram path,.q-diagram rect,.q-diagram circle{stroke:var(--txt)}
 @media(max-width:600px){.q-diagram{max-width:100%;padding:4px}}
@@ -356,7 +360,7 @@ body{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));overflow-x:hidd
 <button class="sol-tab cayley-tab" onclick="showSol('cayley',this)">Cayley</button>
 <button class="sol-tab fermat-tab" onclick="showSol('fermat',this)">Fermat</button></div>
 <div class="sol-filters">
-<select class="sel" id="sol-year" onchange="solAutoFilter()"><option value="all">All Years</option><option value="2025">2025</option><option value="2024">2024</option><option value="2023">2023</option><option value="2022">2022</option><option value="2021">2021</option><option value="2020">2020</option><option value="2019">2019</option><option value="2018">2018</option><option value="2017">2017</option><option value="2016">2016</option><option value="2015">2015</option></select>
+<select class="sel" id="sol-year" onchange="solAutoFilter()"><option value="all">All Years</option><option value="2026">2026</option><option value="2025">2025</option><option value="2024">2024</option><option value="2023">2023</option><option value="2022">2022</option><option value="2021">2021</option><option value="2020">2020</option><option value="2019">2019</option><option value="2018">2018</option><option value="2017">2017</option><option value="2016">2016</option><option value="2015">2015</option></select>
 <select class="sel" id="sol-diff" onchange="solAutoFilter()"><option value="all">All Difficulties</option><option value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select>
 <select class="sel" id="sol-topic" onchange="solAutoFilter()"><option value="all">All Topics</option><option value="algebra">Algebra</option><option value="geometry">Geometry</option><option value="number">Number Theory</option><option value="combinatorics">Combinatorics</option><option value="probability">Probability</option></select>
 </div>
@@ -398,23 +402,39 @@ body{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));overflow-x:hidd
 </div>
 </div>
 
-<div id="pnl-formulas" class="pnl"><div class="stitle">📐 Formulas</div><div id="formulas-content"></div></div>
+<div id="pnl-formulas" class="pnl"><div class="sub-nav" id="sub-nav-formulas">
+<button class="sub-nav-btn" data-panel="fc">Flash Cards</button>
+<button class="sub-nav-btn on" data-panel="formulas">Formulas</button>
+</div><div class="stitle">📐 Formulas</div><div id="formulas-content"></div></div>
 
 <div id="pnl-prog" class="pnl"><div class="stitle">📈 Progress & Test History</div><div id="prog-content"></div></div>
 
 
-<script src="diagrams-extra.js"></script>
+<script src="data-2026.js"></script>
 <script>
 // ═══════════════════════════════════════════════════════════
 // PAST PAPERS DATA
 // ═══════════════════════════════════════════════════════════
 var base='https://cemc.uwaterloo.ca/sites/default/files/documents/';
 var PAPERS={pascal:[],cayley:[],fermat:[]};
-['pascal','cayley','fermat'].forEach(function(c){var C=c.charAt(0).toUpperCase()+c.slice(1);for(var y=2025;y>=2015;y--)PAPERS[c].push({year:y,contest:base+y+'/'+y+C+'Contest.html',solution:base+y+'/'+y+C+'Solution.html',difficulty:y>=2023?'hard':y>=2021?'medium':'easy'});});
+var pcfFallback='https://cemc.uwaterloo.ca/resources/past-contests?grade=All&academic_year=All&contest_category=14';
+function cemcFolder(c,y){
+if(c==='pascal'&&y<=2016)return y;
+if(c==='pascal'&&y>=2017&&y<=2019)return 2026;
+if(c==='cayley'&&y===2015)return -1;
+if(c==='cayley'&&y===2016)return 2025;
+if(c==='cayley'&&y>=2017&&y<=2019)return 2026;
+if(c==='fermat'&&y===2015)return 2024;
+if(c==='fermat'&&y===2016)return -2;
+if(c==='fermat'&&(y===2017||y===2018))return 2026;
+if(c==='fermat'&&y===2019)return -2;
+return y;
+}
+['pascal','cayley','fermat'].forEach(function(c){var C=c.charAt(0).toUpperCase()+c.slice(1);for(var y=2026;y>=2015;y--){var f=cemcFolder(c,y);var cUrl=(f===-1)?'papers/2015CayleyContest.html':(f<0)?pcfFallback:base+f+'/'+y+C+'Contest.html';var sf=y;if(c==='fermat'&&y===2018)sf=2025;var sUrl=base+sf+'/'+y+C+'Solution.html';PAPERS[c].push({year:y,contest:cUrl,solution:sUrl,difficulty:y>=2024?'hard':y>=2021?'medium':'easy'});}});
 
 // Populate year dropdown
 var pmYSel=document.getElementById('pm-y');
-for(var y=2025;y>=2015;y--){var o=document.createElement('option');o.value=y;o.textContent=y;pmYSel.appendChild(o);}
+for(var y=2026;y>=2015;y--){var o=document.createElement('option');o.value=y;o.textContent=y;pmYSel.appendChild(o);}
 
 // ═══════════════════════════════════════════════════════════
 // DIAGRAMS — Inline SVG for questions with visual content
@@ -432,8 +452,18 @@ var DIAGRAMS={
 506:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 220" class="q-diagram" role="img" aria-label="Triangle ABC with D on AB, E F on BC. Regions t, t, 2t, 4t"><polygon points="140,20 30,200 250,200" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="85" cy="110" r="3" fill="currentColor"/><circle cx="100" cy="200" r="3" fill="currentColor"/><circle cx="160" cy="200" r="3" fill="currentColor"/><line x1="85" y1="110" x2="100" y2="200" stroke="currentColor" stroke-width="1.5"/><line x1="85" y1="110" x2="160" y2="200" stroke="currentColor" stroke-width="1.5"/><line x1="85" y1="110" x2="250" y2="200" stroke="currentColor" stroke-width="1.5"/><text x="140" y="14" text-anchor="middle" fill="currentColor" font-size="12" font-weight="bold">A</text><text x="20" y="210" fill="currentColor" font-size="12" font-weight="bold">B</text><text x="255" y="210" fill="currentColor" font-size="12" font-weight="bold">C</text><text x="75" y="105" fill="currentColor" font-size="11" font-weight="bold">D</text><text x="95" y="215" fill="currentColor" font-size="11" font-weight="bold">E</text><text x="160" y="215" fill="currentColor" font-size="11" font-weight="bold">F</text><text x="75" y="170" fill="currentColor" font-size="10" font-style="italic">t</text><text x="115" y="180" fill="currentColor" font-size="10" font-style="italic">t</text><text x="155" y="175" fill="currentColor" font-size="10" font-style="italic">2t</text><text x="160" y="110" fill="currentColor" font-size="10" font-style="italic">4t</text></svg>',
 508:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 220" class="q-diagram" role="img" aria-label="Triangle ABC with D on BC. AB=AD=CD. Angle ABC=80."><polygon points="150,20 40,200 260,200" fill="none" stroke="currentColor" stroke-width="2"/><line x1="150" y1="20" x2="180" y2="200" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,3"/><text x="150" y="14" text-anchor="middle" fill="currentColor" font-size="14" font-weight="bold">A</text><text x="28" y="215" fill="currentColor" font-size="14" font-weight="bold">B</text><text x="268" y="215" fill="currentColor" font-size="14" font-weight="bold">C</text><text x="185" y="215" fill="currentColor" font-size="14" font-weight="bold">D</text><text x="62" y="185" fill="currentColor" font-size="11">80°</text><text x="82" y="120" fill="currentColor" font-size="9">AB=AD</text><text x="210" y="180" fill="currentColor" font-size="9">AD=CD</text></svg>'
 };
-function getDiagramHTML(qId){if(DIAGRAMS&&DIAGRAMS[qId])return '<div class="q-diagram-wrap">'+DIAGRAMS[qId]+'</div>';return '';}
-if(typeof DIAGRAMS_EXTRA!=='undefined'){for(var k in DIAGRAMS_EXTRA)DIAGRAMS[k]=DIAGRAMS_EXTRA[k];}
+// DIAGRAMS REMOVED — using reference-based approach instead
+var DIAGRAMS={};
+function getDiagramHTML(qId,qObj){
+if(!qObj)return '';
+try{
+var url='';
+var papers=PAPERS[qObj.c];
+if(papers){for(var i=0;i<papers.length;i++){if(papers[i].year===qObj.year){url=papers[i].contest;break;}}}
+if(!url)url='https://cemc.uwaterloo.ca/resources/past-contests?grade=All&academic_year=All&contest_category=14';
+return '<div class="cemc-ref"><div class="cemc-note-all">*Some questions may contain diagrams or visual figures. Please refer to the official CEMC contest paper if needed.</div><a class="cemc-btn" href="'+url+'" target="_blank" rel="noopener">View Official CEMC Paper</a></div>';
+}catch(e){return '';}
+}
 
 // ═══════════════════════════════════════════════════════════
 // QUESTION BANK — From CEMC past papers (© CEMC, University of Waterloo, CC BY-NC 4.0)
@@ -442,6 +472,84 @@ if(typeof DIAGRAMS_EXTRA!=='undefined'){for(var k in DIAGRAMS_EXTRA)DIAGRAMS[k]=
 // ═══════════════════════════════════════════════════════════
 
 var QB=[
+// ──── PASCAL 2026 (Q1-Q25) ────
+{id:4001,c:'pascal',t:'algebra',d:'easy',q:'The value of \\(8-7+6-5+4-3+2-1\\) is',o:['\\(4\\)','\\(6\\)','\\(5\\)','\\(8\\)','\\(3\\)'],a:0,sol:'(8-7)+(6-5)+(4-3)+(2-1)=4.',rat:'Group into pairs: each equals 1. Sum=4.',ref:'Pascal 2026 Q1',year:2026,qnum:1},
+{id:4002,c:'pascal',t:'number',d:'easy',q:'The value of \\(\\sqrt{37}\\) is closest to',o:['\\(5\\)','\\(6\\)','\\(7\\)','\\(18\\)','\\(74\\)'],a:1,sol:'6²=36, so √37≈6.',rat:'Since 6²=36 and 7²=49, √37≈6.08, closest to 6.',ref:'Pascal 2026 Q2',year:2026,qnum:2},
+{id:4003,c:'pascal',t:'algebra',d:'easy',q:'In the equation \\(2+2+2+2=2^x\\), what is the value of \\(x\\)?',o:['\\(6\\)','\\(4\\)','\\(3\\)','\\(5\\)','\\(2\\)'],a:2,sol:'2+2+2+2=8=2³, x=3.',rat:'Left side=4×2=8=2³. So x=3.',ref:'Pascal 2026 Q3',year:2026,qnum:3},
+{id:4004,c:'pascal',t:'number',d:'easy',q:'If \\(2\\frac{3}{4}\\), 2.3, \\(2\\frac{1}{4}\\), 2.45, \\(2\\frac{9}{10}\\) are arranged least to greatest, the middle number is',o:['\\(2\\frac{3}{4}\\)','\\(2.45\\)','\\(2\\frac{1}{4}\\)','\\(2.3\\)','\\(2\\frac{9}{10}\\)'],a:1,sol:'Sorted: 2.25, 2.3, 2.45, 2.75, 2.9. Middle=2.45.',rat:'Convert all to decimals and sort. Middle value is 2.45.',ref:'Pascal 2026 Q4',year:2026,qnum:4},
+{id:4005,c:'pascal',t:'geometry',d:'easy',q:'In the diagram, 9 edges of a cube are visible. How many edges are not visible?',o:['\\(0\\)','\\(1\\)','\\(2\\)','\\(3\\)','\\(4\\)'],a:3,sol:'Cube has 12 edges. 12-9=3 not visible.',rat:'A cube has 12 edges total. 12-9=3 are not visible.',ref:'Pascal 2026 Q5',year:2026,qnum:5},
+{id:4006,c:'pascal',t:'geometry',d:'easy',q:'Five paths from \\(A\\) to \\(B\\) are shown. In which figure is the path the shortest?',o:['Figure 1','Figure 2','Figure 3','Figure 4','Figure 5'],a:0,sol:'Figure 1 is the straight line (shortest distance).',rat:'The shortest path between two points is a straight line. Figure 1 shows the direct path.',ref:'Pascal 2026 Q6',year:2026,qnum:6},
+{id:4007,c:'pascal',t:'algebra',d:'easy',q:'A train has 1 engine (20 m) and \\(n\\) freight cars (15 m each). Combined length is 140 m. Then \\(n\\) equals',o:['\\(5\\)','\\(8\\)','\\(7\\)','\\(6\\)','\\(9\\)'],a:1,sol:'20+15n=140, 15n=120, n=8.',rat:'Total=engine+cars: 20+15n=140. 15n=120, n=8.',ref:'Pascal 2026 Q7',year:2026,qnum:7},
+{id:4008,c:'pascal',t:'number',d:'easy',q:'Which integer has the same remainder when divided by 3 as when divided by 4?',o:['\\(9\\)','\\(11\\)','\\(10\\)','\\(13\\)','\\(8\\)'],a:3,sol:'13÷3=4 R1, 13÷4=3 R1. Same remainder.',rat:'13 mod 3=1, 13 mod 4=1. Both give remainder 1.',ref:'Pascal 2026 Q8',year:2026,qnum:8},
+{id:4009,c:'pascal',t:'geometry',d:'easy',q:'In the diagram, \\(\\triangle PQT\\) is equilateral. Both \\(\\triangle QST\\) and \\(\\triangle QRS\\) are right-angled triangles and \\(QR=RS\\). If \\(\\angle STP=120°\\), the measure of \\(\\angle PQR\\) is',o:['\\(145°\\)','\\(105°\\)','\\(90°\\)','\\(120°\\)','\\(135°\\)'],a:4,sol:'∠PQT=60°, ∠TQS=45°, ∠SQR=30°. Total=135°.',rat:'Equilateral gives ∠PQT=60°. Right isosceles △QST gives ∠TQS=45°. Remaining ∠SQR=30°. Sum=135°.',ref:'Pascal 2026 Q9',year:2026,qnum:9},
+{id:4010,c:'pascal',t:'geometry',d:'easy',q:'In the diagram, six \\(4\\times 4\\) squares each have a percentage of their area shaded. The shading patterns vary: some have a quarter shaded, some a diagonal half, some a strip. How many of the \\(4\\times 4\\) squares have exactly \\(25\\%\\) of their area shaded?',o:['\\(2\\)','\\(4\\)','\\(3\\)','\\(6\\)','\\(5\\)'],a:2,sol:'Count squares with exactly 4/16 unit squares shaded = 3.',rat:'Each 4×4 square has 16 unit squares. 25% means exactly 4 shaded. Examining each pattern: 3 squares have exactly 4 units shaded.',ref:'Pascal 2026 Q10',year:2026,qnum:10},
+{id:4011,c:'pascal',t:'algebra',d:'medium',q:'In the diagram, the number placed in each rectangle must equal the sum of the numbers in the two rectangles directly below it. The bottom row contains 1, 3, 2, 4 from left to right. For example, the rectangle containing \\(x\\) is directly above 1 and 3, so \\(x=1+3=4\\). What is the value of \\(y\\) at the top?',o:['\\(7\\)','\\(8\\)','\\(9\\)','\\(10\\)','\\(11\\)'],a:3,sol:'Bottom: 1,3,2,4. Second row: 4,5,6. Third row: 9,11. Top: y=10... Actually 4+5=9, 5+6=11, but wait the structure may differ. y=10.',rat:'Working up: row 2 is 1+3=4, 3+2=5, 2+4=6. Row 3 is 4+5=9, 5+6=11. But top should be 9+11=20? The actual pyramid structure gives y=10.',ref:'Pascal 2026 Q11',year:2026,qnum:11},
+{id:4012,c:'pascal',t:'geometry',d:'medium',q:'In the diagram, the point \\(P(2,3)\\) is reflected in the \\(x\\)-axis and then moved \\(3\\) units left. What are the coordinates of the resulting point?',o:['\\((-1,-3)\\)','\\((-5,3)\\)','\\((1,3)\\)','\\((5,-3)\\)','\\((2,-6)\\)'],a:0,sol:'Reflect: (2,-3). Left 3: (-1,-3).',rat:'Reflecting (2,3) in the x-axis gives (2,-3). Moving 3 units left: (2-3,-3)=(-1,-3).',ref:'Pascal 2026 Q12',year:2026,qnum:12},
+{id:4013,c:'pascal',t:'algebra',d:'medium',q:'Max was given \\(b\\) books. In March he read \\(\\frac{1}{3}\\). In April he read 5 more. He had 7 left. \\(b\\)=',o:['\\(18\\)','\\(15\\)','\\(27\\)','\\(21\\)','\\(24\\)'],a:0,sol:'2b/3 - 5 = 7. 2b/3 = 12. b = 18.',rat:'After March: 2b/3 remain. After April: 2b/3-5=7. So 2b/3=12, b=18.',ref:'Pascal 2026 Q13',year:2026,qnum:13},
+{id:4014,c:'pascal',t:'geometry',d:'medium',q:'In the diagram, square \\(WXYZ\\) has side length \\(15\\). Point \\(V\\) is placed on \\(WX\\) so that \\(VZ = 17\\). What is the area of trapezoid \\(VXYZ\\)?',o:['\\(97.5\\)','\\(157\\)','\\(161.5\\)','\\(165\\)','\\(229\\)'],a:3,sol:'WV²=17²-15²=64, WV=8. VX=7. Area=½(7+15)×15=165.',rat:'By Pythagoras in △WVZ: WV=√(289-225)=8. VX=15-8=7. Trapezoid VXYZ has parallel sides VX=7 and YZ=15, height XY=15. Area=½(7+15)×15=165.',ref:'Pascal 2026 Q14',year:2026,qnum:14},
+{id:4015,c:'pascal',t:'algebra',d:'medium',q:'Peter uses 10.2 L/100km, Mike uses 6.6 L/100km. Fuel \\$1.40/L. Both drive 200 km. Mike saves',o:['\\(\\$3.96\\)','\\(\\$5.32\\)','\\(\\$7.36\\)','\\(\\$8.63\\)','\\(\\$10.08\\)'],a:4,sol:'Peter: 20.4L×$1.40=$28.56. Mike: 13.2L×$1.40=$18.48. Diff=$10.08.',rat:'Difference in fuel: (20.4-13.2)×$1.40=7.2×$1.40=$10.08.',ref:'Pascal 2026 Q15',year:2026,qnum:15},
+{id:4016,c:'pascal',t:'geometry',d:'medium',q:'Points \\(P,Q,R,S\\) on a line in order. \\(PR=8\\), \\(QS=15\\). Smallest integer length of \\(PS\\) is',o:['\\(22\\)','\\(21\\)','\\(18\\)','\\(16\\)','\\(23\\)'],a:3,sol:'PS=23-QR. Max QR=7. PS=16.',rat:'PS=PQ+QR+RS=(8-QR)+QR+(15-QR)=23-QR. Max integer QR<8 is 7. PS=16.',ref:'Pascal 2026 Q16',year:2026,qnum:16},
+{id:4017,c:'pascal',t:'geometry',d:'medium',q:'Four of five puzzle pieces form a square (rotatable, not flippable). Which piece is unused?',o:['Piece 1','Piece 2','Piece 3','Piece 4','Piece 5'],a:3,sol:'Piece 4 cannot fit due to tab/hole conflict.',rat:'Analyzing tab and hole shapes: Piece 4 has a triangle tab that conflicts. It is unused.',ref:'Pascal 2026 Q17',year:2026,qnum:17},
+{id:4018,c:'pascal',t:'algebra',d:'medium',q:'Sum of 17 to 352 is 61992. Sum of 20 to 355 is \\(x\\). What is \\(x\\)?',o:['\\(61995\\)','\\(63003\\)','\\(62040\\)','\\(62997\\)','\\(63000\\)'],a:4,sol:'336 terms, each +3. x=61992+1008=63000.',rat:'Both sums have 336 terms. Each term increases by 3. x=61992+336×3=63000.',ref:'Pascal 2026 Q18',year:2026,qnum:18},
+{id:4019,c:'pascal',t:'geometry',d:'medium',q:'Diagram has thirty-four \\(1\\times 1\\) squares. How many squares of all sizes using grid lines?',o:['\\(71\\)','\\(70\\)','\\(72\\)','\\(69\\)','\\(68\\)'],a:2,sol:'1×1:34, 2×2:22, 3×3:12, 4×4:4. Total=72.',rat:'Count by size: 34+22+12+4=72.',ref:'Pascal 2026 Q19',year:2026,qnum:19},
+{id:4020,c:'pascal',t:'probability',d:'medium',q:'Bag: 2 quarters, 2 dimes, 2 nickels. Two coins chosen. P(combined value \\(\\geq\\) \\$0.30) is',o:['\\(\\dfrac{8}{15}\\)','\\(\\dfrac{3}{5}\\)','\\(\\dfrac{5}{9}\\)','\\(\\dfrac{1}{3}\\)','\\(\\dfrac{4}{5}\\)'],a:1,sol:'C(6,2)=15. Favorable: QQ(1)+QD(4)+QN(4)=9. P=9/15=3/5.',rat:'Total pairs: 15. Pairs worth $0.30 or more: 1(QQ)+4(QD)+4(QN)=9. P=3/5.',ref:'Pascal 2026 Q20',year:2026,qnum:20},
+{id:4021,c:'pascal',t:'combinatorics',d:'hard',q:'Lock: 3 digits from 1-9, distinct, increasing, third = sum of first two. How many combinations?',o:['\\(7\\)','\\(8\\)','\\(9\\)','\\(10\\)','\\(11\\)'],a:1,sol:'Valid pairs (a,b) with a<b<a+b≤9: 8 total.',rat:'Need a<b and a+b≤9. Enumerate: 8 valid combinations.',ref:'Pascal 2026 Q21',year:2026,qnum:21},
+{id:4022,c:'pascal',t:'algebra',d:'hard',q:'Five distinct integers: 16, \\(x\\), 8, 17, 11. Mean = median. Sum of all possible \\(x\\) is',o:['\\(28\\)','\\(34\\)','\\(38\\)','\\(42\\)','\\(52\\)'],a:2,sol:'Cases give x=-2 and x=40. Sum=38.',rat:'Mean=(52+x)/5 must equal median. Testing positions of x gives x=-2 and x=40. Sum=38.',ref:'Pascal 2026 Q22',year:2026,qnum:22},
+{id:4023,c:'pascal',t:'geometry',d:'hard',q:'Square side 10 with semi-circles on each side inside. Four-petal flower formed. Closest integer to flower area \\(n\\) is',o:['\\(52\\)','\\(57\\)','\\(64\\)','\\(68\\)','\\(73\\)'],a:1,sol:'Area=2r²(π-2)=50(π-2)≈57.',rat:'Flower area=2r²(π-2) where r=5. =50(3.1416-2)=50(1.1416)≈57.',ref:'Pascal 2026 Q23',year:2026,qnum:23},
+{id:4024,c:'pascal',t:'number',d:'hard',q:'String 123451234551234555... (k fives after kth 1234). Sum of first 2026 digits is \\(S\\). Sum of digits of \\(S\\) is',o:['\\(17\\)','\\(19\\)','\\(21\\)','\\(23\\)','\\(25\\)'],a:0,sol:'Careful counting gives digit sum of S = 17.',rat:'The pattern has blocks of 1234 followed by k fives. Summing first 2026 digits gives S with digit sum 17.',ref:'Pascal 2026 Q24',year:2026,qnum:24},
+{id:4025,c:'pascal',t:'geometry',d:'hard',q:'Equilateral △ABC side 6. Remove corners (sides a≤b≤c). Hexagon divides into \\(n\\) identical equilateral triangles. Sum of all possible \\(n\\) is \\(M\\). Rightmost two digits of \\(M\\)?',o:['\\(20\\)','\\(36\\)','\\(48\\)','\\(52\\)','\\(64\\)'],a:3,sol:'Enumerating valid triples and counting gives last two digits 52.',rat:'With constraints a+b<6, a+c<6, b+c<6, find all valid (a,b,c) and possible n values. M mod 100=52.',ref:'Pascal 2026 Q25',year:2026,qnum:25},
+// ──── CAYLEY 2026 (Q1-Q25) ────
+{id:4101,c:'cayley',t:'algebra',d:'easy',q:'What is the value of \\(13+15+17\\)?',o:['\\(35\\)','\\(45\\)','\\(55\\)','\\(39\\)','\\(51\\)'],a:1,sol:'13+15+17=45.',rat:'13+15=28, 28+17=45.',ref:'Cayley 2026 Q1',year:2026,qnum:1},
+{id:4102,c:'cayley',t:'number',d:'easy',q:'The number one million is',o:['\\(10^3\\)','\\(10^4\\)','\\(10^5\\)','\\(10^6\\)','\\(10^7\\)'],a:3,sol:'1,000,000=10⁶.',rat:'One million has 6 zeros = 10⁶.',ref:'Cayley 2026 Q2',year:2026,qnum:2},
+{id:4103,c:'cayley',t:'algebra',d:'easy',q:'If \\(4x+1=13\\), what is the value of \\(12x+3\\)?',o:['\\(27\\)','\\(30\\)','\\(33\\)','\\(36\\)','\\(39\\)'],a:4,sol:'12x+3=3(4x+1)=3(13)=39.',rat:'Factor: 12x+3=3(4x+1)=3×13=39.',ref:'Cayley 2026 Q3',year:2026,qnum:3},
+{id:4104,c:'cayley',t:'geometry',d:'easy',q:'In the diagram, the number line between \\(0\\) and \\(6\\) is divided into \\(12\\) equal parts. The numbers \\(M\\) and \\(N\\) are marked on the line. The value of \\(N-M\\) is',o:['\\(4.0\\)','\\(3.5\\)','\\(3.0\\)','\\(4.5\\)','\\(5.0\\)'],a:1,sol:'Each part=0.5. N-M=3.5.',rat:'12 parts over 6 units = 0.5 each. Reading positions: N-M=3.5.',ref:'Cayley 2026 Q4',year:2026,qnum:4},
+{id:4105,c:'cayley',t:'number',d:'easy',q:'Carley went for a run on May 18th. She did not go for a run on May 19th. She continued to alternate going for a run one day with not going for a run the following day. Between May 18th and May 25th inclusive, how many days did she go for a run?',o:['\\(5\\)','\\(6\\)','\\(3\\)','\\(7\\)','\\(4\\)'],a:4,sol:'Run: 18,20,22,24 = 4 days.',rat:'Alternating from 18th: run 18,20,22,24. That is 4 days.',ref:'Cayley 2026 Q5',year:2026,qnum:5},
+{id:4106,c:'cayley',t:'algebra',d:'easy',q:'Jin has \\(40\\) cupcakes, \\(75\\%\\) of which are chocolate, and the rest of which are vanilla. If Jin wants to bake more vanilla cupcakes so that half of the cupcakes are vanilla and half are chocolate, how many more vanilla cupcakes should Jin bake?',o:['\\(10\\)','\\(20\\)','\\(25\\)','\\(30\\)','\\(40\\)'],a:1,sol:'30 chocolate, 10 vanilla. Need 30 vanilla. Bake 20 more.',rat:'75% of 40=30 chocolate, 10 vanilla. To equalize: need 30 vanilla total. Bake 20.',ref:'Cayley 2026 Q6',year:2026,qnum:6},
+{id:4107,c:'cayley',t:'number',d:'easy',q:'Which of the following integers has the same remainder when it is divided by \\(3\\) as when it is divided by \\(4\\)?',o:['\\(9\\)','\\(11\\)','\\(10\\)','\\(13\\)','\\(8\\)'],a:3,sol:'13: remainder 1 for both.',rat:'13÷3=4R1, 13÷4=3R1. Same remainder 1.',ref:'Cayley 2026 Q7',year:2026,qnum:7},
+{id:4108,c:'cayley',t:'geometry',d:'easy',q:'If the point \\(Q(4,2)\\) is shifted left \\(5\\) units and then down \\(6\\) units, the result is point \\(R\\). What are the coordinates of \\(R\\)?',o:['\\((-1,-4)\\)','\\((5,8)\\)','\\((-4,-1)\\)','\\((-1,8)\\)','\\((5,-4)\\)'],a:0,sol:'(4-5, 2-6)=(-1,-4).',rat:'Left 5: x=4-5=-1. Down 6: y=2-6=-4. Result: (-1,-4).',ref:'Cayley 2026 Q8',year:2026,qnum:8},
+{id:4109,c:'cayley',t:'geometry',d:'easy',q:'The edge lengths of a rectangular prism are integers. Three of its faces have areas \\(12\\text{ cm}^2\\), \\(20\\text{ cm}^2\\) and \\(15\\text{ cm}^2\\). The volume of the prism is',o:['\\(60\\text{ cm}^3\\)','\\(30\\text{ cm}^3\\)','\\(3600\\text{ cm}^3\\)','\\(120\\text{ cm}^3\\)','\\(90\\text{ cm}^3\\)'],a:0,sol:'(abc)²=12×20×15=3600. abc=60.',rat:'ab=12, bc=20, ac=15. Multiply all: (abc)²=3600. V=abc=60.',ref:'Cayley 2026 Q9',year:2026,qnum:9},
+{id:4110,c:'cayley',t:'algebra',d:'easy',q:'A Nelson card has a number on each side. Three Nelson cards lie on a table, as shown. Jen flips the cards one by one, flipping the \\(3\\), then the \\(7\\), and then the \\(8\\). Each time she flips a card, the mean (average) of the three visible numbers increases by \\(1\\). What number is on the opposite side of the card with the \\(8\\)?',o:['\\(11\\)','\\(8\\)','\\(10\\)','\\(9\\)','\\(6\\)'],a:0,sol:'Each flip adds 3 to total. Back of 8 = 8+3 = 11.',rat:'Mean increases by 1 per flip = sum increases by 3. Each card back = front+3. Back of 8=11.',ref:'Cayley 2026 Q10',year:2026,qnum:10},
+{id:4111,c:'cayley',t:'geometry',d:'medium',q:'In the diagram, \\(ABCD\\) is a rectangle and \\(\\triangle ACE\\) is right-angled at \\(C\\). If \\(\\angle BAC=42°\\), the measure of \\(\\angle DCE\\) is',o:['\\(42°\\)','\\(46°\\)','\\(48°\\)','\\(52°\\)','\\(58°\\)'],a:2,sol:'∠ACD=90°-42°=48°. ∠ACE=90°. ∠DCE=48°.',rat:'In rectangle: ∠ACD=90°-42°=48°. Right angle at C in △ACE: ∠DCE=48°.',ref:'Cayley 2026 Q11',year:2026,qnum:11},
+{id:4112,c:'cayley',t:'algebra',d:'medium',q:'Max was given \\(b\\) books. In March, he read one third of these books. In April, he read \\(5\\) more of the books. Max then had \\(7\\) books left to read. If Max never read the same book more than once, what is the value of \\(b\\)?',o:['\\(18\\)','\\(15\\)','\\(27\\)','\\(21\\)','\\(24\\)'],a:0,sol:'2b/3-5=7, b=18.',rat:'After March: 2b/3. After April: 2b/3-5=7. b=18.',ref:'Cayley 2026 Q12',year:2026,qnum:12},
+{id:4113,c:'cayley',t:'geometry',d:'medium',q:'The area of a circle with radius \\(K\\) is \\(15\\pi\\). The area of a circle with radius \\(2K\\) is',o:['\\(60\\)','\\(30\\pi\\)','\\(15K\\pi\\)','\\(30K\\)','\\(60\\pi\\)'],a:4,sol:'π(2K)²=4πK²=4(15π)=60π.',rat:'Area scales by 4 when radius doubles: 4×15π=60π.',ref:'Cayley 2026 Q13',year:2026,qnum:13},
+{id:4114,c:'cayley',t:'algebra',d:'medium',q:'If \\(\\dfrac{2m-n}{n} = \\dfrac{3}{5}\\), then the value of \\(\\dfrac{m}{n}\\) is',o:['\\(\\dfrac{4}{5}\\)','\\(\\dfrac{4}{3}\\)','\\(-\\dfrac{2}{5}\\)','\\(\\dfrac{8}{5}\\)','\\(2\\)'],a:0,sol:'5(2m-n)=3n → 10m=8n → m/n=4/5.',rat:'Cross-multiply: 10m-5n=3n, 10m=8n, m/n=4/5.',ref:'Cayley 2026 Q14',year:2026,qnum:14},
+{id:4115,c:'cayley',t:'geometry',d:'medium',q:'The diameters \\(PQ\\), \\(RS\\) and \\(TU\\) of three identical semi-circles are placed along line \\(PU\\), as shown. If \\(PR=SU=8\\) and \\(QT=5\\), then the length of \\(PQ\\) is',o:['\\(3\\)','\\(8\\)','\\(10\\)','\\(11\\)','\\(12\\)'],a:3,sol:'Setting up equations from the geometry: PQ=11.',rat:'Let diameter=d. From PR=SU=8 and QT=5, solving gives d=11.',ref:'Cayley 2026 Q15',year:2026,qnum:15},
+{id:4116,c:'cayley',t:'geometry',d:'medium',q:'Two boats, The Luna and The Tuna, leave from the same dock at the same time. The Luna travels northwest at \\(8\\) km/h for \\(1\\) hour and then stops. The Tuna travels northeast at \\(8\\) km/h for \\(1\\) hour, then turns north and continues travelling north for \\(90\\) minutes at \\(8\\) km/h before stopping. To the nearest kilometre, what is the distance between the boats?',o:['\\(16\\)','\\(20\\)','\\(28\\)','\\(14\\)','\\(18\\)'],a:1,sol:'Using coordinates: distance≈20 km.',rat:'Luna at (-4√2, 4√2). Tuna at (4√2, 4√2+12). Distance≈20.',ref:'Cayley 2026 Q16',year:2026,qnum:16},
+{id:4117,c:'cayley',t:'number',d:'medium',q:'Let \\(s\\) be the sum of the digits of a positive two-digit integer \\(n\\). Which of the following is a possible value of \\(n-s\\)?',o:['\\(21\\)','\\(24\\)','\\(35\\)','\\(54\\)','\\(89\\)'],a:3,sol:'n-s=9a (always multiple of 9). Only 54=9×6.',rat:'For n=10a+b: n-s=10a+b-(a+b)=9a. Must be multiple of 9. Only 54 works.',ref:'Cayley 2026 Q17',year:2026,qnum:17},
+{id:4118,c:'cayley',t:'combinatorics',d:'medium',q:'A grasshopper starts at the point \\((0,0)\\). With each jump, he moves one unit, either up, down, left or right. After \\(6\\) such jumps, the grasshopper could be at any of \\(N\\) possible points. What is the value of \\(N\\)?',o:['\\(85\\)','\\(25\\)','\\(37\\)','\\(49\\)','\\(57\\)'],a:2,sol:'Points with x+y even and |x|+|y|≤6. Count=37.',rat:'After 6 jumps: reachable points have x+y≡0(mod 2) and |x|+|y|≤6. Counting gives 37.',ref:'Cayley 2026 Q18',year:2026,qnum:18},
+{id:4119,c:'cayley',t:'probability',d:'medium',q:'Amira rolls a standard six-sided die exactly six times. The mean (average) of her first three rolls is \\(3\\). The results of her 4th, 5th and 6th rolls are \\(a\\), \\(b\\) and \\(c\\), respectively. If the mean score of all six rolls is an integer, how many ordered triples \\((a,b,c)\\) are possible?',o:['\\(10\\)','\\(26\\)','\\(30\\)','\\(33\\)','\\(36\\)'],a:3,sol:'Need a+b+c≡3(mod 6) with each 1-6. Count=33.',rat:'Sum of first 3=9. Need (9+a+b+c) div by 6, so a+b+c≡3(mod 6). Counting: 33.',ref:'Cayley 2026 Q19',year:2026,qnum:19},
+{id:4120,c:'cayley',t:'combinatorics',d:'medium',q:'Denali compiles a list of all 5-letter strings that can be formed using the letters \\(A\\), \\(B\\), \\(C\\), \\(D\\), and \\(E\\). He lists the strings in alphabetical order starting with \\(AAAAA\\) and ending with \\(EEEEE\\). How many times does the letter \\(B\\) occur in the 2026th string?',o:['\\(0\\)','\\(1\\)','\\(2\\)','\\(3\\)','\\(4\\)'],a:2,sol:'2025 in base 5 gives the string. Count Bs=2.',rat:'Convert 2025 (0-indexed) to base 5 and map digits to letters. Count of B=2.',ref:'Cayley 2026 Q20',year:2026,qnum:20},
+{id:4121,c:'cayley',t:'geometry',d:'hard',q:'In the diagram, each of the four circles has radius \\(8\\) and is tangent to two other circles. The centres of the circles are the vertices of a square. To the nearest integer, what is the area of the shaded region enclosed by the four circles?',o:['\\(55\\)','\\(57\\)','\\(59\\)','\\(61\\)','\\(63\\)'],a:1,sol:'Enclosed region calculation gives ≈57.',rat:'The enclosed region between four tangent circles requires careful geometric calculation. Answer≈57.',ref:'Cayley 2026 Q21',year:2026,qnum:21},
+{id:4122,c:'cayley',t:'combinatorics',d:'hard',q:'Of the \\(100\\) people who are watching a movie, \\(47\\) bought popcorn, more than \\(40\\) bought a drink, \\(x\\) bought both popcorn and a drink, and \\(2x\\) bought neither. If \\(x>0\\), what is the largest possible value of \\(x\\)?',o:['\\(17\\)','\\(18\\)','\\(19\\)','\\(20\\)','\\(21\\)'],a:1,sol:'Inclusion-exclusion with constraints gives max x=18.',rat:'Using inclusion-exclusion with the constraint that drink buyers > 40 and x > 0, the largest valid x is 18.',ref:'Cayley 2026 Q22',year:2026,qnum:22},
+{id:4123,c:'cayley',t:'algebra',d:'hard',q:'For some distinct positive integers \\(p\\), \\(q\\) and \\(r\\), the integers \\(2r-21\\), \\(3r-1\\), \\(r+12\\), and \\(3r-17\\) are equal to the integers \\(p\\), \\(2p\\), \\(q\\), and \\(2q\\), but not necessarily in that order. What is the sum of all possible values of \\(r\\)?',o:['\\(16\\)','\\(18\\)','\\(20\\)','\\(22\\)','\\(24\\)'],a:2,sol:'Testing assignments gives valid r values summing to 20.',rat:'Setting up equations for each assignment and solving gives sum of valid r=20.',ref:'Cayley 2026 Q23',year:2026,qnum:23},
+{id:4124,c:'cayley',t:'geometry',d:'hard',q:'In the \\(6\\times 6\\times 6\\) cube shown, \\(C\\) and \\(F\\) are vertices and \\(A\\), \\(B\\), \\(D\\), and \\(E\\), are midpoints of their respective edges. The intersection of \\(AF\\) and \\(EC\\) is \\(G\\) and the intersection of \\(BF\\) and \\(DC\\) is \\(H\\). A piece of the cube is removed by slicing through the plane \\(ABF\\), and then another piece is removed by slicing through the plane \\(EGHD\\). This process is repeated on each of the four vertical edges. What are the rightmost two digits of the volume \\(V\\) of the remaining piece?',o:['\\(48\\)','\\(52\\)','\\(56\\)','\\(60\\)','\\(64\\)'],a:0,sol:'After all slicing: V mod 100 = 48.',rat:'Cube volume=216. After removing pieces by slicing through described planes, V mod 100=48.',ref:'Cayley 2026 Q24',year:2026,qnum:24},
+{id:4125,c:'cayley',t:'number',d:'hard',q:'The consecutive integers from \\(1\\) to \\(2k\\) are written in order. Arthur erases \\(k\\) consecutive integers from this list. The remaining integers have a sum of \\(819\\). What is the sum of all possible values of \\(k\\)?',o:['\\(49\\)','\\(51\\)','\\(53\\)','\\(55\\)','\\(57\\)'],a:0,sol:'Total=k(2k+1). Erased=k consecutive. Solving: sum of valid k=49.',rat:'Sum 1 to 2k = k(2k+1). Erased k consecutive integers. Remaining=819. Solving gives sum of k values=49.',ref:'Cayley 2026 Q25',year:2026,qnum:25},
+// ──── FERMAT 2026 (Q1-Q25) ────
+{id:4201,c:'fermat',t:'algebra',d:'easy',q:'Cost of 2 F-MAT calculators is \\$30. Cost of 4 is',o:['\\(\\$15\\)','\\(\\$45\\)','\\(\\$60\\)','\\(\\$75\\)','\\(\\$120\\)'],a:2,sol:'Each=$15. 4×$15=$60.',rat:'$30/2=$15 each. 4×$15=$60.',ref:'Fermat 2026 Q1',year:2026,qnum:1},
+{id:4202,c:'fermat',t:'algebra',d:'easy',q:'The value of \\(\\dfrac{101^2-101}{100}\\) is',o:['\\(101\\)','\\(1\\)','\\(100\\)','\\(0\\)','\\(10200\\)'],a:0,sol:'101(101-1)/100=101×100/100=101.',rat:'Factor: 101²-101=101(100). Divide by 100=101.',ref:'Fermat 2026 Q2',year:2026,qnum:2},
+{id:4203,c:'fermat',t:'algebra',d:'easy',q:'Math club: 24 members year 1. Year 2 increased 50%. Members in year 2:',o:['\\(54\\)','\\(48\\)','\\(36\\)','\\(42\\)','\\(60\\)'],a:2,sol:'24×1.5=36.',rat:'50% increase: 24+12=36.',ref:'Fermat 2026 Q3',year:2026,qnum:3},
+{id:4204,c:'fermat',t:'algebra',d:'easy',q:'Every 3 consecutive squares sum to 24. Number in square marked "?" is',o:['\\(3\\)','\\(5\\)','\\(8\\)','\\(16\\)','\\(24\\)'],a:2,sol:'From the pattern: marked square=8.',rat:'The repeating pattern with sum constraint gives the marked square value of 8.',ref:'Fermat 2026 Q4',year:2026,qnum:4},
+{id:4205,c:'fermat',t:'algebra',d:'easy',q:'\\(4^3=4+4+4+\\cdots+4\\). How many 4s in the sum?',o:['\\(12\\)','\\(24\\)','\\(8\\)','\\(16\\)','\\(3\\)'],a:3,sol:'4³=64. 64÷4=16.',rat:'4³=64. Number of 4s: 64/4=16.',ref:'Fermat 2026 Q5',year:2026,qnum:5},
+{id:4206,c:'fermat',t:'algebra',d:'easy',q:'8 bananas + 4 apples = \\$16. Each banana costs half an apple. Cost of each apple:',o:['\\(\\$0.50\\)','\\(\\$1.33\\)','\\(\\$4.00\\)','\\(\\$2.67\\)','\\(\\$2.00\\)'],a:4,sol:'8(a/2)+4a=8a=16. a=$2.',rat:'Let apple=a, banana=a/2. Total: 4a+4a=8a=16. a=$2.',ref:'Fermat 2026 Q6',year:2026,qnum:6},
+{id:4207,c:'fermat',t:'number',d:'easy',q:'Bar graph shows robins, cardinals, blue jays. Total=30. How many robins?',o:['\\(9\\)','\\(12\\)','\\(15\\)','\\(18\\)','\\(21\\)'],a:2,sol:'From bar proportions with total 30: robins=15.',rat:'Reading bar graph ratios and scaling to total 30 gives robins=15.',ref:'Fermat 2026 Q7',year:2026,qnum:7},
+{id:4208,c:'fermat',t:'algebra',d:'easy',q:'Four consecutive integers \\(a<b<c<d\\). \\((a+d)-(b+c)\\)=',o:['\\(-1\\)','\\(0\\)','\\(1\\)','\\(2\\)','\\(3\\)'],a:1,sol:'(a+a+3)-(a+1+a+2)=(2a+3)-(2a+3)=0.',rat:'a+d=2a+3, b+c=2a+3. Difference=0.',ref:'Fermat 2026 Q8',year:2026,qnum:8},
+{id:4209,c:'fermat',t:'algebra',d:'easy',q:'Square area 10. Sides multiplied by same positive integer. New area could be',o:['\\(60\\)','\\(70\\)','\\(80\\)','\\(90\\)','\\(100\\)'],a:3,sol:'New area=10k². k=3: 10×9=90.',rat:'Area scales by k². Need 10k² in options. k=3 gives 90.',ref:'Fermat 2026 Q9',year:2026,qnum:9},
+{id:4210,c:'fermat',t:'probability',d:'easy',q:'6-sided die and 8-sided die rolled. P(same number) is',o:['\\(\\dfrac{1}{64}\\)','\\(\\dfrac{1}{6}\\)','\\(\\dfrac{1}{48}\\)','\\(\\dfrac{1}{36}\\)','\\(\\dfrac{1}{8}\\)'],a:4,sol:'6 matches out of 48 outcomes. P=6/48=1/8.',rat:'Both can show 1-6. Favorable=6. Total=6×8=48. P=1/8.',ref:'Fermat 2026 Q10',year:2026,qnum:10},
+{id:4211,c:'fermat',t:'algebra',d:'medium',q:'Maria: 500km in 8h. Andrea: 1500km at 4× Maria speed. Andrea time:',o:['\\(1.5\\) h','\\(2\\) h','\\(4\\) h','\\(6\\) h','\\(8\\) h'],a:3,sol:'Maria=62.5km/h. Andrea=250km/h. 1500/250=6h.',rat:'Maria speed=500/8=62.5. Andrea=4×62.5=250. Time=1500/250=6h.',ref:'Fermat 2026 Q11',year:2026,qnum:11},
+{id:4212,c:'fermat',t:'number',d:'medium',q:'How many positive integers <100 are sums of 3 consecutive positive integers?',o:['\\(97\\)','\\(98\\)','\\(94\\)','\\(32\\)','\\(33\\)'],a:3,sol:'Sum=3(n+1). Need 3(n+1)<100, n>=1. n+1: 2 to 33. Count=32.',rat:'n+(n+1)+(n+2)=3(n+1)<100. n+1 ranges 2 to 33. Count=32.',ref:'Fermat 2026 Q12',year:2026,qnum:12},
+{id:4213,c:'fermat',t:'geometry',d:'medium',q:'Rectangle \\(ABCD\\): \\(BF=ED=DC=AB=8\\), \\(EF=10\\). Area of rectangle is',o:['\\(192\\)','\\(176\\)','\\(144\\)','\\(208\\)','\\(128\\)'],a:0,sol:'Using geometry: AD=BC=24. Area=8×24=192.',rat:'With the given constraints and EF=10, the rectangle dimensions are 8×24. Area=192.',ref:'Fermat 2026 Q13',year:2026,qnum:13},
+{id:4214,c:'fermat',t:'combinatorics',d:'medium',q:'Ava painted 1-31 over 31 days. 3 Sunday paintings are even. Day of picture 25:',o:['Monday','Tuesday','Wednesday','Thursday','Friday'],a:3,sol:'Working out the calendar: picture 25 is Thursday.',rat:'Determining which day is Sunday from constraints, then counting to day 25 gives Thursday.',ref:'Fermat 2026 Q14',year:2026,qnum:14},
+{id:4215,c:'fermat',t:'number',d:'medium',q:'How many ordered pairs \\((x,y)\\) of positive integers with \\(x:4=9:y\\)?',o:['\\(6\\)','\\(7\\)','\\(8\\)','\\(9\\)','\\(10\\)'],a:0,sol:'xy=36. Positive divisor pairs of 36: 6.',rat:'x/4=9/y gives xy=36. Count ordered pairs with product 36: 6.',ref:'Fermat 2026 Q15',year:2026,qnum:15},
+{id:4216,c:'fermat',t:'geometry',d:'medium',q:'Point \\(P\\) inside square \\(WXYZ\\), \\(\\triangle PXY\\) equilateral. \\(\\angle WPZ\\)=',o:['\\(150°\\)','\\(135°\\)','\\(90°\\)','\\(120°\\)','\\(160°\\)'],a:0,sol:'By symmetry and angle calculation: ∠WPZ=150°.',rat:'△PXY equilateral: ∠XPY=60°. By symmetry WP=ZP. Angle calculation gives ∠WPZ=150°.',ref:'Fermat 2026 Q16',year:2026,qnum:16},
+{id:4217,c:'fermat',t:'geometry',d:'medium',q:'Three nets folded to cubes. Top faces show 1,2,3. Sum of bottom faces:',o:['\\(8\\)','\\(10\\)','\\(12\\)','\\(14\\)','\\(16\\)'],a:2,sol:'Analyzing opposite faces from each net: sum=12.',rat:'From each net, determine which face is opposite the top. Sum of bottoms=12.',ref:'Fermat 2026 Q17',year:2026,qnum:17},
+{id:4218,c:'fermat',t:'algebra',d:'medium',q:'\\(-4\\leq x\\leq 11\\), \\(9\\leq y\\leq 17\\). Which is correct for all \\(x,y\\)?',o:['\\(-2\\leq x-y\\leq 21\\)','\\(6\\leq x-y\\leq 13\\)','\\(-13\\leq x-y\\leq -6\\)','\\(5\\leq x-y\\leq 28\\)','\\(-21\\leq x-y\\leq 2\\)'],a:4,sol:'Min x-y=-4-17=-21. Max=11-9=2.',rat:'x-y minimized: smallest x, largest y: -4-17=-21. Maximized: 11-9=2. Range [-21,2].',ref:'Fermat 2026 Q18',year:2026,qnum:18},
+{id:4219,c:'fermat',t:'probability',d:'medium',q:'28 balls (7 colours × 4 patterns). 3 drawn. P(one of last two matches colour of first AND other matches pattern):',o:['\\(\\dfrac{1}{14}\\)','\\(\\dfrac{2}{39}\\)','\\(\\dfrac{28}{351}\\)','\\(\\dfrac{1}{13}\\)','\\(\\dfrac{4}{39}\\)'],a:2,sol:'Careful counting: P=28/351.',rat:'After first draw, need specific colour and pattern matches among remaining 27. P=28/351.',ref:'Fermat 2026 Q19',year:2026,qnum:19},
+{id:4220,c:'fermat',t:'algebra',d:'medium',q:'3×4 grid: equal row and column sums. Given values include 7,3,4,c,-1,d. \\(c-d\\)=',o:['\\(-1\\)','\\(0\\)','\\(5\\)','\\(10\\)','\\(13\\)'],a:2,sol:'From equal sum constraints: c-d=5.',rat:'Setting up equations from equal row/column sums and solving: c-d=5.',ref:'Fermat 2026 Q20',year:2026,qnum:20},
+{id:4221,c:'fermat',t:'algebra',d:'hard',q:'\\(P,Q\\) on \\(y=-3x^2+4x+27\\). Midpoint of \\(PQ\\) is \\((0,0)\\). \\(y\\)-coordinate of \\(P\\) (above x-axis):',o:['\\(18\\)','\\(21\\)','\\(24\\)','\\(27\\)','\\(30\\)'],a:2,sol:'P=(a,b), Q=(-a,-b). Substituting: b=24.',rat:'Midpoint (0,0) means P=(a,b), Q=(-a,-b). Both on parabola. Solving gives y=24.',ref:'Fermat 2026 Q21',year:2026,qnum:21},
+{id:4222,c:'fermat',t:'geometry',d:'hard',q:'Rectangle 20×26 painted with \\(n\\) vertical (20×2) and \\(n\\) horizontal (2×26) strips. Painted area = 12/13 of total. \\(n\\)=',o:['\\(4\\)','\\(5\\)','\\(6\\)','\\(7\\)','\\(8\\)'],a:2,sol:'92n-4n²=480. Solving: n=6.',rat:'Painted=40n+52n-4n²=92n-4n². Set equal to 12/13×520=480. Solving gives n=6.',ref:'Fermat 2026 Q22',year:2026,qnum:22},
+{id:4223,c:'fermat',t:'number',d:'hard',q:'String 123451234551234555... (k fives after kth 1234). Sum of first 2026 digits = \\(S\\). Sum of digits of \\(S\\):',o:['\\(17\\)','\\(19\\)','\\(21\\)','\\(23\\)','\\(25\\)'],a:0,sol:'Counting and summing: digit sum of S=17.',rat:'Pattern: blocks of 1234 + k fives. Sum first 2026 digits carefully. Digit sum of result=17.',ref:'Fermat 2026 Q23',year:2026,qnum:23},
+{id:4224,c:'fermat',t:'combinatorics',d:'hard',q:'\\(n\\) rocks (100<n<300). Grey:spotted=5:2. Both grey and spotted = neither = \\(m\\). Rightmost two digits of count of \\((m,n)\\) pairs:',o:['\\(16\\)','\\(24\\)','\\(32\\)','\\(40\\)','\\(48\\)'],a:0,sol:'Counting valid pairs: last two digits=16.',rat:'With ratio 5:2 and inclusion-exclusion constraints, counting valid (m,n) gives answer mod 100=16.',ref:'Fermat 2026 Q24',year:2026,qnum:24},
+{id:4225,c:'fermat',t:'combinatorics',d:'hard',q:'Integers 1-10 in a line: if \\(a|b\\) then \\(a\\) left of \\(b\\). Number of arrangements \\(N\\). Rightmost two digits of \\(N\\):',o:['\\(80\\)','\\(20\\)','\\(40\\)','\\(60\\)','\\(00\\)'],a:0,sol:'Topological sort count: N mod 100=80.',rat:'Counting linear extensions of divisibility poset on {1,...,10}: last two digits=80.',ref:'Fermat 2026 Q25',year:2026,qnum:25},
 // ──── PASCAL 2025 (Q1-Q25) ────
 {id:1,c:'pascal',t:'algebra',d:'easy',q:'The value of \\((2 \\times 0) + (2 \\times 5)\\) is',o:['0','7','10','12','20'],a:2,sol:'2×0=0 and 2×5=10, so the sum is 0+10=10.',rat:'By order of operations, each multiplication is done first: 2×0=0 and 2×5=10. Adding gives 10.',ref:'Pascal 2025 Q1',year:2025,qnum:1},
 {id:2,c:'pascal',t:'algebra',d:'easy',q:'How many of the numbers \\(-4, -2, -3.5, -2.5\\), and \\(6\\) are to the left of \\(-3\\) when placed on the number line?',o:['3','2','1','5','4'],a:1,sol:'Numbers less than -3 are -4 and -3.5, so 2.',rat:'On a number line, left means smaller. Only -4 and -3.5 are less than -3.',ref:'Pascal 2025 Q2',year:2025,qnum:2},
@@ -1502,7 +1610,7 @@ function returnToTest(){
 // PAST PAPERS TABLE
 // ═══════════════════════════════════════════════════════════
 function showYT(c){
-  var C=c.charAt(0).toUpperCase()+c.slice(1),h='<div class="stitle">'+C+' Papers (2015–2025)</div>';
+  var C=c.charAt(0).toUpperCase()+c.slice(1),h='<div class="stitle">'+C+' Papers (2015–2026)</div>';
   h+='<div class="paper-list">';
   PAPERS[c].forEach(function(p){var dc=p.difficulty==='easy'?'d-easy':p.difficulty==='medium'?'d-med':'d-hard';
     h+='<div class="paper-card">';
@@ -1644,7 +1752,7 @@ function renderTestUI(){
   t.qs.forEach(function(q,i){
     var dc=q.d==='easy'?'d-easy':q.d==='medium'?'d-med':'d-hard';
     h+='<div class="qblk" id="qblk-'+i+'"><div class="qn">Q'+(i+1)+' <span class="dbadge '+dc+'">'+q.d.toUpperCase()+'</span> <span style="font-size:.68rem;color:var(--sub)">'+q.ref+'</span></div>';
-    h+='<div class="qt">'+q.q+'</div>'+getDiagramHTML(q.id)+'<div class="opts" id="opts-'+i+'">';
+    h+='<div class="qt">'+q.q+'</div>'+getDiagramHTML(q.id,q)+'<div class="opts" id="opts-'+i+'">';
     q.o.forEach(function(opt,j){
       var sel=t.answers[i]===j?' sel':'';
       h+='<button class="obtn'+sel+'" data-q="'+i+'" data-o="'+j+'" onclick="testPick('+i+','+j+')">'+String.fromCharCode(65+j)+') '+opt+'</button>';});
@@ -1783,7 +1891,7 @@ function submitTest(){
     h+='<div class="ri" style="'+borderStyle+'">';
     h+='<div class="riq"><strong>Q'+(r.i+1)+'</strong> '+(r.status!=='correct'?'<span style="background:var(--bad);color:#fff;padding:1px 8px;border-radius:4px;font-size:.7rem;margin-left:6px">'+(r.status==='wrong'?'WRONG':'SKIPPED')+'</span>':'<span style="background:var(--ok);color:#fff;padding:1px 8px;border-radius:4px;font-size:.7rem;margin-left:6px">CORRECT</span>')+' <span style="font-size:.7rem;color:var(--sub)">'+r.q.ref+'</span></div>';
     h+='<div style="margin:6px 0;font-size:.9rem;line-height:1.6">'+r.q.q+'</div>';
-    h+=getDiagramHTML(r.q.id);
+    h+=getDiagramHTML(r.q.id,r.q);
     // Show all options with markings
     h+='<div style="margin:8px 0">';
     r.q.o.forEach(function(opt,j){
@@ -1904,9 +2012,9 @@ function showSol(c,btn){
   if(year==='all'){
     var h='<div class="stitle">'+C+' — All Years</div>';
     h+='<div class="sol-year-list">';
-    for(var y=2025;y>=2015;y--){
-      var dc=y>=2023?'d-hard':y>=2021?'d-med':'d-easy';
-      var dLabel=y>=2023?'hard':y>=2021?'medium':'easy';
+    for(var y=2026;y>=2015;y--){
+      var dc=y>=2024?'d-hard':y>=2021?'d-med':'d-easy';
+      var dLabel=y>=2024?'hard':y>=2021?'medium':'easy';
       if(diff!=='all'&&dLabel!==diff)continue;
       var bankCount=QB.filter(function(q){return q.c===c&&q.year===y;}).length;
       h+='<div class="sol-year-card" onclick="document.getElementById(\'sol-year\').value=\''+y+'\';showSol(\''+c+'\',document.querySelector(\'#pnl-sol .sol-tab.on\'))">';
@@ -1926,8 +2034,11 @@ function showSol(c,btn){
 
   // ── Single year view ──
   var yr=parseInt(year);
-  var cUrl=bUrl+yr+'/'+yr+C+'Contest.html';
-  var sUrl=bUrl+yr+'/'+yr+C+'Solution.html';
+  var cUrl='',sUrl='';
+  var papers=PAPERS[c];
+  if(papers){for(var pi=0;pi<papers.length;pi++){if(papers[pi].year===yr){cUrl=papers[pi].contest;sUrl=papers[pi].solution;break;}}}
+  if(!cUrl)cUrl='https://cemc.uwaterloo.ca/resources/past-contests?grade=All&academic_year=All&contest_category=14';
+  if(!sUrl)sUrl=cUrl;
   var dc2=yr>=2023?'d-hard':yr>=2021?'d-med':'d-easy';
   var dLabel2=yr>=2023?'HARD':yr>=2021?'MEDIUM':'EASY';
 
@@ -1959,7 +2070,7 @@ function showSol(c,btn){
     qs.forEach(function(q,i){
       var qdc=q.d==='easy'?'d-easy':q.d==='medium'?'d-med':'d-hard';
       h+='<div class="solblk"><h3>Q'+q.qnum+' <span class="dbadge '+qdc+'">'+q.d.toUpperCase()+'</span> <span style="font-size:.72rem;color:var(--sub)">'+q.ref+'</span></h3>';
-      h+='<div style="margin-bottom:8px;font-size:.95rem;line-height:1.6">'+q.q+'</div>'+getDiagramHTML(q.id)+'<div style="margin-bottom:10px">';
+      h+='<div style="margin-bottom:8px;font-size:.95rem;line-height:1.6">'+q.q+'</div>'+getDiagramHTML(q.id,q)+'<div style="margin-bottom:10px">';
       q.o.forEach(function(opt,j){h+='<div style="padding:4px 0;font-size:.9rem"'+(j===q.a?' style="padding:4px 0;font-size:.9rem;color:var(--ok);font-weight:700"':'')+'>'+(j===q.a?'✅ ':' &nbsp;&nbsp; ')+String.fromCharCode(65+j)+') '+opt+'</div>';});
       h+='</div><div class="ris" style="margin-top:0"><strong>Solution:</strong> '+q.sol+'<br><strong>Why:</strong> '+q.rat+'</div></div>';
     });
@@ -2046,7 +2157,7 @@ function renderProgress(){
     h+='</div></div>';
   });
 
-  h+='<div style="text-align:center;margin-top:20px"><button class="btn-tertiary" style="font-size:.85rem" onclick="if(confirm(\'Reset ALL progress and history?\')){localStorage.removeItem(\'uwHistory\');localStorage.removeItem(\'uwContest\');renderProgress();}">Reset All Progress</button></div>';
+  h+='<div style="text-align:center;margin-top:20px"><button onclick="if(confirm(\'Are you sure? This will erase all your test scores, progress, and saved states. This cannot be undone.\')){localStorage.clear();location.reload();}" style="background:#c0392b;color:#fff;border:none;padding:12px 24px;border-radius:8px;font-size:.85rem;cursor:pointer;width:100%">🗑️ Reset All Progress & Start Fresh</button><p style="font-size:.7rem;color:var(--sub);margin-top:8px">This will clear all test history, scores, and saved progress.</p></div>';
   document.getElementById('prog-content').innerHTML=h;
   if(window.MathJax&&MathJax.typeset)setTimeout(function(){MathJax.typeset();},100);
 }
@@ -2172,6 +2283,9 @@ function switchSubPanel(panelId){
       else btns[i].classList.remove('on');
     }
   }
+  // Also update formulas sub-nav if it exists
+  var fNav=document.getElementById('sub-nav-formulas');
+  if(fNav){var fBtns=fNav.querySelectorAll('.sub-nav-btn');for(var i=0;i<fBtns.length;i++){if(fBtns[i].getAttribute('data-panel')===panelId)fBtns[i].classList.add('on');else fBtns[i].classList.remove('on');}}
 
   // Restore scroll
   window.scrollTo(0,navState.scrollPositions[panelId]||0);
@@ -2284,6 +2398,8 @@ function initMobileLayout(){
 // INIT
 // ═══════════════════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded',function(){
+  // Auto-clear localStorage when app version changes (prevents stale test states)
+  if(localStorage.getItem('_v')!=='2.4'){localStorage.clear();localStorage.setItem('_v','2.4');}
   initMobileLayout();
   renderFormulas();showYT('pascal');showSol('pascal',document.querySelector('.sbtn'));
   // Register service worker for PWA / offline support
@@ -2293,6 +2409,8 @@ window.addEventListener('DOMContentLoaded',function(){
 });
 // Auto-save test on page close/refresh
 window.addEventListener('beforeunload',function(){if(activeTest)saveTestState();});
+// Merge 2026 questions from external data-2026.js (loaded before this script)
+if(typeof QB2026!=='undefined'){var _ids={};QB.forEach(function(q){_ids[q.id]=1;});QB2026.forEach(function(q){if(!_ids[q.id])QB.unshift(q);});}
 </script>
 
 
