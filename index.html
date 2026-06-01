@@ -433,7 +433,7 @@ if(c==='fermat'&&(y===2017||y===2018))return 2026;
 if(c==='fermat'&&y===2019)return -2;
 return y;
 }
-['pascal','cayley','fermat'].forEach(function(c){var C=c.charAt(0).toUpperCase()+c.slice(1);for(var y=2026;y>=2015;y--){var f=cemcFolder(c,y);var cUrl=(f===-1)?'papers/2015CayleyContest.html':(f<0)?pcfFallback:base+f+'/'+y+C+'Contest.html';var sf=y;if(c==='fermat'&&y===2018)sf=2025;var sUrl=base+sf+'/'+y+C+'Solution.html';PAPERS[c].push({year:y,contest:cUrl,solution:sUrl,difficulty:y>=2024?'hard':y>=2021?'medium':'easy'});}});
+['pascal','cayley','fermat'].forEach(function(c){var C=c.charAt(0).toUpperCase()+c.slice(1);for(var y=2026;y>=2015;y--){var f=cemcFolder(c,y);var cUrl=(f===-1)?'papers/2015CayleyContest.html':(f<0)?pcfFallback:base+f+'/'+y+C+'Contest.html';var sf=y;if(c==='fermat'&&y===2018)sf=2025;if(c==='pascal'&&y===2024)sf=2026;var sUrl=base+sf+'/'+y+C+'Solution.html';PAPERS[c].push({year:y,contest:cUrl,solution:sUrl,difficulty:y>=2024?'hard':y>=2021?'medium':'easy'});}});
 
 // Populate year dropdown
 var pmYSel=document.getElementById('pm-y');
