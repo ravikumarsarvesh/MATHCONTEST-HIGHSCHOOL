@@ -569,7 +569,7 @@
   </div><!-- end container -->
 
   <!-- Load contest registry for duplicate detection -->
-  <script src="data/contest-registry.js"></script>
+  <script src="contest-registry.js"></script>
 
   <script>
     // ============================================================
@@ -583,7 +583,7 @@
 
     // Try to load password from config
     try {
-      fetch('data/contest-config.json')
+      fetch('contest-config.json')
         .then(r => r.json())
         .then(cfg => { if (cfg && cfg.adminPassword) adminPassword = cfg.adminPassword; })
         .catch(() => {});
