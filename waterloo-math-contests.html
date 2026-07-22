@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="MathArena">
-<meta name="description" content="Free practice hub for Ontario math contests — Pascal (Gr 9), Cayley (Gr 10) & Fermat (Gr 11). Contest materials © CEMC, University of Waterloo. Used under CC BY-NC 4.0.">
+<meta name="description" content="Free practice hub for Ontario math contests — Pascal (Gr 9), Cayley (Gr 10), Fermat (Gr 11) & Euclid (Gr 12). Contest materials © CEMC, University of Waterloo. Used under CC BY-NC 4.0.">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="application-name" content="MathArena">
 <link rel="manifest" href="manifest.json">
@@ -19,10 +19,10 @@
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
 <link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512.png">
-<title>MathArena - Waterloo Math Prep | Pascal · Cayley · Fermat</title>
+<title>MathArena - Waterloo Math Prep | Pascal · Cayley · Fermat · Euclid</title>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <style>
-:root{--gold:#FFD700;--dark:#1a1a2e;--mid:#16213e;--accent:#0f3460;--hl:#e94560;--pascal:#4CAF50;--cayley:#2196F3;--fermat:#FF9800;--ok:#4CAF50;--bad:#f44336;--cbg:#1e2a45;--txt:#e0e0e0;--sub:#a0aec0}
+:root{--gold:#FFD700;--dark:#1a1a2e;--mid:#16213e;--accent:#0f3460;--hl:#e94560;--pascal:#4CAF50;--cayley:#2196F3;--fermat:#FF9800;--euclid:#9C27B0;--ok:#4CAF50;--bad:#f44336;--cbg:#1e2a45;--txt:#e0e0e0;--sub:#a0aec0}
 *{box-sizing:border-box;margin:0;padding:0}body{background:var(--dark);color:var(--txt);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;font-size:16px}
 header{background:linear-gradient(135deg,var(--accent),var(--hl));padding:20px 24px;text-align:center}
 header h1{font-size:1.8rem;color:#fff}header p{color:rgba(255,255,255,.8);margin-top:4px;font-size:.9rem}
@@ -37,9 +37,9 @@ select.sel{padding:10px 14px;border-radius:8px;background:var(--cbg);color:var(-
 .cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:20px}
 .ccard{background:var(--cbg);border-radius:12px;padding:20px;border:2px solid transparent;cursor:pointer;transition:.25s;text-align:center}
 .ccard:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,0,0,.4)}
-.ccard.pascal{border-color:var(--pascal)}.ccard.cayley{border-color:var(--cayley)}.ccard.fermat{border-color:var(--fermat)}
+.ccard.pascal{border-color:var(--pascal)}.ccard.cayley{border-color:var(--cayley)}.ccard.fermat{border-color:var(--fermat)}.ccard.euclid{border-color:var(--euclid)}
 .badge{display:inline-block;padding:3px 10px;border-radius:14px;font-size:.7rem;font-weight:700;margin-bottom:6px;letter-spacing:1px}
-.pascal .badge{background:var(--pascal);color:#000}.cayley .badge{background:var(--cayley);color:#fff}.fermat .badge{background:var(--fermat);color:#000}
+.pascal .badge{background:var(--pascal);color:#000}.cayley .badge{background:var(--cayley);color:#fff}.fermat .badge{background:var(--fermat);color:#000}.euclid .badge{background:var(--euclid);color:#fff}
 .ccard h2{font-size:1.3rem;margin-bottom:4px}.ccard p{color:var(--sub);font-size:.8rem}
 .stitle{font-size:1.2rem;font-weight:700;margin-bottom:12px;color:var(--gold)}
 table.yt{width:100%;border-collapse:collapse}.yt th{background:var(--accent);padding:9px 12px;text-align:left;font-size:.8rem}
@@ -257,6 +257,7 @@ header.app-bar{position:sticky;top:0;z-index:200;height:auto;min-height:48px;dis
 .sol-tab.on.pascal-tab{background:var(--pascal);color:#000}
 .sol-tab.on.cayley-tab{background:var(--cayley);color:#fff}
 .sol-tab.on.fermat-tab{background:var(--fermat);color:#000}
+.sol-tab.on.euclid-tab{background:var(--euclid);color:#fff}
 .sol-tab:active{transform:scale(.96)}
 .sol-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .sol-filters .sel{flex:1;min-width:0;font-size:.88rem}
@@ -301,7 +302,7 @@ body{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));overflow-x:hidd
 </style>
 </head>
 <body>
-<header class="app-bar"><div style="text-align:center"><span class="app-bar-title">🏆 Math Arena - Waterloo Math Prep</span><div style="font-size:.65rem;color:rgba(255,255,255,.6);letter-spacing:3px;margin-top:2px;font-weight:600">Practice Pascal · Cayley · Fermat</div></div></header>
+<header class="app-bar"><div style="text-align:center"><span class="app-bar-title">🏆 Math Arena - Waterloo Math Prep</span><div style="font-size:.65rem;color:rgba(255,255,255,.6);letter-spacing:3px;margin-top:2px;font-weight:600">Practice Pascal · Cayley · Fermat · Euclid</div></div></header>
 <nav class="bottom-nav" id="bottom-nav">
 <div class="bnav-item active" data-tab="papers"><span class="bnav-icon">📚</span><span class="bnav-label">Home</span></div>
 <div class="bnav-item" data-tab="pastmock"><span class="bnav-icon">📋</span><span class="bnav-label">Exam Practice</span></div>
@@ -327,6 +328,7 @@ body{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));overflow-x:hidd
 <div class="ccard pascal" onclick="showYT('pascal')"><span class="badge">GRADE 9</span><h2>Pascal</h2><p>25 questions · 60 min</p></div>
 <div class="ccard cayley" onclick="showYT('cayley')"><span class="badge">GRADE 10</span><h2>Cayley</h2><p>25 questions · 60 min</p></div>
 <div class="ccard fermat" onclick="showYT('fermat')"><span class="badge">GRADE 11</span><h2>Fermat</h2><p>25 questions · 60 min</p></div>
+<div class="ccard euclid" onclick="showYT('euclid')"><span class="badge">GRADE 12</span><h2>Euclid</h2><p>10 questions · 2.5 hrs</p></div>
 </div><div id="yt-area"></div>
 </div>
 
@@ -334,7 +336,7 @@ body{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));overflow-x:hidd
 <div class="stitle">📋 Past Paper Practice</div>
 <p style="color:var(--sub);font-size:.85rem;margin-bottom:14px;line-height:1.5">Take a full mock test from a specific year's contest paper.</p>
 <div class="practice-setup-card">
-<div class="practice-field"><label class="practice-label">Contest</label><select class="sel" id="pm-c"><option value="pascal">Pascal</option><option value="cayley">Cayley</option><option value="fermat">Fermat</option></select></div>
+<div class="practice-field"><label class="practice-label">Contest</label><select class="sel" id="pm-c"><option value="pascal">Pascal</option><option value="cayley">Cayley</option><option value="fermat">Fermat</option><option value="euclid">Euclid</option></select></div>
 <div class="practice-field"><label class="practice-label">Year</label><select class="sel" id="pm-y"></select></div>
 <button class="btn practice-start-btn" onclick="startPastMock()">🚀 Start Past Paper Test</button>
 </div>
@@ -347,7 +349,7 @@ body{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));overflow-x:hidd
 <div class="stitle">📝 All Contests Practice</div>
 <p style="color:var(--sub);font-size:.85rem;margin-bottom:14px;line-height:1.5">25 random questions · 60 min · Filtered by contest & difficulty</p>
 <div class="practice-setup-card">
-<div class="practice-field"><label class="practice-label">Contest</label><select class="sel" id="m-c"><option value="pascal">Pascal Only</option><option value="cayley">Cayley Only</option><option value="fermat">Fermat Only</option><option value="mixed">Mixed (All Contests)</option></select></div>
+<div class="practice-field"><label class="practice-label">Contest</label><select class="sel" id="m-c"><option value="pascal">Pascal Only</option><option value="cayley">Cayley Only</option><option value="fermat">Fermat Only</option><option value="euclid">Euclid Only</option><option value="mixed">Mixed (All Contests)</option></select></div>
 <div class="practice-field"><label class="practice-label">Difficulty</label><select class="sel" id="m-d"><option value="mixed">Mixed Difficulty</option><option value="easy">Easy (Part A)</option><option value="medium">Medium (Part B)</option><option value="hard">Hard (Part C)</option></select></div>
 <button class="btn practice-start-btn" onclick="startMock()">🚀 Start Mock Test</button>
 </div></div>
@@ -361,7 +363,8 @@ body{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));overflow-x:hidd
 <div class="sol-contest-tabs">
 <button class="sol-tab on pascal-tab" onclick="showSol('pascal',this)">Pascal</button>
 <button class="sol-tab cayley-tab" onclick="showSol('cayley',this)">Cayley</button>
-<button class="sol-tab fermat-tab" onclick="showSol('fermat',this)">Fermat</button></div>
+<button class="sol-tab fermat-tab" onclick="showSol('fermat',this)">Fermat</button>
+<button class="sol-tab euclid-tab" onclick="showSol('euclid',this)">Euclid</button></div>
 <div class="sol-filters">
 <select class="sel" id="sol-year" onchange="solAutoFilter()"><option value="all">All Years</option><option value="2026">2026</option><option value="2025">2025</option><option value="2024">2024</option><option value="2023">2023</option><option value="2022">2022</option><option value="2021">2021</option><option value="2020">2020</option><option value="2019">2019</option><option value="2018">2018</option><option value="2017">2017</option><option value="2016">2016</option><option value="2015">2015</option></select>
 <select class="sel" id="sol-diff" onchange="solAutoFilter()"><option value="all">All Difficulties</option><option value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select>
@@ -382,7 +385,7 @@ body{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));overflow-x:hidd
 <!-- FLASH CARDS MODE -->
 <div id="fc-cards-mode">
 <div class="practice-setup-card" style="margin-bottom:16px">
-<div class="practice-field"><label class="practice-label">Contest</label><select class="sel" id="fc-c"><option value="pascal">Pascal</option><option value="cayley">Cayley</option><option value="fermat">Fermat</option></select></div>
+<div class="practice-field"><label class="practice-label">Contest</label><select class="sel" id="fc-c"><option value="pascal">Pascal</option><option value="cayley">Cayley</option><option value="fermat">Fermat</option><option value="euclid">Euclid</option></select></div>
 <div class="practice-field"><label class="practice-label">Topic</label><select class="sel" id="fc-t"><option value="all">All Topics</option><option value="algebra">Algebra</option><option value="geometry">Geometry</option><option value="number">Number Theory</option><option value="combinatorics">Combinatorics</option><option value="probability">Probability</option></select></div>
 <div style="display:flex;gap:8px"><button class="btn" style="flex:1" onclick="loadFC()">Load</button><button class="btn2" style="flex:1" onclick="shuffFC()">🔀 Shuffle</button></div>
 </div>
@@ -413,31 +416,38 @@ body{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));overflow-x:hidd
 <div id="pnl-prog" class="pnl"><div class="stitle">📈 Progress & Test History</div><div id="prog-content"></div></div>
 
 
+<script src="data/contest-registry.js"></script>
+<script src="data/data-loader.js"></script>
 <script src="data-2026.js"></script>
+<script src="data-euclid-2016-2026.js"></script>
 <script>
 // ═══════════════════════════════════════════════════════════
-// PAST PAPERS DATA
+// PAST PAPERS DATA — Built from data/contest-registry.js + data/data-loader.js
+// To add new years: use admin-update.html, update registry, push to GitHub
 // ═══════════════════════════════════════════════════════════
-var base='https://cemc.uwaterloo.ca/sites/default/files/documents/';
-var PAPERS={pascal:[],cayley:[],fermat:[]};
-var pcfFallback='https://cemc.uwaterloo.ca/resources/past-contests?grade=All&academic_year=All&contest_category=14';
-function cemcFolder(c,y){
-if(c==='pascal'&&y<=2016)return y;
-if(c==='pascal'&&y>=2017&&y<=2019)return 2026;
-if(c==='cayley'&&y===2015)return -1;
-if(c==='cayley'&&y===2016)return 2025;
-if(c==='cayley'&&y>=2017&&y<=2019)return 2026;
-if(c==='fermat'&&y===2015)return 2024;
-if(c==='fermat'&&y===2016)return -2;
-if(c==='fermat'&&(y===2017||y===2018))return 2026;
-if(c==='fermat'&&y===2019)return -2;
-return y;
-}
-['pascal','cayley','fermat'].forEach(function(c){var C=c.charAt(0).toUpperCase()+c.slice(1);for(var y=2026;y>=2015;y--){var f=cemcFolder(c,y);var cUrl=(f===-1)?'papers/2015CayleyContest.html':(f<0)?pcfFallback:base+f+'/'+y+C+'Contest.html';var sf=y;if(c==='fermat'&&y===2018)sf=2025;if(c==='pascal'&&y===2024)sf=2026;var sUrl=base+sf+'/'+y+C+'Solution.html';PAPERS[c].push({year:y,contest:cUrl,solution:sUrl,difficulty:y>=2024?'hard':y>=2021?'medium':'easy'});}});
+var PAPERS={pascal:[],cayley:[],fermat:[],euclid:[]};
 
-// Populate year dropdown
+// Build PAPERS from data loader (reads from contest-registry.js)
+if(window.MathArenaDataLoader){
+  PAPERS=window.MathArenaDataLoader.buildPapers();
+}
+
+// Populate year dropdown from registry
 var pmYSel=document.getElementById('pm-y');
-for(var y=2026;y>=2015;y--){var o=document.createElement('option');o.value=y;o.textContent=y;pmYSel.appendChild(o);}
+(function(){
+  var allYears=[];
+  if(window.MathArenaDataLoader){
+    var contests=window.MathArenaDataLoader.getContests();
+    contests.forEach(function(c){
+      var yrs=window.MathArenaDataLoader.getAvailableYears(c);
+      yrs.forEach(function(y){if(allYears.indexOf(y)===-1)allYears.push(y);});
+    });
+    allYears.sort(function(a,b){return b-a;});
+  } else {
+    for(var y=2026;y>=2015;y--)allYears.push(y);
+  }
+  allYears.forEach(function(y){var o=document.createElement('option');o.value=y;o.textContent=y;pmYSel.appendChild(o);});
+})();
 
 // ═══════════════════════════════════════════════════════════
 // DIAGRAMS — Inline SVG for questions that have visual content
@@ -1471,7 +1481,21 @@ var FCARDS=[
 {q:'Sphere volume?',a:'(4/3)πr³',h:'SA=4πr².',t:'geometry',c:'fermat'},
 {q:'Grid paths (m right, n up)?',a:'C(m+n,n)',h:'Lattice path counting.',t:'combinatorics',c:'fermat'},
 {q:'Inscribed circle radius (right △)?',a:'r=(a+b-c)/2',h:'c=hypotenuse.',t:'geometry',c:'fermat'},
-{q:'Circular permutations?',a:'(n-1)!',h:'Fix one, arrange rest.',t:'combinatorics',c:'fermat'}
+{q:'Circular permutations?',a:'(n-1)!',h:'Fix one, arrange rest.',t:'combinatorics',c:'fermat'},
+{q:'Cauchy-Schwarz / Titu Lemma?',a:'(a²/x+b²/y) ≥ (a+b)²/(x+y)',h:'Powerful inequality for optimization.',t:'algebra',c:'euclid'},
+{q:'Sum of cubes factorization?',a:'a³+b³=(a+b)(a²-ab+b²)',h:'Also: a³-b³=(a-b)(a²+ab+b²).',t:'algebra',c:'euclid'},
+{q:'If a+b+c=0, then a³+b³+c³=?',a:'3abc',h:'Key algebraic identity.',t:'algebra',c:'euclid'},
+{q:'Vieta formulas (cubic)?',a:'Sum of roots=-b/a, sum of products of pairs=c/a, product=-d/a',h:'For ax³+bx²+cx+d=0.',t:'algebra',c:'euclid'},
+{q:'Heron formula?',a:'Area=√(s(s-a)(s-b)(s-c)), s=(a+b+c)/2',h:'Works for any triangle with sides a,b,c.',t:'geometry',c:'euclid'},
+{q:'Median length formula?',a:'m²=(2b²+2c²-a²)/4',h:'Median to side a.',t:'geometry',c:'euclid'},
+{q:'Sum of divisors σ(n)?',a:'Multiply (1+p+p²+...+pᵉ) for each prime factor pᵉ',h:'Multiplicative function.',t:'number',c:'euclid'},
+{q:'When is n²+n divisible by 6?',a:'When n≢1 (mod 3)',h:'n(n+1) is always even; check div by 3.',t:'number',c:'euclid'},
+{q:'Logarithm change of base?',a:'log_a(x) = log_b(x)/log_b(a)',h:'Convert between any bases.',t:'algebra',c:'euclid'},
+{q:'External tangent length?',a:'√(d²-(r₁-r₂)²)',h:'d=distance between centres.',t:'geometry',c:'euclid'},
+{q:'Difference of squares factoring?',a:'a²-b²=(a+b)(a-b)',h:'Use to factor large numbers.',t:'algebra',c:'euclid'},
+{q:'Fermat sum of two squares?',a:'n=a²+b² iff all primes ≡3(mod 4) have even exponent',h:'Key number theory result.',t:'number',c:'euclid'},
+{q:'Derangements formula?',a:'D(n)=n!(1-1/1!+1/2!-1/3!+...±1/n!)',h:'Permutations with no fixed points.',t:'combinatorics',c:'euclid'},
+{q:'Power of a point?',a:'PA·PB=PC·PD for chords through P',h:'Works for internal and external points.',t:'geometry',c:'euclid'}
 ];
 
 var SOLUTIONS={
@@ -1615,7 +1639,9 @@ function returnToTest(){
 // PAST PAPERS TABLE
 // ═══════════════════════════════════════════════════════════
 function showYT(c){
-  var C=c.charAt(0).toUpperCase()+c.slice(1),h='<div class="stitle">'+C+' Papers (2015–2026)</div>';
+  var C=c.charAt(0).toUpperCase()+c.slice(1);
+  var yearRange=(c==='euclid')?'(2016–2026)':'(2015–2026)';
+  var h='<div class="stitle">'+C+' Papers '+yearRange+'</div>';
   h+='<div class="paper-list">';
   PAPERS[c].forEach(function(p){var dc=p.difficulty==='easy'?'d-easy':p.difficulty==='medium'?'d-med':'d-hard';
     h+='<div class="paper-card">';
@@ -1756,12 +1782,15 @@ function renderTestUI(){
   h+='<div class="pbar-w"><div class="pbar" id="t-pbar" style="width:0%"></div></div>';
   t.qs.forEach(function(q,i){
     var dc=q.d==='easy'?'d-easy':q.d==='medium'?'d-med':'d-hard';
-    h+='<div class="qblk" id="qblk-'+i+'"><div class="qn">Q'+(i+1)+' <span class="dbadge '+dc+'">'+q.d.toUpperCase()+'</span> <span style="font-size:.68rem;color:var(--sub)">'+q.ref+'</span></div>';
+    h+='<div class="qblk" id="qblk-'+i+'"><div class="qn">'+(q.displayNumber?'Q'+q.displayNumber:'Q'+(i+1))+' <span class="dbadge '+dc+'">'+q.d.toUpperCase()+'</span> <span style="font-size:.68rem;color:var(--sub)">'+q.ref+'</span></div>';
     h+='<div class="qt">'+q.q+'</div>'+getDiagramHTML(q.id,q)+'<div class="opts" id="opts-'+i+'">';
     q.o.forEach(function(opt,j){
       var sel=t.answers[i]===j?' sel':'';
       h+='<button class="obtn'+sel+'" data-q="'+i+'" data-o="'+j+'" onclick="testPick('+i+','+j+')">'+String.fromCharCode(65+j)+') '+opt+'</button>';});
-    h+='</div></div>';});
+    h+='</div>';
+    h+='<div class="work-area" style="margin-top:12px"><label style="font-size:.75rem;color:var(--sub);display:block;margin-bottom:4px">📝 Show your work (optional):</label>';
+    h+='<textarea class="work-box" data-qwork="'+i+'" placeholder="Type your solution steps here..." style="width:100%;min-height:80px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;color:var(--txt);padding:10px;font-size:.85rem;resize:vertical;font-family:inherit"></textarea></div>';
+    h+='</div>';});
   h+='<div style="text-align:center;margin-top:16px"><button class="btn" style="padding:12px 32px;font-size:.92rem" onclick="submitTest()">Submit Test</button></div>';
   area.innerHTML=h;area.style.display='block';
   // Ensure parent .pnl panel has .on class so it's visible
@@ -2404,7 +2433,7 @@ function initMobileLayout(){
 // ═══════════════════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded',function(){
   // Auto-clear localStorage when app version changes (prevents stale test states)
-  if(localStorage.getItem('_v')!=='2.4'){localStorage.clear();localStorage.setItem('_v','2.4');}
+  if(localStorage.getItem('_v')!=='2.5'){localStorage.clear();localStorage.setItem('_v','2.5');}
   initMobileLayout();
   renderFormulas();showYT('pascal');showSol('pascal',document.querySelector('.sbtn'));
   // Register service worker for PWA / offline support
@@ -2416,6 +2445,7 @@ window.addEventListener('DOMContentLoaded',function(){
 window.addEventListener('beforeunload',function(){if(activeTest)saveTestState();});
 // Merge 2026 questions from external data-2026.js
 if(typeof QB2026!=='undefined'){var _ids={};QB.forEach(function(q){_ids[q.id]=1;});QB2026.forEach(function(q){if(!_ids[q.id])QB.unshift(q);});}
+if(typeof QBEuclid!=='undefined'){var _eids={};QB.forEach(function(q){_eids[q.id]=1;});QBEuclid.forEach(function(q){if(!_eids[q.id])QB.push(q);});}
 </script>
 
 

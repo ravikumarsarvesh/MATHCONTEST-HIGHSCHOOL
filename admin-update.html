@@ -1,0 +1,1186 @@
+<!--
+  ============================================================
+  ADMIN UPDATE PAGE — MathArena Contest Management Wizard
+  ============================================================
+  WORKFLOW:
+  1. Admin enters password to unlock
+  2. Wizard guides through contest data entry (7 steps)
+  3. Generates data JS file + updated registry
+  4. Admin downloads files and pushes to GitHub
+  
+  DO NOT link this page from anywhere else in the app.
+  ============================================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>MathArena Admin — Contest Update Wizard</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #1a1a2e;
+      color: #e0e0e0;
+      min-height: 100vh;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 20px 0;
+    }
+    h1 { color: #FFD700; text-align: center; margin-bottom: 8px; font-size: 1.6rem; }
+    h2 { color: #FFD700; margin-bottom: 16px; font-size: 1.2rem; }
+    h3 { color: #e94560; margin-bottom: 12px; font-size: 1.05rem; }
+    .subtitle { text-align: center; color: #888; margin-bottom: 30px; font-size: 0.9rem; }
+
+    /* Cards */
+    .card {
+      background: #1e2a45;
+      border: 1px solid #0f3460;
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+
+    /* Buttons */
+    button, .btn {
+      min-height: 44px;
+      border-radius: 10px;
+      border: none;
+      padding: 12px 24px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    button:hover { opacity: 0.9; transform: translateY(-1px); }
+    button:active { transform: translateY(0); }
+    button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    .btn-primary { background: #e94560; color: #fff; }
+    .btn-gold { background: #FFD700; color: #1a1a2e; }
+    .btn-secondary { background: #0f3460; color: #e0e0e0; }
+    .btn-success { background: #27ae60; color: #fff; }
+    .btn-sm { min-height: 36px; padding: 8px 16px; font-size: 0.85rem; }
+
+    /* Inputs */
+    input, select, textarea {
+      width: 100%;
+      background: #16213e;
+      border: 1px solid #0f3460;
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: #e0e0e0;
+      font-size: 0.95rem;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #e94560;
+    }
+    textarea { resize: vertical; min-height: 120px; font-family: 'Consolas', monospace; font-size: 0.82rem; }
+    label { display: block; margin-bottom: 6px; font-weight: 500; color: #ccc; font-size: 0.9rem; }
+    .form-group { margin-bottom: 18px; }
+
+    /* Step Indicator */
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .step-circle {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700;
+      background: #0f3460;
+      color: #888;
+      border: 2px solid #0f3460;
+      transition: all 0.3s;
+      flex-shrink: 0;
+    }
+    .step-circle.active { background: #FFD700; color: #1a1a2e; border-color: #FFD700; }
+    .step-circle.completed { background: #27ae60; color: #fff; border-color: #27ae60; }
+    .step-line {
+      width: 20px; height: 2px;
+      background: #0f3460;
+      flex-shrink: 0;
+    }
+    .step-line.completed { background: #27ae60; }
+
+    /* Progress Bar */
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: #0f3460;
+      border-radius: 2px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #e94560, #FFD700);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+
+    /* Password Overlay */
+    .password-overlay {
+      position: fixed;
+      inset: 0;
+      background: #1a1a2e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .password-box {
+      background: #1e2a45;
+      border: 1px solid #0f3460;
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+    .password-box h2 { margin-bottom: 8px; }
+    .password-box p { color: #888; margin-bottom: 20px; font-size: 0.9rem; }
+    .password-box input { margin-bottom: 16px; }
+    .password-error { color: #e94560; font-size: 0.85rem; margin-top: 8px; display: none; }
+
+    /* Navigation */
+    .nav-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      margin-top: 24px;
+    }
+    .nav-buttons button { flex: 1; }
+
+    /* URL Validation */
+    .url-status {
+      font-size: 0.8rem;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .url-valid { color: #27ae60; }
+    .url-invalid { color: #e94560; }
+    .url-warning { color: #f39c12; }
+
+    /* Warning Box */
+    .warning-box {
+      background: #3d1f00;
+      border: 1px solid #f39c12;
+      border-radius: 10px;
+      padding: 16px;
+      margin: 16px 0;
+    }
+    .warning-box h3 { color: #f39c12; margin-bottom: 8px; }
+    .warning-box .btn-row { display: flex; gap: 10px; margin-top: 12px; }
+
+    /* Success Box */
+    .success-box {
+      background: #0d3320;
+      border: 1px solid #27ae60;
+      border-radius: 10px;
+      padding: 16px;
+      margin: 16px 0;
+    }
+    .success-box h3 { color: #27ae60; }
+
+    /* Checklist */
+    .checklist { list-style: none; padding: 0; }
+    .checklist li {
+      padding: 8px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+    }
+    .checklist li .icon { font-size: 1.1rem; }
+    .check-pass .icon { color: #27ae60; }
+    .check-fail .icon { color: #e94560; }
+
+    /* Preview Table */
+    .preview-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #0f3460;
+      font-size: 0.9rem;
+    }
+    .preview-row:last-child { border-bottom: none; }
+    .preview-label { color: #888; }
+    .preview-value { color: #e0e0e0; font-weight: 500; text-align: right; max-width: 60%; word-break: break-all; }
+    .preview-value a { color: #FFD700; text-decoration: none; }
+    .preview-value a:hover { text-decoration: underline; }
+
+    /* Help Section */
+    .help-section {
+      margin-top: 30px;
+    }
+    .help-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      background: #0f3460;
+      color: #e0e0e0;
+      padding: 14px 20px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+    .help-toggle:hover { background: #163d6e; }
+    .help-content {
+      display: none;
+      padding: 20px;
+      background: #16213e;
+      border-radius: 0 0 10px 10px;
+      margin-top: -4px;
+    }
+    .help-content.open { display: block; }
+    .help-content ol { padding-left: 20px; }
+    .help-content li { margin-bottom: 8px; font-size: 0.9rem; }
+
+    /* Contest Radio Buttons */
+    .contest-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .contest-option {
+      position: relative;
+    }
+    .contest-option input { display: none; }
+    .contest-option label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: #16213e;
+      border: 2px solid #0f3460;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .contest-option input:checked + label {
+      border-color: #FFD700;
+      background: #1e3a5f;
+      color: #FFD700;
+    }
+    .contest-option label:hover { border-color: #e94560; }
+
+    /* Misc */
+    .hidden { display: none !important; }
+    .text-center { text-align: center; }
+    .text-gold { color: #FFD700; }
+    .text-red { color: #e94560; }
+    .text-green { color: #27ae60; }
+    .mt-10 { margin-top: 10px; }
+    .mt-16 { margin-top: 16px; }
+    .mb-16 { margin-bottom: 16px; }
+    .gap-10 { gap: 10px; }
+    .flex-row { display: flex; gap: 10px; align-items: center; }
+    .copy-btn-row { display: flex; gap: 8px; margin-top: 8px; }
+    .instructions-box {
+      background: #0d3320;
+      border: 1px solid #27ae60;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+    .instructions-box h3 { color: #27ae60; margin-bottom: 12px; }
+    .instructions-box ol { padding-left: 20px; }
+    .instructions-box li { margin-bottom: 8px; font-size: 0.9rem; }
+    .instructions-box code { background: #16213e; padding: 2px 6px; border-radius: 4px; font-size: 0.85rem; }
+
+    @media (max-width: 480px) {
+      body { padding: 12px; }
+      .card { padding: 18px; }
+      .contest-grid { grid-template-columns: 1fr; }
+      .nav-buttons { flex-direction: column; }
+      .step-circle { width: 26px; height: 26px; font-size: 0.65rem; }
+      .step-line { width: 12px; }
+      h1 { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PASSWORD OVERLAY -->
+  <div class="password-overlay" id="passwordOverlay">
+    <div class="password-box">
+      <h2>🔒 Admin Access</h2>
+      <p>Enter admin password to continue</p>
+      <input type="password" id="passwordInput" placeholder="Password" autocomplete="off">
+      <button class="btn-primary" style="width:100%" onclick="checkPassword()">Unlock</button>
+      <div class="password-error" id="passwordError">Incorrect password. Try again.</div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="container" id="mainContent" style="display:none">
+    <h1>⚙️ MathArena Admin</h1>
+    <p class="subtitle">Contest Update Wizard</p>
+
+    <!-- Step Indicator -->
+    <div class="step-indicator" id="stepIndicator"></div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width: 14.28%"></div>
+    </div>
+
+    <!-- STEP 1: Choose Contest -->
+    <div class="card step-card" id="step1">
+      <h2>Step 1: Choose Contest</h2>
+      <p style="color:#888; margin-bottom:16px; font-size:0.9rem;">Select the CEMC contest you want to add or update.</p>
+      <div class="contest-grid">
+        <div class="contest-option">
+          <input type="radio" name="contest" id="contestPascal" value="pascal">
+          <label for="contestPascal">🟢 Pascal<br><small style="font-weight:400;color:#888">Grade 9</small></label>
+        </div>
+        <div class="contest-option">
+          <input type="radio" name="contest" id="contestCayley" value="cayley">
+          <label for="contestCayley">🔵 Cayley<br><small style="font-weight:400;color:#888">Grade 10</small></label>
+        </div>
+        <div class="contest-option">
+          <input type="radio" name="contest" id="contestFermat" value="fermat">
+          <label for="contestFermat">🟣 Fermat<br><small style="font-weight:400;color:#888">Grade 11</small></label>
+        </div>
+        <div class="contest-option">
+          <input type="radio" name="contest" id="contestEuclid" value="euclid">
+          <label for="contestEuclid">🟡 Euclid<br><small style="font-weight:400;color:#888">Grade 12</small></label>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <div></div>
+        <button class="btn-primary" onclick="nextStep(1)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Enter Year -->
+    <div class="card step-card hidden" id="step2">
+      <h2>Step 2: Enter Year</h2>
+      <p style="color:#888; margin-bottom:16px; font-size:0.9rem;">Which year's contest are you adding?</p>
+      <div class="form-group">
+        <label for="yearInput">Contest Year</label>
+        <input type="number" id="yearInput" min="2015" max="2035" placeholder="e.g. 2024">
+      </div>
+      <div class="form-group">
+        <label>Import Structure From Previous Year (Optional)</label>
+        <select id="importPrevYear">
+          <option value="">— None (start fresh) —</option>
+        </select>
+        <small style="color:#888;display:block;margin-top:4px;">Copies template structure only. You'll replace URLs.</small>
+      </div>
+      <div id="duplicateWarning" class="warning-box hidden">
+        <h3>⚠️ Duplicate Detected</h3>
+        <p style="font-size:0.9rem;">This contest + year already exists in the registry.</p>
+        <div class="btn-row">
+          <button class="btn-secondary btn-sm" onclick="cancelDuplicate()">Cancel</button>
+          <button class="btn-primary btn-sm" onclick="allowUpdate()">Update Existing</button>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn-secondary" onclick="prevStep(2)">← Back</button>
+        <button class="btn-primary" onclick="nextStep(2)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Question Paper URL -->
+    <div class="card step-card hidden" id="step3">
+      <h2>Step 3: Question Paper Source</h2>
+      <p style="color:#888; margin-bottom:16px; font-size:0.9rem;">Provide the contest question paper — either paste a URL or upload a PDF file.</p>
+      <div class="form-group">
+        <label>Question Paper Source *</label>
+        <div class="source-toggle" style="display:flex;gap:12px;margin-bottom:8px;">
+          <label style="cursor:pointer;"><input type="radio" name="paperSource" value="link" checked onchange="togglePaperSource()"> Link (URL)</label>
+          <label style="cursor:pointer;"><input type="radio" name="paperSource" value="file" onchange="togglePaperSource()"> File Upload (PDF)</label>
+        </div>
+        <div id="paperLinkInput">
+          <input type="url" id="paperUrl" placeholder="https://cemc.uwaterloo.ca/..." oninput="validateUrl('paperUrl')">
+          <div class="url-status" id="paperUrlStatus"></div>
+        </div>
+        <div id="paperFileInput" style="display:none;">
+          <input type="file" id="paperFile" accept=".pdf,.html" style="padding:8px;">
+          <div class="url-status" id="paperFileStatus"></div>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn-secondary" onclick="prevStep(3)">← Back</button>
+        <button class="btn-primary" onclick="nextStep(3)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Solution URL -->
+    <div class="card step-card hidden" id="step4">
+      <h2>Step 4: Solution Source</h2>
+      <p style="color:#888; margin-bottom:16px; font-size:0.9rem;">Provide the official solutions — either paste a URL or upload a PDF file.</p>
+      <div class="form-group">
+        <label>Solution Source</label>
+        <div class="source-toggle" style="display:flex;gap:12px;margin-bottom:8px;">
+          <label style="cursor:pointer;"><input type="radio" name="solutionSource" value="link" checked onchange="toggleSolutionSource()"> Link (URL)</label>
+          <label style="cursor:pointer;"><input type="radio" name="solutionSource" value="file" onchange="toggleSolutionSource()"> File Upload (PDF)</label>
+        </div>
+        <div id="solutionLinkInput">
+          <input type="url" id="solutionUrl" placeholder="https://cemc.uwaterloo.ca/..." oninput="validateUrl('solutionUrl')">
+          <div class="url-status" id="solutionUrlStatus"></div>
+        </div>
+        <div id="solutionFileInput" style="display:none;">
+          <input type="file" id="solutionFile" accept=".pdf,.html" style="padding:8px;">
+          <div class="url-status" id="solutionFileStatus"></div>
+        </div>
+        <small style="color:#f39c12;display:block;margin-top:4px;">Optional — but recommended for full functionality.</small>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn-secondary" onclick="prevStep(4)">← Back</button>
+        <button class="btn-primary" onclick="nextStep(4)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 5: Answer Key + Questions -->
+    <div class="card step-card hidden" id="step5">
+      <h2>Step 5: Questions & Answer Key</h2>
+      <p style="color:#888; margin-bottom:16px; font-size:0.9rem;">Optionally provide an answer key URL and upload question JSON, or generate an empty template.</p>
+      <div class="form-group">
+        <label for="answerKeyUrl">Answer Key URL (Optional)</label>
+        <input type="url" id="answerKeyUrl" placeholder="https://..." oninput="validateUrl('answerKeyUrl')">
+        <div class="url-status" id="answerKeyUrlStatus"></div>
+      </div>
+      <div class="form-group">
+        <label for="questionJson">Question JSON (Optional — paste or upload)</label>
+        <textarea id="questionJson" placeholder='[{"q":"...","o":["A","B","C","D","E"],"a":"B","sol":"...","rat":"..."}]'></textarea>
+        <div class="flex-row mt-10">
+          <input type="file" id="jsonFileInput" accept=".json" style="font-size:0.8rem;" onchange="loadJsonFile(event)">
+        </div>
+      </div>
+      <div style="text-align:center; margin: 16px 0;">
+        <span style="color:#888">— or —</span>
+      </div>
+      <button class="btn-gold" style="width:100%" onclick="generateEmptyTemplate()">📝 Generate Empty Template</button>
+      <small style="color:#888;display:block;margin-top:8px;text-align:center;">Creates a complete empty question structure for this contest type.</small>
+      <div class="nav-buttons">
+        <button class="btn-secondary" onclick="prevStep(5)">← Back</button>
+        <button class="btn-primary" onclick="nextStep(5)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 6: Preview -->
+    <div class="card step-card hidden" id="step6">
+      <h2>Step 6: Preview & Generate</h2>
+      <p style="color:#888; margin-bottom:16px; font-size:0.9rem;">Review your data before generating files for manual review and deployment.</p>
+      <div id="previewContent"></div>
+      <div class="nav-buttons">
+        <button class="btn-secondary" onclick="prevStep(6)">← Back</button>
+        <button class="btn-gold" onclick="nextStep(6)">✅ Generate & Download Files</button>
+      </div>
+    </div>
+
+    <!-- STEP 7: Download Files -->
+    <div class="card step-card hidden" id="step7">
+      <h2>Step 7: Download Generated Files</h2>
+      <p style="color:#888; margin-bottom:16px; font-size:0.9rem;">Your files have been generated. Review, download, and deploy them manually.</p>
+      
+      <div class="form-group">
+        <label>Generated Data File: <code id="generatedFilename" class="text-gold"></code></label>
+        <textarea id="generatedDataJs" readonly></textarea>
+        <div class="copy-btn-row">
+          <button class="btn-secondary btn-sm" onclick="copyToClipboard('generatedDataJs')">📋 Copy JS</button>
+          <button class="btn-success btn-sm" onclick="downloadFile('data')">⬇️ Download JS File</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Updated Registry: <code class="text-gold">contest-registry.js</code></label>
+        <textarea id="generatedRegistryJs" readonly></textarea>
+        <div class="copy-btn-row">
+          <button class="btn-secondary btn-sm" onclick="copyToClipboard('generatedRegistryJs')">📋 Copy Registry</button>
+          <button class="btn-success btn-sm" onclick="downloadFile('registry')">⬇️ Download Registry</button>
+        </div>
+      </div>
+
+      <!-- Installation Instructions -->
+      <div class="instructions-box">
+        <h3>✅ Success! Next Steps:</h3>
+        <ol>
+          <li>Save <code id="instrFilename"></code> into the <code>/data</code> folder</li>
+          <li>Replace <code>data/contest-registry.js</code> with the updated version</li>
+          <li>Commit changes to GitHub</li>
+          <li>Push — Vercel deploys automatically</li>
+        </ol>
+      </div>
+
+      <!-- Verify Button -->
+      <div style="margin-top: 20px;">
+        <button class="btn-gold" style="width:100%" onclick="runVerification()">🔍 Verify Configuration</button>
+        <div id="verifyResults" class="hidden" style="margin-top:12px;"></div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn-secondary" onclick="prevStep(7)">← Back</button>
+        <button class="btn-primary" onclick="resetWizard()">🔄 Start New</button>
+      </div>
+    </div>
+
+    <!-- HELP SECTION -->
+    <div class="help-section">
+      <button class="help-toggle" onclick="toggleHelp()">
+        <span>❓ How to Add a New Contest Year</span>
+        <span id="helpArrow">▼</span>
+      </button>
+      <div class="help-content" id="helpContent">
+        <ol>
+          <li>Open this admin page and enter the password.</li>
+          <li><strong>Choose the contest</strong> (Pascal, Cayley, Fermat, or Euclid).</li>
+          <li><strong>Enter the year</strong> of the contest you want to add.</li>
+          <li><strong>Paste the question paper URL</strong> from the CEMC website.</li>
+          <li><strong>Paste the solution URL</strong> (optional but recommended).</li>
+          <li><strong>Add questions</strong> — either paste JSON data, upload a .json file, or generate an empty template.</li>
+          <li><strong>Review the preview</strong> and confirm everything looks correct.</li>
+          <li><strong>Download the generated files</strong>:
+            <ul style="margin-top:4px;">
+              <li><code>data-{contest}-{year}.js</code> — the contest data file</li>
+              <li><code>contest-registry.js</code> — updated registry with the new year</li>
+            </ul>
+          </li>
+          <li><strong>Save the files</strong> into your project's <code>/data</code> folder.</li>
+          <li><strong>Commit & push</strong> to GitHub. Vercel will auto-deploy.</li>
+        </ol>
+      </div>
+    </div>
+
+  </div><!-- end container -->
+
+  <!-- Load contest registry for duplicate detection -->
+  <script src="data/contest-registry.js"></script>
+
+  <script>
+    // ============================================================
+    // STATE
+    // ============================================================
+    let currentStep = 1;
+    const totalSteps = 7;
+    let adminPassword = "matharena2026"; // hardcoded fallback
+    let isUpdatingExisting = false;
+    let generatedData = null;
+
+    // Try to load password from config
+    try {
+      fetch('data/contest-config.json')
+        .then(r => r.json())
+        .then(cfg => { if (cfg && cfg.adminPassword) adminPassword = cfg.adminPassword; })
+        .catch(() => {});
+    } catch(e) {}
+
+    // ============================================================
+    // PASSWORD GATE
+    // ============================================================
+    document.getElementById('passwordInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') checkPassword();
+    });
+
+    function checkPassword() {
+      const input = document.getElementById('passwordInput').value.trim();
+      if (input === adminPassword) {
+        document.getElementById('passwordOverlay').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+        buildStepIndicator();
+      } else {
+        document.getElementById('passwordError').style.display = 'block';
+        document.getElementById('passwordInput').value = '';
+        document.getElementById('passwordInput').focus();
+      }
+    }
+
+    // ============================================================
+    // STEP INDICATOR
+    // ============================================================
+    function buildStepIndicator() {
+      const container = document.getElementById('stepIndicator');
+      container.innerHTML = '';
+      for (let i = 1; i <= totalSteps; i++) {
+        const circle = document.createElement('div');
+        circle.className = 'step-circle' + (i === currentStep ? ' active' : '') + (i < currentStep ? ' completed' : '');
+        circle.textContent = i < currentStep ? '✓' : i;
+        circle.id = 'stepCircle' + i;
+        container.appendChild(circle);
+        if (i < totalSteps) {
+          const line = document.createElement('div');
+          line.className = 'step-line' + (i < currentStep ? ' completed' : '');
+          line.id = 'stepLine' + i;
+          container.appendChild(line);
+        }
+      }
+    }
+
+    function updateStepIndicator() {
+      for (let i = 1; i <= totalSteps; i++) {
+        const circle = document.getElementById('stepCircle' + i);
+        if (!circle) continue;
+        circle.className = 'step-circle';
+        if (i < currentStep) { circle.className += ' completed'; circle.textContent = '✓'; }
+        else if (i === currentStep) { circle.className += ' active'; circle.textContent = i; }
+        else { circle.textContent = i; }
+        if (i < totalSteps) {
+          const line = document.getElementById('stepLine' + i);
+          line.className = 'step-line' + (i < currentStep ? ' completed' : '');
+        }
+      }
+      document.getElementById('progressFill').style.width = ((currentStep / totalSteps) * 100) + '%';
+    }
+
+    // ============================================================
+    // NAVIGATION
+    // ============================================================
+    function showStep(step) {
+      document.querySelectorAll('.step-card').forEach(el => el.classList.add('hidden'));
+      document.getElementById('step' + step).classList.remove('hidden');
+      currentStep = step;
+      updateStepIndicator();
+    }
+
+    function nextStep(from) {
+      if (!validateStep(from)) return;
+      if (from === 1) {
+        populateImportDropdown();
+      }
+      if (from === 2) {
+        // Duplicate detection with confirm popup
+        const contest = getSelectedContest();
+        const year = parseInt(document.getElementById('yearInput').value);
+        const registry = window.MATH_ARENA_REGISTRY;
+        if (registry && registry.contests && registry.contests[contest]) {
+          const years = registry.contests[contest].years || [];
+          if (years.indexOf(year) !== -1) {
+            if (!confirm('⚠️ WARNING: ' + contest.charAt(0).toUpperCase() + contest.slice(1) + ' ' + year + ' already exists in the registry!\n\nDo you want to overwrite it?')) {
+              return; // Don't proceed
+            }
+            isUpdatingExisting = true;
+          }
+        }
+        checkDuplicate();
+      }
+      if (from === 5) buildPreview();
+      if (from === 6) generateFiles();
+      showStep(from + 1);
+    }
+
+    function prevStep(from) {
+      showStep(from - 1);
+    }
+
+    function validateStep(step) {
+      switch(step) {
+        case 1:
+          const contest = getSelectedContest();
+          if (!contest) { alert('Please select a contest.'); return false; }
+          return true;
+        case 2:
+          const year = getYear();
+          if (!year || year < 2015 || year > 2035) { alert('Please enter a valid year (2015-2035).'); return false; }
+          if (document.getElementById('duplicateWarning').classList.contains('hidden') === false && !isUpdatingExisting) {
+            alert('Please resolve the duplicate warning first.'); return false;
+          }
+          return true;
+        case 3:
+          const paperUrl = document.getElementById('paperUrl').value.trim();
+          if (!paperUrl || !isValidUrl(paperUrl)) { alert('Please enter a valid question paper URL.'); return false; }
+          return true;
+        case 4:
+          // Solution URL is optional but warn
+          const solUrl = document.getElementById('solutionUrl').value.trim();
+          if (!solUrl) {
+            if (!confirm('No solution URL provided. Continue anyway?')) return false;
+          }
+          return true;
+        case 5:
+          return true;
+        case 6:
+          return true;
+        default:
+          return true;
+      }
+    }
+
+    // ============================================================
+    // GETTERS
+    // ============================================================
+    function getSelectedContest() {
+      const checked = document.querySelector('input[name="contest"]:checked');
+      return checked ? checked.value : null;
+    }
+
+    function getYear() {
+      return parseInt(document.getElementById('yearInput').value);
+    }
+
+    function isValidUrl(str) {
+      try { new URL(str); return true; } catch { return false; }
+    }
+
+    function getPaperSource() {
+      const mode = document.querySelector('input[name="paperSource"]:checked').value;
+      if (mode === 'file') {
+        const fileInput = document.getElementById('paperFile');
+        return fileInput.files.length > 0 ? fileInput.files[0].name : '';
+      }
+      return document.getElementById('paperUrl').value.trim();
+    }
+
+    function getSolutionSource() {
+      const mode = document.querySelector('input[name="solutionSource"]:checked').value;
+      if (mode === 'file') {
+        const fileInput = document.getElementById('solutionFile');
+        return fileInput.files.length > 0 ? fileInput.files[0].name : '';
+      }
+      return document.getElementById('solutionUrl').value.trim();
+    }
+
+    // ============================================================
+    // URL VALIDATION
+    // ============================================================
+    function validateUrl(inputId) {
+      const input = document.getElementById(inputId);
+      const status = document.getElementById(inputId + 'Status');
+      const val = input.value.trim();
+      if (!val) {
+        status.innerHTML = '';
+        return;
+      }
+      if (isValidUrl(val)) {
+        status.innerHTML = '<span class="url-valid">✅ Valid URL</span>';
+      } else {
+        status.innerHTML = '<span class="url-invalid">❌ Invalid URL format</span>';
+      }
+    }
+
+    // ============================================================
+    // SOURCE TOGGLE (Link vs File Upload)
+    // ============================================================
+    function togglePaperSource() {
+      const mode = document.querySelector('input[name="paperSource"]:checked').value;
+      document.getElementById('paperLinkInput').style.display = mode === 'link' ? 'block' : 'none';
+      document.getElementById('paperFileInput').style.display = mode === 'file' ? 'block' : 'none';
+      // Update file status when a file is selected
+      if (mode === 'file') {
+        const fileInput = document.getElementById('paperFile');
+        fileInput.onchange = function() {
+          const status = document.getElementById('paperFileStatus');
+          if (fileInput.files.length > 0) {
+            status.innerHTML = '<span class="url-valid">✅ ' + fileInput.files[0].name + '</span>';
+          } else {
+            status.innerHTML = '';
+          }
+        };
+      }
+    }
+
+    function toggleSolutionSource() {
+      const mode = document.querySelector('input[name="solutionSource"]:checked').value;
+      document.getElementById('solutionLinkInput').style.display = mode === 'link' ? 'block' : 'none';
+      document.getElementById('solutionFileInput').style.display = mode === 'file' ? 'block' : 'none';
+      // Update file status when a file is selected
+      if (mode === 'file') {
+        const fileInput = document.getElementById('solutionFile');
+        fileInput.onchange = function() {
+          const status = document.getElementById('solutionFileStatus');
+          if (fileInput.files.length > 0) {
+            status.innerHTML = '<span class="url-valid">✅ ' + fileInput.files[0].name + '</span>';
+          } else {
+            status.innerHTML = '';
+          }
+        };
+      }
+    }
+
+    // ============================================================
+    // DUPLICATE DETECTION
+    // ============================================================
+    function checkDuplicate() {
+      const contest = getSelectedContest();
+      const year = getYear();
+      const registry = window.MATH_ARENA_REGISTRY;
+      if (!registry || !registry.contests || !registry.contests[contest]) {
+        document.getElementById('duplicateWarning').classList.add('hidden');
+        return;
+      }
+      const years = registry.contests[contest].years || [];
+      if (Array.isArray(years) && years.includes(year)) {
+        document.getElementById('duplicateWarning').classList.remove('hidden');
+        isUpdatingExisting = false;
+      } else {
+        document.getElementById('duplicateWarning').classList.add('hidden');
+      }
+    }
+
+    function cancelDuplicate() {
+      document.getElementById('yearInput').value = '';
+      document.getElementById('duplicateWarning').classList.add('hidden');
+      isUpdatingExisting = false;
+    }
+
+    function allowUpdate() {
+      isUpdatingExisting = true;
+      document.getElementById('duplicateWarning').classList.add('hidden');
+    }
+
+    // ============================================================
+    // IMPORT PREVIOUS YEAR
+    // ============================================================
+    function populateImportDropdown() {
+      const contest = getSelectedContest();
+      const select = document.getElementById('importPrevYear');
+      select.innerHTML = '<option value="">— None (start fresh) —</option>';
+      const registry = window.MATH_ARENA_REGISTRY;
+      if (!registry || !registry.contests || !registry.contests[contest]) return;
+      const years = registry.contests[contest].years || [];
+      if (Array.isArray(years)) {
+        const sorted = years.slice().sort((a, b) => b - a);
+        sorted.forEach(y => {
+          const opt = document.createElement('option');
+          opt.value = y;
+          opt.textContent = contest.charAt(0).toUpperCase() + contest.slice(1) + ' ' + y;
+          select.appendChild(opt);
+        });
+      }
+    }
+
+    // ============================================================
+    // GENERATE EMPTY TEMPLATE
+    // ============================================================
+    function generateEmptyTemplate() {
+      const contest = getSelectedContest();
+      let questions = [];
+
+      if (contest === 'euclid') {
+        // Euclid: 10 questions with parts a, b, c
+        for (let i = 1; i <= 10; i++) {
+          questions.push({
+            num: i,
+            parts: [
+              { part: "a", q: "", sol: "", rat: "", marks: 2 },
+              { part: "b", q: "", sol: "", rat: "", marks: 3 },
+              { part: "c", q: "", sol: "", rat: "", marks: 5 }
+            ]
+          });
+        }
+      } else {
+        // MCQ: Pascal, Cayley, Fermat — 25 questions
+        for (let i = 1; i <= 25; i++) {
+          questions.push({
+            num: i,
+            q: "",
+            o: ["(A)", "(B)", "(C)", "(D)", "(E)"],
+            a: "",
+            sol: "",
+            rat: ""
+          });
+        }
+      }
+
+      document.getElementById('questionJson').value = JSON.stringify(questions, null, 2);
+    }
+
+    // ============================================================
+    // LOAD JSON FILE
+    // ============================================================
+    function loadJsonFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          document.getElementById('questionJson').value = JSON.stringify(parsed, null, 2);
+        } catch (err) {
+          alert('Invalid JSON file: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // ============================================================
+    // PREVIEW
+    // ============================================================
+    function buildPreview() {
+      const contest = getSelectedContest();
+      const year = getYear();
+      const paperUrl = getPaperSource();
+      const solutionUrl = getSolutionSource();
+      const answerKeyUrl = document.getElementById('answerKeyUrl').value.trim();
+      const questionJson = document.getElementById('questionJson').value.trim();
+      let questionCount = 0;
+      try {
+        const q = JSON.parse(questionJson);
+        questionCount = Array.isArray(q) ? q.length : 0;
+      } catch(e) { questionCount = 0; }
+
+      const filename = `data-${contest}-${year}.js`;
+      const paperMode = document.querySelector('input[name="paperSource"]:checked').value;
+      const solutionMode = document.querySelector('input[name="solutionSource"]:checked').value;
+
+      let html = '';
+      html += previewRow('Contest', contest.charAt(0).toUpperCase() + contest.slice(1));
+      html += previewRow('Year', year);
+      if (paperMode === 'file') {
+        html += previewRow('Paper Source', paperUrl ? `📄 File: <code>${paperUrl}</code>` : '<span class="text-red">No file selected</span>');
+      } else {
+        html += previewRow('Paper URL', paperUrl ? `<a href="${paperUrl}" target="_blank">${truncate(paperUrl, 45)}</a>` : '<span class="text-red">Not set</span>');
+      }
+      if (solutionMode === 'file') {
+        html += previewRow('Solution Source', solutionUrl ? `📄 File: <code>${solutionUrl}</code>` : '<span class="url-warning">No file selected</span>');
+      } else {
+        html += previewRow('Solution URL', solutionUrl ? `<a href="${solutionUrl}" target="_blank">${truncate(solutionUrl, 45)}</a>` : '<span class="url-warning">Not set</span>');
+      }
+      html += previewRow('Answer Key URL', answerKeyUrl ? `<a href="${answerKeyUrl}" target="_blank">${truncate(answerKeyUrl, 45)}</a>` : '—');
+      html += previewRow('Questions', questionCount > 0 ? questionCount + ' questions' : '<span class="url-warning">Empty (template only)</span>');
+      html += previewRow('Generated File', `<code class="text-gold">${filename}</code>`);
+      html += previewRow('Registry Update', `<code class="text-gold">contest-registry.js</code>`);
+
+      document.getElementById('previewContent').innerHTML = html;
+    }
+
+    function previewRow(label, value) {
+      return `<div class="preview-row"><span class="preview-label">${label}</span><span class="preview-value">${value}</span></div>`;
+    }
+
+    function truncate(str, max) {
+      return str.length > max ? str.substring(0, max) + '...' : str;
+    }
+
+    // ============================================================
+    // GENERATE FILES
+    // ============================================================
+    function generateFiles() {
+      const contest = getSelectedContest();
+      const year = getYear();
+      const paperUrl = getPaperSource();
+      const solutionUrl = getSolutionSource();
+      const answerKeyUrl = document.getElementById('answerKeyUrl').value.trim();
+      const questionJson = document.getElementById('questionJson').value.trim();
+
+      let questions = [];
+      try { questions = JSON.parse(questionJson); } catch(e) { questions = []; }
+
+      const now = new Date().toISOString();
+      const filename = `data-${contest}-${year}.js`;
+
+      // Generate data JS
+      const dataObj = {
+        contest: contest,
+        year: year,
+        active: true,
+        questionPaperUrl: paperUrl,
+        solutionUrl: solutionUrl,
+        answerKeyUrl: answerKeyUrl,
+        questions: questions,
+        flashcards: [],
+        metadata: {
+          createdAt: now,
+          updatedAt: now,
+          source: "CEMC",
+          generatedBy: "MathArena Admin"
+        }
+      };
+
+      const dataJs = `window.MATH_ARENA_DATA = window.MATH_ARENA_DATA || {};\nwindow.MATH_ARENA_DATA["${contest}-${year}"] = ${JSON.stringify(dataObj, null, 2)};\n`;
+
+      // Generate updated registry
+      let registry = {};
+      try {
+        registry = JSON.parse(JSON.stringify(window.MATH_ARENA_REGISTRY || {}));
+      } catch(e) {
+        registry = { contests: {} };
+      }
+
+      // Ensure contests wrapper
+      if (!registry.contests) registry.contests = {};
+      if (!registry.contests[contest]) {
+        registry.contests[contest] = { name: contest.charAt(0).toUpperCase() + contest.slice(1), years: [] };
+      }
+      if (!registry.contests[contest].years) {
+        registry.contests[contest].years = [];
+      }
+
+      // Add year if not present
+      if (!registry.contests[contest].years.includes(year)) {
+        registry.contests[contest].years.push(year);
+        registry.contests[contest].years.sort((a, b) => b - a);
+      }
+
+      const registryJs = `// Auto-generated by MathArena Admin — ${now}\nwindow.MATH_ARENA_REGISTRY = ${JSON.stringify(registry, null, 2)};\n`;
+
+      // Store generated data
+      generatedData = { dataJs, registryJs, filename, contest, year };
+
+      // Populate UI
+      document.getElementById('generatedFilename').textContent = filename;
+      document.getElementById('generatedDataJs').value = dataJs;
+      document.getElementById('generatedRegistryJs').value = registryJs;
+      document.getElementById('instrFilename').textContent = filename;
+    }
+
+    // ============================================================
+    // DOWNLOAD & COPY
+    // ============================================================
+    function downloadFile(type) {
+      if (!generatedData) return;
+      let content, filename;
+      if (type === 'data') {
+        content = generatedData.dataJs;
+        filename = generatedData.filename;
+      } else {
+        content = generatedData.registryJs;
+        filename = 'contest-registry.js';
+      }
+      const blob = new Blob([content], { type: 'application/javascript' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function copyToClipboard(textareaId) {
+      const textarea = document.getElementById(textareaId);
+      textarea.select();
+      textarea.setSelectionRange(0, 99999);
+      try {
+        navigator.clipboard.writeText(textarea.value).then(() => {
+          showCopyFeedback(textareaId);
+        });
+      } catch(e) {
+        document.execCommand('copy');
+        showCopyFeedback(textareaId);
+      }
+    }
+
+    function showCopyFeedback(textareaId) {
+      const btn = document.querySelector(`[onclick="copyToClipboard('${textareaId}')"]`);
+      if (btn) {
+        const orig = btn.textContent;
+        btn.textContent = '✓ Copied!';
+        btn.style.background = '#27ae60';
+        setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 2000);
+      }
+    }
+
+    // ============================================================
+    // VERIFY
+    // ============================================================
+    function runVerification() {
+      if (!generatedData) return;
+      const contest = generatedData.contest;
+      const year = generatedData.year;
+      const results = [];
+
+      // Check registry has the year
+      let registryObj = {};
+      try { registryObj = JSON.parse(document.getElementById('generatedRegistryJs').value.replace(/^[^{]*/, '').replace(/;\s*$/, '')); } catch(e) {}
+
+      const hasYear = registryObj[contest] && registryObj[contest].years && registryObj[contest].years.includes(year);
+      results.push({ pass: hasYear, text: 'Registry updated' });
+      results.push({ pass: hasYear, text: 'Year added to contest' });
+
+      // Check no duplicates
+      const years = (registryObj[contest] && registryObj[contest].years) || [];
+      const unique = new Set(years).size === years.length;
+      results.push({ pass: unique, text: 'No duplicate years' });
+
+      // Check URLs/Sources
+      const paperSource = getPaperSource();
+      const paperMode = document.querySelector('input[name="paperSource"]:checked').value;
+      const paperValid = paperMode === 'file' ? paperSource.length > 0 : isValidUrl(paperSource);
+      results.push({ pass: paperValid, text: 'Paper source valid' });
+
+      // Ready check
+      const allPass = results.every(r => r.pass);
+      results.push({ pass: allPass, text: 'Ready for GitHub' });
+
+      let html = '<ul class="checklist">';
+      results.forEach(r => {
+        html += `<li class="${r.pass ? 'check-pass' : 'check-fail'}"><span class="icon">${r.pass ? '✓' : '✗'}</span> ${r.text}</li>`;
+      });
+      html += '</ul>';
+
+      if (allPass) {
+        html += '<p class="text-green mt-10" style="font-weight:600;">🎉 All checks passed! Ready to deploy.</p>';
+      } else {
+        html += '<p class="text-red mt-10" style="font-weight:600;">⚠️ Some checks failed. Review above.</p>';
+      }
+
+      const container = document.getElementById('verifyResults');
+      container.innerHTML = html;
+      container.classList.remove('hidden');
+    }
+
+    // ============================================================
+    // HELP TOGGLE
+    // ============================================================
+    function toggleHelp() {
+      const content = document.getElementById('helpContent');
+      const arrow = document.getElementById('helpArrow');
+      content.classList.toggle('open');
+      arrow.textContent = content.classList.contains('open') ? '▲' : '▼';
+    }
+
+    // ============================================================
+    // RESET
+    // ============================================================
+    function resetWizard() {
+      if (!confirm('Start a new contest entry? Current data will be lost.')) return;
+      document.querySelectorAll('input[name="contest"]').forEach(el => el.checked = false);
+      document.getElementById('yearInput').value = '';
+      document.getElementById('paperUrl').value = '';
+      document.getElementById('solutionUrl').value = '';
+      document.getElementById('answerKeyUrl').value = '';
+      document.getElementById('questionJson').value = '';
+      document.getElementById('paperUrlStatus').innerHTML = '';
+      document.getElementById('solutionUrlStatus').innerHTML = '';
+      document.getElementById('answerKeyUrlStatus').innerHTML = '';
+      document.getElementById('paperFileStatus').innerHTML = '';
+      document.getElementById('solutionFileStatus').innerHTML = '';
+      document.getElementById('paperFile').value = '';
+      document.getElementById('solutionFile').value = '';
+      // Reset source toggles to "link" mode
+      document.querySelector('input[name="paperSource"][value="link"]').checked = true;
+      document.querySelector('input[name="solutionSource"][value="link"]').checked = true;
+      document.getElementById('paperLinkInput').style.display = 'block';
+      document.getElementById('paperFileInput').style.display = 'none';
+      document.getElementById('solutionLinkInput').style.display = 'block';
+      document.getElementById('solutionFileInput').style.display = 'none';
+      document.getElementById('duplicateWarning').classList.add('hidden');
+      document.getElementById('verifyResults').classList.add('hidden');
+      document.getElementById('importPrevYear').innerHTML = '<option value="">— None (start fresh) —</option>';
+      isUpdatingExisting = false;
+      generatedData = null;
+      showStep(1);
+    }
+
+    // ============================================================
+    // INIT
+    // ============================================================
+    buildStepIndicator();
+  </script>
+</body>
+</html>

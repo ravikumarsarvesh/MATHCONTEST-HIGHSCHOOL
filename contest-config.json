@@ -1,0 +1,560 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-07-02",
+  "adminPassword": "matharena2026",
+  "contests": {
+    "pascal": {
+      "name": "Pascal",
+      "grade": 9,
+      "questions": 25,
+      "duration": "60 min",
+      "color": "#4CAF50",
+      "years": {
+        "2015": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2015/2015PascalContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2015/2015PascalSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "easy",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2016": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2016/2016PascalContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2016/2016PascalSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "easy",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2017": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2017PascalContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2017PascalSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "easy",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2018": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2018PascalContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2018PascalSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "easy",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2019": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2019PascalContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2019PascalSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "easy",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2020": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2020/2020PascalContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2020/2020PascalSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "easy",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2021": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2021/2021PascalContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2021/2021PascalSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "medium",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2022": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2022/2022PascalContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2022/2022PascalSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "medium",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2023": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2023/2023PascalContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2023/2023PascalSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "medium",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2024": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2024/2024PascalContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2024PascalSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "hard",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2025": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2025/2025PascalContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2025/2025PascalSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "hard",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2026": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2026PascalContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2026PascalSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "hard",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        }
+      }
+    },
+    "cayley": {
+      "name": "Cayley",
+      "grade": 10,
+      "questions": 25,
+      "duration": "60 min",
+      "color": "#2196F3",
+      "years": {
+        "2015": {
+          "active": true,
+          "paperUrl": "papers/2015CayleyContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2015/2015CayleySolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "easy",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2016": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2025/2016CayleyContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2025/2016CayleySolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "easy",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2017": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2017CayleyContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2017CayleySolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "easy",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2018": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2018CayleyContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2018CayleySolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "easy",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2019": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2019CayleyContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2019CayleySolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "easy",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2020": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2020/2020CayleyContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2020/2020CayleySolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "easy",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2021": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2021/2021CayleyContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2021/2021CayleySolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "medium",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2022": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2022/2022CayleyContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2022/2022CayleySolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "medium",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2023": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2023/2023CayleyContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2023/2023CayleySolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "medium",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2024": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2024/2024CayleyContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2024/2024CayleySolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "hard",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2025": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2025/2025CayleyContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2025/2025CayleySolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "hard",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2026": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2026CayleyContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2026CayleySolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "hard",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        }
+      }
+    },
+    "fermat": {
+      "name": "Fermat",
+      "grade": 11,
+      "questions": 25,
+      "duration": "60 min",
+      "color": "#FF9800",
+      "years": {
+        "2015": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2024/2015FermatContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2024/2015FermatSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "easy",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2016": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2016/2016FermatContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2016/2016FermatSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "easy",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2017": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2017FermatContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2017FermatSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "easy",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2018": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2018FermatContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2025/2018FermatSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "easy",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2019": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2019/2019FermatContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2019/2019FermatSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "easy",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2020": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2020/2020FermatContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2020/2020FermatSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "easy",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2021": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2021/2021FermatContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2021/2021FermatSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "medium",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2022": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2022/2022FermatContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2022/2022FermatSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "medium",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2023": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2023/2023FermatContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2023/2023FermatSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "medium",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2024": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2024/2024FermatContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2024/2024FermatSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "hard",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2025": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2025/2025FermatContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2025/2025FermatSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "hard",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2026": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2026FermatContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2026FermatSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "hard",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        }
+      }
+    },
+    "euclid": {
+      "name": "Euclid",
+      "grade": 12,
+      "questions": 10,
+      "duration": "2.5 hrs",
+      "color": "#9C27B0",
+      "years": {
+        "2016": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2016/2016EuclidContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2016/2016EuclidSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "easy",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2017": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2025/2017EuclidContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2024/2017EuclidSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "easy",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2018": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2024/2018EuclidContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2024/2018EuclidSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "easy",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2019": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2019/2019EuclidContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2019/2019EuclidSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "easy",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2020": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2020/2020EuclidContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2025/2020EuclidSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "easy",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2021": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2021/2021EuclidContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2021/2021EuclidSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "medium",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2022": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2022/2022EuclidContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2022/2022EuclidSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "medium",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2023": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2023/2023EuclidContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2023/2023EuclidSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "medium",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2024": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2024/2024EuclidContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2024/2024EuclidSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "hard",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2025": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2025/2025EuclidContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2025/2025EuclidSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "hard",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        },
+        "2026": {
+          "active": true,
+          "paperUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2026EuclidContest.html",
+          "solutionUrl": "https://cemc.uwaterloo.ca/sites/default/files/documents/2026/2026EuclidSolution.html",
+          "answerKeyUrl": "",
+          "difficulty": "hard",
+          "flashCards": [],
+          "formulas": [],
+          "formulaQuiz": [],
+          "mockTestSource": "qb"
+        }
+      }
+    }
+  }
+}
